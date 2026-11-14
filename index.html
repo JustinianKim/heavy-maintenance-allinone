@@ -748,8 +748,12 @@
         const wpData = await readFileAsArrayBuffer(wpFile);
         const workbook = XLSX.read(wpData, { type: 'array', cellStyles: true });
 
-        // Find MPD Sheet
-        const mpdSheetName = workbook.SheetNames.find(n => n.toUpperCase().includes('MPD'));
+        // Find MPD Sheet (Flexible matching: "MPD", "[MPD]", "TBC MPD", etc.)
+        const mpdSheetName = workbook.SheetNames.find(n => {
+          const upper = n.toUpperCase();
+          return upper.includes('MPD') && !upper.includes('TBC');
+        }) || workbook.SheetNames.find(n => n.toUpperCase().includes('MPD'));
+
         let mpdSum = 0.0;
         let found53_380 = false;
         let found53_990_30j = false;
@@ -837,12 +841,15 @@
           }
           logToTerminal(`MPD 시트 완료: 합계 ${mpdSum.toFixed(1)} M/H`);
         } else {
-          logToTerminal('⚠️ MPD 시트를 찾을 수 없습니다.');
+          logToTerminal(`⚠️ MPD 시트를 찾을 수 없습니다. (현재 시트 목록: ${workbook.SheetNames.join(', ')})`);
         }
 
-        // Find AD SB EO Sheet
+        // Find AD SB EO Sheet (Flexible matching)
         setProgress(65, 'AD/SB/EO 시트 파싱 시작...');
-        const adSheetName = workbook.SheetNames.find(n => n.toUpperCase().includes('AD SB EO'));
+        const adSheetName = workbook.SheetNames.find(n => {
+          const upper = n.toUpperCase().replace(/\s+/g, '');
+          return upper.includes('ADSBEO') || upper.includes('AD/SB/EO') || (upper.includes('AD') && upper.includes('SB'));
+        });
         let adSum = 0.0;
 
         if (adSheetName) {
@@ -871,8 +878,12 @@
           }
           logToTerminal(`AD/SB/EO 시트 완료: 합계 ${adSum.toFixed(1)} M/H`);
         } else {
-          logToTerminal('⚠️ AD/SB/EO 시트를 찾을 수 없습니다.');
+          logToTerminal(`⚠️ AD/SB/EO 시트를 찾을 수 없습니다. (현재 시트 목록: ${workbook.SheetNames.join(', ')})`);
         }
+
+        // Warning banner flag if sheets are missing
+        const missingSheetsWarning = (!mpdSheetName && !adSheetName) ? 
+          `선택하신 파일(${filename})에 'MPD' 및 'AD SB EO' 시트가 존재하지 않습니다. (포함된 시트: ${workbook.SheetNames.join(', ')})\n실제 C-Check 워크패키지 원본(Final Workpackage) 엑셀 파일을 업로드해 주세요.` : null;
 
         // Apply Weights & Factors
         setProgress(95, '가중치 합산 및 예측 TAT 산출 중...');
@@ -994,7 +1005,8 @@
           total,
           tatDays,
           reasons,
-          calcExplanation
+          calcExplanation,
+          missingSheetsWarning
         });
 
       } catch (err) {
@@ -1019,6 +1031,19 @@
 
       const container = document.getElementById('resReasonsContainer');
       container.innerHTML = '';
+
+      if (res.missingSheetsWarning) {
+        const warnBox = document.createElement('div');
+        warnBox.className = 'p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs flex items-start space-x-2.5';
+        warnBox.innerHTML = `
+          <span class="text-base leading-none">⚠️</span>
+          <div>
+            <p class="font-bold">Work Package 시트 미발견 안내</p>
+            <p class="mt-1 text-amber-800 whitespace-pre-line leading-relaxed">${res.missingSheetsWarning}</p>
+          </div>
+        `;
+        container.appendChild(warnBox);
+      }
 
       res.reasons.forEach(item => {
         const card = document.createElement('div');
