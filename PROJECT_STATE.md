@@ -61,7 +61,28 @@
 
 ---
 
-## 4. 파일 구성
+## 4. GitHub 저장소 동기화 및 배포 규칙 (GitHub Sync & Deployment)
+
+### ① GitHub에 업로드(Tracked)되는 핵심 파일 목록
+- **`index.html`**: 모든 기능(WP 분석기, 체크리스트, 객실오더)이 집약된 단일 메인 웹 애플리케이션
+- **`heavy_maintenance_allinone_offline.zip`**: 최신 `index.html`, `실행하기.bat`, `app_icon.png`, `vendor/` 자산이 포함된 오프라인 패키지
+- **`PROJECT_STATE.md`**: 본 인수인계 및 개발 스타일 가이드 문서
+- **`README.md`**: 저장소 안내 문서
+- **`실행하기.bat`**: Windows 로컬 브라우저 자동 실행 배치 파일
+- **`app_icon.png`**: 앱 아이콘 및 파비콘
+- **`vendor/`**: 자체 호스팅된 SheetJS (`xlsx.full.min.js`) 및 Tailwind CSS (`tailwind.min.js`)
+
+*(※ 사내 기밀 및 원본 참조 파일인 `자료/` 폴더와 `*.pptx` 파일은 `.gitignore`에 의해 GitHub에 올라가지 않고 로컬에만 안전하게 보관됩니다.)*
+
+### ② 코드 수정 시 필수 배포 절차
+코드를 수정할 때마다 AI는 항상 아래 3단계를 자동으로 일괄 수행해야 합니다:
+1. `index.html` 기능 수정 및 검증
+2. 최신 `index.html`을 포함하여 `heavy_maintenance_allinone_offline.zip` 압축 파일 재생성
+3. `git add`, `git commit`, `git push origin main` 실행 ➔ **GitHub Pages 자동 배포 완료** (약 30초 내 라이브 반영)
+
+---
+
+## 5. 파일 구성
 
 ```text
 WP_분석기/
@@ -79,7 +100,7 @@ WP_분석기/
 
 ---
 
-## 5. 다음 작업 시 빠른 시작 팁
+## 6. 다음 작업 시 빠른 시작 팁
 
 새로운 채팅창을 시작하실 때 아래 한 줄만 입력하시면 즉시 이어서 작업이 가능합니다:
 
