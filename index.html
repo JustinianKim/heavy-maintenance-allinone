@@ -261,8 +261,8 @@
   </main>
 
   <!-- Guide Modal -->
-  <div id="guideModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+  <div id="guideModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4" style="overscroll-behavior: contain;">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150" style="overscroll-behavior: contain;">
       <div class="bg-brand-orange text-white px-6 py-4 flex items-center justify-between">
         <h3 class="text-base font-bold flex items-center space-x-2">
           <span>ⓘ</span>
@@ -270,7 +270,7 @@
         </h3>
         <button id="btnCloseGuide" class="text-white/80 hover:text-white text-lg font-bold">✕</button>
       </div>
-      <div class="p-6 overflow-y-auto text-sm text-gray-700 space-y-4 leading-relaxed font-sans">
+      <div class="p-6 overflow-y-auto text-sm text-gray-700 space-y-4 leading-relaxed font-sans" style="overscroll-behavior: contain;">
         <div class="border-b pb-3">
           <h4 class="font-bold text-gray-900 text-base mb-1">목적 및 기본 원칙</h4>
           <p class="text-gray-600 text-xs">WP(Work Package) 분석 결과에 "추가 Man-hour(M/H)"를 더해 최종 소요 일수(TAT)를 보정합니다.</p>
@@ -506,12 +506,27 @@
       });
     });
 
-    // Guide Modal
-    btnOpenGuide.addEventListener('click', () => guideModal.classList.remove('hidden'));
-    btnCloseGuide.addEventListener('click', () => guideModal.classList.add('hidden'));
-    btnCloseGuideBottom.addEventListener('click', () => guideModal.classList.add('hidden'));
+    // Guide Modal (Body Scroll Lock & Containment)
+    function openGuideModal() {
+      guideModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeGuideModal() {
+      guideModal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    btnOpenGuide.addEventListener('click', openGuideModal);
+    btnCloseGuide.addEventListener('click', closeGuideModal);
+    btnCloseGuideBottom.addEventListener('click', closeGuideModal);
     guideModal.addEventListener('click', (e) => {
-      if (e.target === guideModal) guideModal.classList.add('hidden');
+      if (e.target === guideModal) closeGuideModal();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !guideModal.classList.contains('hidden')) {
+        closeGuideModal();
+      }
     });
 
     // Progress updates
