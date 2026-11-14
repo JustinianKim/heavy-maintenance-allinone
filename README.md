@@ -13,7 +13,7 @@
    - 파일명 기반 C-Check 단계 분석 (4C 이상 시 +30 M/H)
    - 기령 분석 (제작일 기준 15년 이상 시 +30 M/H)
    - Wet Area Access (53-380-00-01) 자동 감지 (+300 M/H, 최소 12일 보정)
-   - Wing Task (지정 13개 카드 목록) 및 990 계열, Stabilizer Trim Actuator, NGS 열교환기 보정치 계산
+   - Wing Task (지정 13개 카드 목록) 및 990 계열, Stabilizer Trim Actuator, NGS Heat Exchanger Cleaning 보정치 계산
    - 실시간 터미널 콘솔 로그 및 상세 산출 리포트 제공
 
 ---
