@@ -2058,7 +2058,10 @@
       matched.forEach(item => {
         const div = document.createElement('div');
         const isCurrent = item.value === chkAircraftValue.value;
-        div.className = `py-2 px-3 cursor-pointer flex items-center justify-between hover:bg-orange-50 transition-colors ${isCurrent ? 'bg-orange-50/80 font-bold text-brand-orange' : 'text-gray-700'}`;
+        if (isCurrent) {
+          div.setAttribute('data-selected', 'true');
+        }
+        div.className = `py-2 px-3 cursor-pointer flex items-center justify-between hover:bg-orange-50 transition-colors ${isCurrent ? 'bg-orange-50 font-bold text-brand-orange' : 'text-gray-700'}`;
         
         let displayHtml = escapeHtml(item.label);
         if (q && q.length >= 2) {
@@ -2080,6 +2083,12 @@
       });
 
       chkAircraftDropdownList.classList.remove('hidden');
+
+      // Scroll to currently selected aircraft
+      const selectedEl = chkAircraftDropdownList.querySelector('[data-selected="true"]');
+      if (selectedEl) {
+        selectedEl.scrollIntoView({ block: 'nearest' });
+      }
     }
 
     function selectAircraft(tail, triggerRender = true) {
@@ -2095,9 +2104,16 @@
     }
 
     function setupComboboxEvents() {
-      chkAircraftInput.addEventListener('focus', () => {
+      const openFullList = () => {
         chkAircraftInput.select();
-        filterAircraftList(chkAircraftInput.value);
+        filterAircraftList('');
+      };
+
+      chkAircraftInput.addEventListener('focus', openFullList);
+      chkAircraftInput.addEventListener('click', () => {
+        if (chkAircraftDropdownList.classList.contains('hidden')) {
+          openFullList();
+        }
       });
 
       chkAircraftInput.addEventListener('input', () => {
@@ -2108,7 +2124,7 @@
         e.stopPropagation();
         if (chkAircraftDropdownList.classList.contains('hidden')) {
           chkAircraftInput.focus();
-          filterAircraftList('');
+          openFullList();
         } else {
           chkAircraftDropdownList.classList.add('hidden');
         }
