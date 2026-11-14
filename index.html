@@ -1276,6 +1276,26 @@
       return diffMs / (1000 * 60 * 60 * 24 * 365.25);
     }
 
+    function calculateRemainingYears(dateVal) {
+      if (!dateVal || dateVal === 'N/A' || dateVal === '구매') return null;
+      const now = new Date();
+      let d = null;
+      if (dateVal instanceof Date) {
+        d = dateVal;
+      } else if (typeof dateVal === 'string') {
+        const s = dateVal.trim();
+        const parts = s.split(/[-./]/);
+        if (parts.length >= 3) {
+          d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        }
+      }
+      if (!d || isNaN(d.getTime())) return null;
+      const diffMs = d.getTime() - now.getTime();
+      const years = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+      if (years <= 0) return '반납 기한 경과';
+      return `반납까지 ${years.toFixed(1)}년`;
+    }
+
     // Helper: Cell Red Color / Strike detection (SheetJS)
     function isCellRedOrStrike(cell) {
       if (!cell) return false;
