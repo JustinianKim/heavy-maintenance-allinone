@@ -581,9 +581,14 @@
       <!-- Progress Dashboard Cards (Hidden in Print) -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 no-print">
         <!-- Overall Progress -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex flex-col justify-between">
+        <div id="cardCatAll"
+          class="bg-white rounded-xl shadow-sm border border-gray-200 hover:border-brand-orange p-4 flex flex-col justify-between cursor-pointer transition-all group"
+          title="클릭하여 전체 162건 목록 보기">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">전체 진척도</span>
+            <span class="text-xs font-bold text-gray-700 flex items-center space-x-1.5">
+              <span>📊</span>
+              <span>전체 진척도</span>
+            </span>
             <span id="chkOverallPercentBadge"
               class="text-xs font-black px-2 py-0.5 rounded-full bg-orange-100 text-brand-orange">0.0%</span>
           </div>
@@ -597,7 +602,10 @@
                 style="width: 0%"></div>
             </div>
           </div>
-          <p id="chkRemainingText" class="text-[11px] text-gray-400 font-medium">미완료 162건 남음</p>
+          <div class="flex items-center justify-between text-[11px]">
+            <p id="chkRemainingText" class="text-gray-400 font-medium">미완료 162건 남음</p>
+            <span class="text-brand-orange font-semibold group-hover:underline">전체 보기 &rarr;</span>
+          </div>
         </div>
 
         <!-- Category 1 Card -->
@@ -2023,6 +2031,7 @@
     const chkCat3Count = document.getElementById('chkCat3Count');
     const chkCat3ProgressBar = document.getElementById('chkCat3ProgressBar');
 
+    const cardCatAll = document.getElementById('cardCatAll');
     const cardCat1 = document.getElementById('cardCat1');
     const cardCat2 = document.getElementById('cardCat2');
     const cardCat3 = document.getElementById('cardCat3');
@@ -2444,6 +2453,10 @@
     });
 
     // Category Cards Direct Click
+    cardCatAll.addEventListener('click', () => {
+      const btn = chkCatTabs.querySelector('[data-cat="all"]');
+      if (btn) btn.click();
+    });
     cardCat1.addEventListener('click', () => {
       const btn = chkCatTabs.querySelector('[data-cat="cat1"]');
       if (btn) btn.click();
