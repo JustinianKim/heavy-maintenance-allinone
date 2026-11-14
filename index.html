@@ -186,11 +186,6 @@
           title="인터넷/VPN 없이 중국 및 오프라인 환경에서 바로 실행할 수 있는 전체 파일(.zip) 다운로드">
           <span>오프라인 패키지 (.zip)</span>
         </a>
-        <button id="btnOpenGuide"
-          class="inline-flex items-center space-x-1 px-3 py-1.5 text-xs font-semibold rounded-lg border border-white/60 hover:bg-white hover:text-brand-orange transition-all duration-150">
-          <span>ⓘ</span>
-          <span>산출 기준</span>
-        </button>
       </div>
     </div>
 
@@ -225,6 +220,19 @@
         <!-- ================= INPUT VIEW ================= -->
         <section id="inputView"
           class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col space-y-5">
+
+          <!-- Section Header with 산출 기준 Button -->
+          <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+            <div>
+              <h2 class="text-base font-bold text-gray-900">Work Package 분석</h2>
+              <p class="text-xs text-gray-400 mt-0.5">엑셀 파일을 업로드하여 소요 공수(M/H) 및 예상 TAT를 자동 산출합니다.</p>
+            </div>
+            <button type="button"
+              class="btn-open-guide inline-flex items-center space-x-1 px-3 py-1.5 text-xs font-semibold rounded-lg border border-gray-200 bg-white hover:bg-orange-50 hover:border-orange-200 text-gray-700 hover:text-brand-orange transition-colors cursor-pointer shadow-2xs"
+              title="가중치 및 TAT 산출 기준 가이드">
+              <span>산출 기준</span>
+            </button>
+          </div>
 
           <!-- WP File Dropzone (Primary Hero - Multiple Files Support) -->
           <div class="space-y-2">
@@ -356,18 +364,22 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b gap-3">
             <div>
               <h2 class="text-lg font-bold text-gray-900 flex items-center space-x-2">
-                <span>📊 분석 결과 리포트</span>
+                <span>분석 결과 리포트</span>
               </h2>
               <p id="resBatchSummaryText" class="text-xs text-gray-500 mt-0.5">총 1대 항공기 분석 완료</p>
             </div>
             <div class="flex items-center space-x-2 shrink-0">
+              <button type="button"
+                class="btn-open-guide px-3 py-1.5 text-xs font-semibold rounded-lg border border-gray-200 bg-white hover:bg-orange-50 hover:border-orange-200 text-gray-700 hover:text-brand-orange transition-colors cursor-pointer"
+                title="가중치 및 TAT 산출 기준 가이드">
+                산출 기준
+              </button>
               <button id="btnExportExcel"
-                class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition-colors shadow-sm">
-                <span>📥</span>
-                <span>결과 엑셀 다운로드</span>
+                class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition-colors shadow-sm cursor-pointer">
+                <span>Excel 저장</span>
               </button>
               <button id="btnBackToInput"
-                class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-gray-800 hover:bg-black text-white transition-colors">
+                class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-gray-800 hover:bg-black text-white transition-colors cursor-pointer">
                 다시 분석
               </button>
             </div>
@@ -996,7 +1008,6 @@
     const btnExportExcel = document.getElementById('btnExportExcel');
 
     const guideModal = document.getElementById('guideModal');
-    const btnOpenGuide = document.getElementById('btnOpenGuide');
     const btnCloseGuide = document.getElementById('btnCloseGuide');
     const btnCloseGuideBottom = document.getElementById('btnCloseGuideBottom');
 
@@ -1207,7 +1218,9 @@
       document.body.style.overflow = '';
     }
 
-    btnOpenGuide.addEventListener('click', openGuideModal);
+    document.querySelectorAll('.btn-open-guide').forEach(btn => {
+      btn.addEventListener('click', openGuideModal);
+    });
     btnCloseGuide.addEventListener('click', closeGuideModal);
     btnCloseGuideBottom.addEventListener('click', closeGuideModal);
     guideModal.addEventListener('click', (e) => {
