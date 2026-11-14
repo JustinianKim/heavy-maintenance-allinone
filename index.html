@@ -2069,11 +2069,18 @@
         });
       });
 
-      let initialTail = tails[0] || 'HL7213';
-      if (checklistStorage._lastSelectedTail && DEFAULT_AIRCRAFT_STATUS[checklistStorage._lastSelectedTail]) {
-        initialTail = checklistStorage._lastSelectedTail;
+      if (checklistStorage._lastSelectedTail) {
+        if (DEFAULT_AIRCRAFT_STATUS[checklistStorage._lastSelectedTail]) {
+          selectAircraft(checklistStorage._lastSelectedTail, false);
+        } else {
+          clearAircraftSelection(false);
+        }
+      } else if (checklistStorage._lastSelectedTail === '') {
+        clearAircraftSelection(false);
+      } else {
+        // 최초 접속 시 기본값 첫 번째 항공기
+        selectAircraft(tails[0] || 'HL7213', false);
       }
-      selectAircraft(initialTail, false);
       setupComboboxEvents();
     }
 
@@ -2113,7 +2120,12 @@
 
         div.addEventListener('mousedown', (e) => {
           e.preventDefault();
-          selectAircraft(item.value, true);
+          // 이미 선택된 기번을 재선택하면 선택 삭제(해제)
+          if (item.value === chkAircraftValue.value) {
+            clearAircraftSelection(true);
+          } else {
+            selectAircraft(item.value, true);
+          }
         });
 
         chkAircraftDropdownList.appendChild(div);
@@ -2128,8 +2140,27 @@
       }
     }
 
+    function clearAircraftSelection(triggerRender = true) {
+      chkAircraftValue.value = '';
+      chkAircraftInput.value = '';
+      chkAircraftDropdownList.classList.add('hidden');
+
+      if (triggerRender) {
+        saveChecklistStorage();
+        renderChecklist();
+      }
+    }
+
     function selectAircraft(tail, triggerRender = true) {
-      const found = aircraftListData.find(a => a.value === tail) || aircraftListData[0];
+      if (!tail) {
+        clearAircraftSelection(triggerRender);
+        return;
+      }
+      const found = aircraftListData.find(a => a.value === tail);
+      if (!found) {
+        clearAircraftSelection(triggerRender);
+        return;
+      }
       chkAircraftValue.value = found.value;
       chkAircraftInput.value = found.label;
       chkAircraftDropdownList.classList.add('hidden');
@@ -2154,6 +2185,13 @@
       });
 
       chkAircraftInput.addEventListener('input', () => {
+        const val = chkAircraftInput.value.trim();
+        if (val === '') {
+          // 백스페이스 등으로 내용을 모두 지우면 즉시 선택 해제
+          chkAircraftValue.value = '';
+          saveChecklistStorage();
+          renderChecklist();
+        }
         filterAircraftList(chkAircraftInput.value);
       });
 
@@ -2170,27 +2208,56 @@
       document.addEventListener('click', (e) => {
         if (!e.target.closest('#chkComboboxContainer')) {
           chkAircraftDropdownList.classList.add('hidden');
-          const cur = aircraftListData.find(a => a.value === chkAircraftValue.value);
-          if (cur) chkAircraftInput.value = cur.label;
+          const val = chkAircraftInput.value.trim();
+          if (val === '') {
+            // 빈칸 상태에서 바깥 클릭 시 빈칸 유지 (이전 기번 복귀 방지)
+            clearAircraftSelection(true);
+          } else {
+            const cur = aircraftListData.find(a => a.value === chkAircraftValue.value);
+            if (cur) {
+              chkAircraftInput.value = cur.label;
+            } else {
+              clearAircraftSelection(true);
+            }
+          }
         }
       });
 
       chkAircraftInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
+          const val = chkAircraftInput.value.trim();
+          if (val === '') {
+            clearAircraftSelection(true);
+            return;
+          }
           const firstOption = chkAircraftDropdownList.querySelector('div[class*="cursor-pointer"]');
           if (firstOption) {
             firstOption.dispatchEvent(new MouseEvent('mousedown'));
           }
         } else if (e.key === 'Escape') {
           chkAircraftDropdownList.classList.add('hidden');
-          const cur = aircraftListData.find(a => a.value === chkAircraftValue.value);
-          if (cur) chkAircraftInput.value = cur.label;
+          const val = chkAircraftInput.value.trim();
+          if (val === '') {
+            clearAircraftSelection(true);
+          } else {
+            const cur = aircraftListData.find(a => a.value === chkAircraftValue.value);
+            if (cur) chkAircraftInput.value = cur.label;
+            else clearAircraftSelection(true);
+          }
         }
       });
     }
 
     function getTailData(tail) {
+      if (!tail) {
+        return {
+          items: {},
+          mro: '',
+          inputDate: '',
+          deliveryDate: ''
+        };
+      }
       if (!checklistStorage[tail]) {
         checklistStorage[tail] = {
           items: {},
@@ -2204,7 +2271,7 @@
 
     function saveChecklistStorage() {
       try {
-        checklistStorage._lastSelectedTail = chkAircraftSelect.value;
+        checklistStorage._lastSelectedTail = chkAircraftValue.value || '';
         localStorage.setItem(chkStorageKey, JSON.stringify(checklistStorage));
       } catch (e) {
         console.error('Storage save error:', e);
@@ -2386,15 +2453,19 @@
       chkCat3ProgressBar.style.width = `${cat3Percent}%`;
 
       // Update Print Header Details
-      const info = DEFAULT_AIRCRAFT_STATUS[currentTail];
-      const mfg = typeof info === 'string' ? info : (info ? info.mfg : null);
-      const redel = typeof info === 'object' && info ? info.redel : null;
-      const age = calculateYearsFrom(mfg);
-      const ageStr = age !== null ? `${age.toFixed(1)}년` : '-';
-      const remStr = calculateRemainingYears(redel);
-      const printExtra = remStr ? `, ${remStr}` : '';
-      const tailLabel = `${currentTail} (B737-800, 기령 ${ageStr}${printExtra})`;
-      document.getElementById('printTailNumber').textContent = tailLabel;
+      if (currentTail) {
+        const info = DEFAULT_AIRCRAFT_STATUS[currentTail];
+        const mfg = typeof info === 'string' ? info : (info ? info.mfg : null);
+        const redel = typeof info === 'object' && info ? info.redel : null;
+        const age = calculateYearsFrom(mfg);
+        const ageStr = age !== null ? `${age.toFixed(1)}년` : '-';
+        const remStr = calculateRemainingYears(redel);
+        const printExtra = remStr ? `, ${remStr}` : '';
+        const tailLabel = `${currentTail} (B737-800, 기령 ${ageStr}${printExtra})`;
+        document.getElementById('printTailNumber').textContent = tailLabel;
+      } else {
+        document.getElementById('printTailNumber').textContent = '대상 항공기 미선택';
+      }
       const mroText = (tailData.mro ? tailData.mro + ' / ' : '') + (tailData.inputDate || '미정');
       document.getElementById('printMroSchedule').textContent = mroText;
       document.getElementById('printProgressText').textContent = `${totalCompleted} / ${totalCount}건 완료 (${overallPercent}%)`;
@@ -2416,6 +2487,15 @@
     chkItemsTableBody.addEventListener('change', (e) => {
       const target = e.target;
       const currentTail = chkAircraftSelect.value;
+      if (!currentTail) {
+        alert('체크리스트를 기록할 대상 항공기를 먼저 선택해 주세요.');
+        if (target.classList.contains('chk-row-checkbox')) {
+          target.checked = false;
+        } else if (target.classList.contains('chk-row-notes')) {
+          target.value = '';
+        }
+        return;
+      }
       const tailData = getTailData(currentTail);
 
       if (target.classList.contains('chk-row-checkbox')) {
@@ -2444,12 +2524,14 @@
     // MRO & Date Inputs Change
     chkMroInput.addEventListener('input', () => {
       const currentTail = chkAircraftSelect.value;
+      if (!currentTail) return;
       getTailData(currentTail).mro = chkMroInput.value.trim();
       saveChecklistStorage();
     });
 
     chkDateInput.addEventListener('change', () => {
       const currentTail = chkAircraftSelect.value;
+      if (!currentTail) return;
       getTailData(currentTail).inputDate = chkDateInput.value;
       saveChecklistStorage();
     });
@@ -2508,6 +2590,10 @@
     // Batch Check
     btnChkBatchCheck.addEventListener('click', () => {
       const currentTail = chkAircraftSelect.value;
+      if (!currentTail) {
+        alert('대상 항공기를 먼저 선택해 주세요.');
+        return;
+      }
       const tailData = getTailData(currentTail);
       const visibleCheckboxes = chkItemsTableBody.querySelectorAll('.chk-row-checkbox');
       if (visibleCheckboxes.length === 0) return;
@@ -2528,6 +2614,10 @@
     // Batch Uncheck
     btnChkBatchUncheck.addEventListener('click', () => {
       const currentTail = chkAircraftSelect.value;
+      if (!currentTail) {
+        alert('대상 항공기를 먼저 선택해 주세요.');
+        return;
+      }
       const tailData = getTailData(currentTail);
       const visibleCheckboxes = chkItemsTableBody.querySelectorAll('.chk-row-checkbox');
       if (visibleCheckboxes.length === 0) return;
@@ -2548,6 +2638,10 @@
     // Reset Checklist
     btnChkReset.addEventListener('click', () => {
       const currentTail = chkAircraftSelect.value;
+      if (!currentTail) {
+        alert('초기화할 대상 항공기를 먼저 선택해 주세요.');
+        return;
+      }
       if (!confirm(`[${currentTail}] 체크리스트의 모든 체크 상태와 작성된 메모를 초기화하시겠습니까?`)) return;
 
       delete checklistStorage[currentTail];
@@ -2566,6 +2660,10 @@
     // Excel Export Capability (SheetJS)
     btnChkExcel.addEventListener('click', () => {
       const currentTail = chkAircraftSelect.value;
+      if (!currentTail) {
+        alert('Excel 파일로 저장할 대상 항공기를 먼저 선택해 주세요.');
+        return;
+      }
       const tailData = getTailData(currentTail);
       const now = new Date();
       const dateStr = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
