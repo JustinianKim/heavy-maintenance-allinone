@@ -5,6 +5,7 @@ dist/
 __pycache__/
 *.pyc
 *.zip
+!heavy_maintenance_allinone_offline.zip
 
 # OS and editor files
 .DS_Store
