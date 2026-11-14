@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,25 +44,56 @@
   </script>
   <style>
     /* Windows Native Font Default */
-    body, button, input, select, textarea {
+    body,
+    button,
+    input,
+    select,
+    textarea {
       font-family: "Malgun Gothic", "맑은 고딕", "Segoe UI", sans-serif;
     }
-    code, pre, .font-mono {
+
+    code,
+    pre,
+    .font-mono {
       font-family: Consolas, "Courier New", monospace;
     }
 
     /* Custom scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; }
-    ::-webkit-scrollbar-thumb { background: #c5c5c5; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #999; }
-    .terminal-scroll::-webkit-scrollbar-track { background: #121212; }
-    .terminal-scroll::-webkit-scrollbar-thumb { background: #333; }
-    .terminal-scroll::-webkit-scrollbar-thumb:hover { background: #555; }
-  
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #c5c5c5;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #999;
+    }
+
+    .terminal-scroll::-webkit-scrollbar-track {
+      background: #121212;
+    }
+
+    .terminal-scroll::-webkit-scrollbar-thumb {
+      background: #333;
+    }
+
+    .terminal-scroll::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
     /* Print and Checklist Custom Styles */
     @media print {
-      body, main {
+
+      body,
+      main {
         background: #ffffff !important;
         color: #000000 !important;
         padding: 0 !important;
@@ -68,22 +101,35 @@
         max-width: 100% !important;
         font-size: 9pt !important;
       }
-      header, footer, nav, #moduleWpAnalyzer, #moduleCabinOrder, .no-print, button, #chkCatTabs, #chkSearchClear {
+
+      header,
+      footer,
+      nav,
+      #moduleWpAnalyzer,
+      #moduleCabinOrder,
+      .no-print,
+      button,
+      #chkCatTabs,
+      #chkSearchClear {
         display: none !important;
       }
+
       #moduleChecklist {
         display: block !important;
         padding: 0 !important;
         margin: 0 !important;
         width: 100% !important;
       }
+
       .print-only {
         display: block !important;
       }
+
       .checklist-item {
         break-inside: avoid !important;
         page-break-inside: avoid !important;
       }
+
       textarea.chk-row-notes {
         border: none !important;
         background: transparent !important;
@@ -92,26 +138,32 @@
         font-size: 8pt !important;
         box-shadow: none !important;
       }
+
       input[type="checkbox"] {
         print-color-adjust: exact;
         -webkit-print-color-adjust: exact;
       }
+
       table {
         width: 100% !important;
         border-collapse: collapse !important;
       }
-      th, td {
+
+      th,
+      td {
         border: 1px solid #d1d5db !important;
         padding: 4px 6px !important;
       }
+
       thead {
         display: table-header-group !important;
       }
     }
-
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col font-sans selection:bg-orange-100 selection:text-orange-900">
+
+<body
+  class="bg-gray-100 text-gray-800 min-h-screen flex flex-col font-sans selection:bg-orange-100 selection:text-orange-900">
 
   <!-- Header -->
   <header class="bg-brand-orange text-white shadow-md sticky top-0 z-30">
@@ -129,11 +181,14 @@
       </div>
       <div class="flex items-center space-x-2.5">
         <!-- Offline Package Download Button -->
-        <a href="heavy_maintenance_allinone_offline.zip" download="heavy_maintenance_allinone_offline.zip" class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-white/20 hover:bg-white text-white hover:text-brand-orange border border-white/40 transition-all duration-150 shadow-xs cursor-pointer" title="인터넷/VPN 없이 중국 및 오프라인 환경에서 바로 실행할 수 있는 전체 파일(.zip) 다운로드">
+        <a href="heavy_maintenance_allinone_offline.zip" download="heavy_maintenance_allinone_offline.zip"
+          class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-white/20 hover:bg-white text-white hover:text-brand-orange border border-white/40 transition-all duration-150 shadow-xs cursor-pointer"
+          title="인터넷/VPN 없이 중국 및 오프라인 환경에서 바로 실행할 수 있는 전체 파일(.zip) 다운로드">
           <span>📦</span>
           <span>오프라인 패키지 (.zip)</span>
         </a>
-        <button id="btnOpenGuide" class="inline-flex items-center space-x-1 px-3 py-1.5 text-xs font-semibold rounded-lg border border-white/60 hover:bg-white hover:text-brand-orange transition-all duration-150">
+        <button id="btnOpenGuide"
+          class="inline-flex items-center space-x-1 px-3 py-1.5 text-xs font-semibold rounded-lg border border-white/60 hover:bg-white hover:text-brand-orange transition-all duration-150">
           <span>ⓘ</span>
           <span>산출 기준</span>
         </button>
@@ -143,15 +198,18 @@
     <!-- Top-level Navigation Tabs -->
     <div class="bg-brand-dark/35 backdrop-blur-xs border-t border-white/10 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto flex space-x-1 sm:space-x-3 text-xs sm:text-sm font-bold">
-        <button id="navTabWp" class="py-2.5 px-3.5 border-b-2 border-white text-white flex items-center space-x-1.5 transition-colors cursor-pointer">
+        <button id="navTabWp"
+          class="py-2.5 px-3.5 border-b-2 border-white text-white flex items-center space-x-1.5 transition-colors cursor-pointer">
           <span>📊</span>
           <span>Work Package 분석기</span>
         </button>
-        <button id="navTabChecklist" class="py-2.5 px-3.5 border-b-2 border-transparent text-orange-100/70 hover:text-white hover:border-white/40 flex items-center space-x-1.5 transition-colors cursor-pointer">
+        <button id="navTabChecklist"
+          class="py-2.5 px-3.5 border-b-2 border-transparent text-orange-100/70 hover:text-white hover:border-white/40 flex items-center space-x-1.5 transition-colors cursor-pointer">
           <span>📋</span>
           <span>중정비 업무 체크리스트</span>
         </button>
-        <button id="navTabCabin" class="py-2.5 px-3.5 border-b-2 border-transparent text-orange-100/70 hover:text-white hover:border-white/40 flex items-center space-x-1.5 transition-colors cursor-pointer">
+        <button id="navTabCabin"
+          class="py-2.5 px-3.5 border-b-2 border-transparent text-orange-100/70 hover:text-white hover:border-white/40 flex items-center space-x-1.5 transition-colors cursor-pointer">
           <span>🛋️</span>
           <span>객실 오더 (Cabin Order)</span>
         </button>
@@ -169,238 +227,257 @@
       <div class="lg:col-span-7 flex flex-col space-y-5">
 
         <!-- ================= INPUT VIEW ================= -->
-        <section id="inputView" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col space-y-5">
+        <section id="inputView"
+          class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col space-y-5">
 
-        <!-- WP File Dropzone (Primary Hero - Multiple Files Support) -->
-        <div class="space-y-2">
-          <label class="block text-sm font-bold text-gray-800 flex items-center justify-between">
-            <span>Work Package 파일 업로드 <span class="text-brand-orange">*</span></span>
-            <span class="text-xs font-normal text-gray-400">Final Workpackage 엑셀 파일 (복수 선택 가능)</span>
-          </label>
-          <div id="wpDropzone" class="relative border-2 border-dashed border-orange-300 hover:border-brand-orange rounded-xl p-6 text-center transition-all cursor-pointer bg-orange-50/20 hover:bg-orange-50/50 group shadow-sm">
-            <input type="file" id="wpFileInput" accept=".xlsx, .xls" multiple class="hidden">
-            
-            <!-- Empty State -->
-            <div id="wpEmptyState" class="flex flex-col items-center justify-center space-y-2.5 pointer-events-none">
-              <div class="w-12 h-12 rounded-full bg-orange-100 text-brand-orange flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-inner">
-                📄
-              </div>
-              <div>
-                <p class="text-sm font-bold text-gray-800">클릭하거나 Work Package 파일(들)을 여기로 드래그 앤 드롭</p>
-                <p class="text-xs text-gray-500 mt-0.5">여러 파일을 한 번에 선택 가능 &bull; 동일 기번 중복 시 <strong>최종 리비전 자동 채택</strong></p>
-              </div>
-            </div>
-
-            <!-- Selected Files List State -->
-            <div id="wpSelectedState" class="hidden text-left space-y-2">
-              <div class="flex items-center justify-between pb-2 border-b border-orange-200">
-                <div class="flex items-center space-x-2">
-                  <span class="text-base text-brand-orange font-bold">📊</span>
-                  <span id="wpFilesCountBadge" class="text-xs font-bold text-gray-800">선택된 파일: 0개</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                  <button type="button" id="wpAddMoreBtn" class="text-xs text-brand-orange hover:underline font-semibold">
-                    + 파일 추가
-                  </button>
-                  <span class="text-gray-300">|</span>
-                  <button type="button" id="wpClearAllBtn" class="text-xs text-red-500 hover:underline font-semibold">
-                    전체 비우기
-                  </button>
-                </div>
-              </div>
-              <!-- Scrollable Chips Container -->
-              <div id="wpFileListContainer" class="max-h-44 overflow-y-auto space-y-1.5 pr-1 text-xs">
-                <!-- Dynamically populated file chips -->
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Built-in DB Active Banner & Optional Override Toggle -->
-        <div class="bg-emerald-50/80 border border-emerald-200 rounded-xl px-3.5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div class="flex items-center space-x-2">
-            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-            <p class="text-xs font-bold text-emerald-950">제주항공 45대 기령 DB 탑재 완료 (HL7213 ~ HL8766)</p>
-          </div>
-          <button type="button" id="btnToggleCustomStatus" class="text-xs font-semibold text-emerald-800 hover:text-emerald-950 underline text-left sm:text-right shrink-0">
-            + 최신 파일 직접 등록 (선택)
-          </button>
-        </div>
-
-        <!-- Aircraft Status File Dropzone (Collapsible Secondary Option) -->
-        <div id="stContainer" class="hidden space-y-1.5 p-4 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-          <div class="flex items-center justify-between">
-            <label class="block text-xs font-bold text-gray-700">
-              최신 항공기 상태 파일 업로드 (선택 사항)
+          <!-- WP File Dropzone (Primary Hero - Multiple Files Support) -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-gray-800 flex items-center justify-between">
+              <span>Work Package 파일 업로드 <span class="text-brand-orange">*</span></span>
+              <span class="text-xs font-normal text-gray-400">Final Workpackage 엑셀 파일 (복수 선택 가능)</span>
             </label>
-            <button type="button" id="btnCloseCustomStatus" class="text-xs text-gray-400 hover:text-gray-600">
-              접기 ✕
+            <div id="wpDropzone"
+              class="relative border-2 border-dashed border-orange-300 hover:border-brand-orange rounded-xl p-6 text-center transition-all cursor-pointer bg-orange-50/20 hover:bg-orange-50/50 group shadow-sm">
+              <input type="file" id="wpFileInput" accept=".xlsx, .xls" multiple class="hidden">
+
+              <!-- Empty State -->
+              <div id="wpEmptyState" class="flex flex-col items-center justify-center space-y-2.5 pointer-events-none">
+                <div
+                  class="w-12 h-12 rounded-full bg-orange-100 text-brand-orange flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-inner">
+                  📄
+                </div>
+                <div>
+                  <p class="text-sm font-bold text-gray-800">클릭하거나 Work Package 파일(들)을 여기로 드래그 앤 드롭</p>
+                  <p class="text-xs text-gray-500 mt-0.5">여러 파일을 한 번에 선택 가능 &bull; 동일 기번 중복 시 <strong>최종 리비전 자동
+                      채택</strong></p>
+                </div>
+              </div>
+
+              <!-- Selected Files List State -->
+              <div id="wpSelectedState" class="hidden text-left space-y-2">
+                <div class="flex items-center justify-between pb-2 border-b border-orange-200">
+                  <div class="flex items-center space-x-2">
+                    <span class="text-base text-brand-orange font-bold">📊</span>
+                    <span id="wpFilesCountBadge" class="text-xs font-bold text-gray-800">선택된 파일: 0개</span>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <button type="button" id="wpAddMoreBtn"
+                      class="text-xs text-brand-orange hover:underline font-semibold">
+                      + 파일 추가
+                    </button>
+                    <span class="text-gray-300">|</span>
+                    <button type="button" id="wpClearAllBtn" class="text-xs text-red-500 hover:underline font-semibold">
+                      전체 비우기
+                    </button>
+                  </div>
+                </div>
+                <!-- Scrollable Chips Container -->
+                <div id="wpFileListContainer" class="max-h-44 overflow-y-auto space-y-1.5 pr-1 text-xs">
+                  <!-- Dynamically populated file chips -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Built-in DB Active Banner & Optional Override Toggle -->
+          <div
+            class="bg-emerald-50/80 border border-emerald-200 rounded-xl px-3.5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex items-center space-x-2">
+              <span
+                class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+              <p class="text-xs font-bold text-emerald-950">제주항공 45대 기령 DB 탑재 완료 (HL7213 ~ HL8766)</p>
+            </div>
+            <button type="button" id="btnToggleCustomStatus"
+              class="text-xs font-semibold text-emerald-800 hover:text-emerald-950 underline text-left sm:text-right shrink-0">
+              + 최신 파일 직접 등록 (선택)
             </button>
           </div>
-          <p class="text-[11px] text-gray-500 mb-2">신규 도입기 등 최신 현황 파일이 있을 경우에만 업로드하세요. (미등록 시 내장 DB 적용)</p>
-          <div id="stDropzone" class="relative border border-dashed border-gray-300 hover:border-blue-400 rounded-lg p-3 text-center transition-colors cursor-pointer bg-white hover:bg-blue-50/20 group">
-            <input type="file" id="stFileInput" accept=".xlsx, .xls" class="hidden">
-            <div id="stEmptyState" class="flex items-center justify-center space-x-2 pointer-events-none py-1">
-              <span class="text-base">🛩</span>
-              <p class="text-xs font-medium text-gray-600">클릭하거나 최신 상태 파일을 여기로 드래그 앤 드롭</p>
+
+          <!-- Aircraft Status File Dropzone (Collapsible Secondary Option) -->
+          <div id="stContainer"
+            class="hidden space-y-1.5 p-4 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-bold text-gray-700">
+                최신 항공기 상태 파일 업로드 (선택 사항)
+              </label>
+              <button type="button" id="btnCloseCustomStatus" class="text-xs text-gray-400 hover:text-gray-600">
+                접기 ✕
+              </button>
             </div>
-            <div id="stSelectedState" class="hidden flex items-center justify-between bg-blue-50/40 p-2 rounded border border-blue-200">
-              <div class="flex items-center space-x-2 overflow-hidden text-left">
-                <span class="text-lg text-blue-600">📋</span>
-                <div class="truncate">
-                  <p id="stFileName" class="text-xs font-bold text-gray-800 truncate"></p>
-                  <p id="stFileSize" class="text-[10px] text-gray-500"></p>
-                </div>
+            <p class="text-[11px] text-gray-500 mb-2">신규 도입기 등 최신 현황 파일이 있을 경우에만 업로드하세요. (미등록 시 내장 DB 적용)</p>
+            <div id="stDropzone"
+              class="relative border border-dashed border-gray-300 hover:border-blue-400 rounded-lg p-3 text-center transition-colors cursor-pointer bg-white hover:bg-blue-50/20 group">
+              <input type="file" id="stFileInput" accept=".xlsx, .xls" class="hidden">
+              <div id="stEmptyState" class="flex items-center justify-center space-x-2 pointer-events-none py-1">
+                <span class="text-base">🛩</span>
+                <p class="text-xs font-medium text-gray-600">클릭하거나 최신 상태 파일을 여기로 드래그 앤 드롭</p>
               </div>
-              <button type="button" id="stRemoveBtn" class="p-1 text-gray-400 hover:text-red-500 rounded" title="파일 삭제">
-                ✕
+              <div id="stSelectedState"
+                class="hidden flex items-center justify-between bg-blue-50/40 p-2 rounded border border-blue-200">
+                <div class="flex items-center space-x-2 overflow-hidden text-left">
+                  <span class="text-lg text-blue-600">📋</span>
+                  <div class="truncate">
+                    <p id="stFileName" class="text-xs font-bold text-gray-800 truncate"></p>
+                    <p id="stFileSize" class="text-[10px] text-gray-500"></p>
+                  </div>
+                </div>
+                <button type="button" id="stRemoveBtn" class="p-1 text-gray-400 hover:text-red-500 rounded"
+                  title="파일 삭제">
+                  ✕
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress and Actions -->
+          <div class="pt-2 space-y-3">
+            <!-- Progress bar -->
+            <div class="space-y-1">
+              <div class="flex justify-between text-xs font-semibold text-gray-500">
+                <span id="progressBarStatus">시스템 준비됨</span>
+                <span id="progressBarPercent">0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                <div id="progressBarFill" class="bg-brand-orange h-2 rounded-full transition-all duration-200"
+                  style="width: 0%"></div>
+              </div>
+            </div>
+
+            <!-- Run Button -->
+            <button id="btnStartAnalysis"
+              class="w-full py-3.5 px-4 bg-brand-orange hover:bg-brand-hover text-white font-bold rounded-xl shadow transition-all duration-150 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed">
+              <span id="btnRunIcon">⚡</span>
+              <span id="btnRunText">분석 시작</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================= RESULT VIEW ================= -->
+        <section id="resultView"
+          class="hidden bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col space-y-5">
+
+          <!-- Header with Action Buttons -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b gap-3">
+            <div>
+              <h2 class="text-lg font-bold text-gray-900 flex items-center space-x-2">
+                <span>📊 분석 결과 리포트</span>
+              </h2>
+              <p id="resBatchSummaryText" class="text-xs text-gray-500 mt-0.5">총 1대 항공기 분석 완료</p>
+            </div>
+            <div class="flex items-center space-x-2 shrink-0">
+              <button id="btnExportExcel"
+                class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition-colors shadow-sm">
+                <span>📥</span>
+                <span>결과 엑셀 다운로드</span>
+              </button>
+              <button id="btnBackToInput"
+                class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-gray-800 hover:bg-black text-white transition-colors">
+                다시 분석
               </button>
             </div>
           </div>
-        </div>
 
-        <!-- Progress and Actions -->
-        <div class="pt-2 space-y-3">
-          <!-- Progress bar -->
-          <div class="space-y-1">
-            <div class="flex justify-between text-xs font-semibold text-gray-500">
-              <span id="progressBarStatus">시스템 준비됨</span>
-              <span id="progressBarPercent">0%</span>
+          <!-- Summary KPI Cards -->
+          <div class="grid grid-cols-3 gap-3">
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 text-center">
+              <p class="text-xs font-semibold text-gray-500">분석 대상</p>
+              <p id="kpiTargetCount" class="text-xl sm:text-2xl font-bold text-brand-orange mt-1">1대</p>
+              <p class="text-[11px] text-gray-400 mt-0.5">항공기</p>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-              <div id="progressBarFill" class="bg-brand-orange h-2 rounded-full transition-all duration-200" style="width: 0%"></div>
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 text-center">
+              <p class="text-xs font-semibold text-gray-500">총 Man-Hour 합계</p>
+              <p id="kpiTotalMh" class="text-xl sm:text-2xl font-bold text-brand-orange mt-1">0.0</p>
+              <p class="text-[11px] text-gray-400 mt-0.5">Total M/H</p>
+            </div>
+            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 text-center">
+              <p class="text-xs font-semibold text-gray-500">예측 TAT (평균/최대)</p>
+              <p id="kpiAvgTat" class="text-xl sm:text-2xl font-bold text-amber-600 mt-1">0일</p>
+              <p id="kpiMaxTatSub" class="text-[11px] text-gray-400 mt-0.5">최대: 0일</p>
             </div>
           </div>
 
-          <!-- Run Button -->
-          <button id="btnStartAnalysis" class="w-full py-3.5 px-4 bg-brand-orange hover:bg-brand-hover text-white font-bold rounded-xl shadow transition-all duration-150 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed">
-            <span id="btnRunIcon">⚡</span>
-            <span id="btnRunText">분석 시작</span>
-          </button>
-        </div>
-      </section>
-
-      <!-- ================= RESULT VIEW ================= -->
-      <section id="resultView" class="hidden bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col space-y-5">
-        
-        <!-- Header with Action Buttons -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b gap-3">
-          <div>
-            <h2 class="text-lg font-bold text-gray-900 flex items-center space-x-2">
-              <span>📊 분석 결과 리포트</span>
-            </h2>
-            <p id="resBatchSummaryText" class="text-xs text-gray-500 mt-0.5">총 1대 항공기 분석 완료</p>
+          <!-- Batch Summary Table -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-gray-800">항공기별 종합 분석 내역</h3>
+              <span class="text-[11px] text-gray-400">행을 클릭하면 세부 가중치 내역을 볼 수 있습니다</span>
+            </div>
+            <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-gray-50 text-gray-600 border-b border-gray-200 font-semibold text-[11px]">
+                    <th class="py-2.5 px-3">기번</th>
+                    <th class="py-2.5 px-3">단계</th>
+                    <th class="py-2.5 px-2">리비전</th>
+                    <th class="py-2.5 px-2">기령</th>
+                    <th class="py-2.5 px-3 text-right">MPD</th>
+                    <th class="py-2.5 px-3 text-right">AD/SB/EO</th>
+                    <th class="py-2.5 px-3 text-right">가중치</th>
+                    <th class="py-2.5 px-3 text-right font-bold text-gray-800">Total M/H</th>
+                    <th class="py-2.5 px-3 text-center font-bold text-brand-orange">예측 TAT</th>
+                    <th class="py-2.5 px-3 text-center">상세</th>
+                  </tr>
+                </thead>
+                <tbody id="batchTableBody" class="divide-y divide-gray-100">
+                  <!-- Dynamically populated table rows -->
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="flex items-center space-x-2 shrink-0">
-            <button id="btnExportExcel" class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition-colors shadow-sm">
-              <span>📥</span>
-              <span>결과 엑셀 다운로드</span>
+
+          <!-- Single Aircraft Direct Detail Section (Visible when 1 aircraft analyzed, or when an aircraft is clicked) -->
+          <div id="singleDetailSection" class="space-y-4 pt-2 border-t border-gray-200">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-gray-800 flex items-center space-x-2">
+                <span>🔍 선택 기번 세부 산출 내역:</span>
+                <span id="detailTargetHl" class="text-brand-orange font-bold">HL8539</span>
+              </h3>
+              <span id="detailTargetFilename" class="text-[11px] text-gray-400 truncate max-w-[280px]"></span>
+            </div>
+
+            <!-- Breakdown List -->
+            <div id="resReasonsContainer" class="space-y-2.5">
+              <!-- Dynamic Reason Cards -->
+            </div>
+
+            <!-- Logic Formula Card -->
+            <div class="bg-orange-50/60 border border-orange-200 rounded-xl p-4 text-center">
+              <p class="text-xs font-bold text-brand-orange mb-1">최종 산출 근거 공식</p>
+              <p id="resCalculationLogic" class="text-xs text-gray-700 font-mono whitespace-pre-line leading-relaxed">
+              </p>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- Right Column: Live Terminal Log (5 cols) -->
+      <div class="lg:col-span-5 flex flex-col h-[600px] lg:h-auto">
+        <div class="bg-[#18181B] rounded-xl shadow-sm border border-gray-800 flex flex-col h-full overflow-hidden">
+          <!-- Terminal Header -->
+          <div class="bg-[#27272A] px-4 py-2.5 flex items-center justify-between border-b border-gray-800">
+            <span class="text-xs font-mono font-medium text-gray-300">분석 진행 로그 (Console)</span>
+            <button id="btnClearTerminal" class="text-[11px] text-gray-400 hover:text-white transition-colors">
+              로그 지우기
             </button>
-            <button id="btnBackToInput" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-gray-800 hover:bg-black text-white transition-colors">
-              다시 분석
-            </button>
-          </div>
-        </div>
-
-        <!-- Summary KPI Cards -->
-        <div class="grid grid-cols-3 gap-3">
-          <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 text-center">
-            <p class="text-xs font-semibold text-gray-500">분석 대상</p>
-            <p id="kpiTargetCount" class="text-xl sm:text-2xl font-bold text-brand-orange mt-1">1대</p>
-            <p class="text-[11px] text-gray-400 mt-0.5">항공기</p>
-          </div>
-          <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 text-center">
-            <p class="text-xs font-semibold text-gray-500">총 Man-Hour 합계</p>
-            <p id="kpiTotalMh" class="text-xl sm:text-2xl font-bold text-brand-orange mt-1">0.0</p>
-            <p class="text-[11px] text-gray-400 mt-0.5">Total M/H</p>
-          </div>
-          <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 text-center">
-            <p class="text-xs font-semibold text-gray-500">예측 TAT (평균/최대)</p>
-            <p id="kpiAvgTat" class="text-xl sm:text-2xl font-bold text-amber-600 mt-1">0일</p>
-            <p id="kpiMaxTatSub" class="text-[11px] text-gray-400 mt-0.5">최대: 0일</p>
-          </div>
-        </div>
-
-        <!-- Batch Summary Table -->
-        <div class="space-y-2">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm font-bold text-gray-800">항공기별 종합 분석 내역</h3>
-            <span class="text-[11px] text-gray-400">행을 클릭하면 세부 가중치 내역을 볼 수 있습니다</span>
-          </div>
-          <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white">
-            <table class="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr class="bg-gray-50 text-gray-600 border-b border-gray-200 font-semibold text-[11px]">
-                  <th class="py-2.5 px-3">기번</th>
-                  <th class="py-2.5 px-3">단계</th>
-                  <th class="py-2.5 px-2">리비전</th>
-                  <th class="py-2.5 px-2">기령</th>
-                  <th class="py-2.5 px-3 text-right">MPD</th>
-                  <th class="py-2.5 px-3 text-right">AD/SB/EO</th>
-                  <th class="py-2.5 px-3 text-right">가중치</th>
-                  <th class="py-2.5 px-3 text-right font-bold text-gray-800">Total M/H</th>
-                  <th class="py-2.5 px-3 text-center font-bold text-brand-orange">예측 TAT</th>
-                  <th class="py-2.5 px-3 text-center">상세</th>
-                </tr>
-              </thead>
-              <tbody id="batchTableBody" class="divide-y divide-gray-100">
-                <!-- Dynamically populated table rows -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Single Aircraft Direct Detail Section (Visible when 1 aircraft analyzed, or when an aircraft is clicked) -->
-        <div id="singleDetailSection" class="space-y-4 pt-2 border-t border-gray-200">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm font-bold text-gray-800 flex items-center space-x-2">
-              <span>🔍 선택 기번 세부 산출 내역:</span>
-              <span id="detailTargetHl" class="text-brand-orange font-bold">HL8539</span>
-            </h3>
-            <span id="detailTargetFilename" class="text-[11px] text-gray-400 truncate max-w-[280px]"></span>
           </div>
 
-          <!-- Breakdown List -->
-          <div id="resReasonsContainer" class="space-y-2.5">
-            <!-- Dynamic Reason Cards -->
+          <!-- Terminal Output -->
+          <div id="terminalBody"
+            class="flex-1 p-4 font-mono text-xs text-green-400 bg-black overflow-y-auto terminal-scroll leading-relaxed whitespace-pre-wrap select-text">
+            <div class="text-gray-500">Work Package 분석기 Web Engine 준비 완료.</div>
+            <div class="text-gray-500">Work Package 파일들을 선택하거나 끌어다 놓은 뒤 [분석 시작]을 누르세요.</div>
           </div>
-
-          <!-- Logic Formula Card -->
-          <div class="bg-orange-50/60 border border-orange-200 rounded-xl p-4 text-center">
-            <p class="text-xs font-bold text-brand-orange mb-1">최종 산출 근거 공식</p>
-            <p id="resCalculationLogic" class="text-xs text-gray-700 font-mono whitespace-pre-line leading-relaxed"></p>
-          </div>
-        </div>
-
-      </section>
-
-    </div>
-
-    <!-- Right Column: Live Terminal Log (5 cols) -->
-    <div class="lg:col-span-5 flex flex-col h-[600px] lg:h-auto">
-      <div class="bg-[#18181B] rounded-xl shadow-sm border border-gray-800 flex flex-col h-full overflow-hidden">
-        <!-- Terminal Header -->
-        <div class="bg-[#27272A] px-4 py-2.5 flex items-center justify-between border-b border-gray-800">
-          <span class="text-xs font-mono font-medium text-gray-300">분석 진행 로그 (Console)</span>
-          <button id="btnClearTerminal" class="text-[11px] text-gray-400 hover:text-white transition-colors">
-            로그 지우기
-          </button>
-        </div>
-
-        <!-- Terminal Output -->
-        <div id="terminalBody" class="flex-1 p-4 font-mono text-xs text-green-400 bg-black overflow-y-auto terminal-scroll leading-relaxed whitespace-pre-wrap select-text">
-          <div class="text-gray-500">Work Package 분석기 Web Engine 준비 완료.</div>
-          <div class="text-gray-500">Work Package 파일들을 선택하거나 끌어다 놓은 뒤 [분석 시작]을 누르세요.</div>
         </div>
       </div>
-    </div>
 
     </div>
     <!-- END MODULE 1 -->
 
-        <!-- ================= MODULE 2: HEAVY MAINTENANCE CHECKLIST ================= -->
+    <!-- ================= MODULE 2: HEAVY MAINTENANCE CHECKLIST ================= -->
     <div id="moduleChecklist" class="hidden w-full space-y-5">
-      
+
       <!-- Printable Header (Visible only in print) -->
       <div class="hidden print-only mb-4 border-b-2 border-gray-800 pb-3">
         <div class="flex justify-between items-end">
@@ -416,7 +493,8 @@
         </div>
         <div class="mt-2.5 flex items-center justify-between text-xs bg-gray-100 p-2 rounded">
           <span>진척 현황: <strong id="printProgressText">0 / 162건 완료 (0%)</strong></span>
-          <span>1단계(입고전): <strong id="printCat1Text">0/36</strong> | 2단계(수행중): <strong id="printCat2Text">0/115</strong> | 3단계(완료후): <strong id="printCat3Text">0/11</strong></span>
+          <span>1단계(입고전): <strong id="printCat1Text">0/36</strong> | 2단계(수행중): <strong id="printCat2Text">0/115</strong>
+            | 3단계(완료후): <strong id="printCat3Text">0/11</strong></span>
         </div>
       </div>
 
@@ -426,47 +504,60 @@
           <!-- Left: Title & Aircraft Selector -->
           <div class="flex flex-wrap items-center gap-3">
             <div class="flex items-center space-x-2.5">
-              <span class="w-9 h-9 rounded-lg bg-orange-100 text-brand-orange flex items-center justify-center text-lg font-bold shadow-inner">📋</span>
+              <span
+                class="w-9 h-9 rounded-lg bg-orange-100 text-brand-orange flex items-center justify-center text-lg font-bold shadow-inner">📋</span>
               <div>
                 <h2 class="text-base font-bold text-gray-900 leading-tight flex items-center space-x-2">
                   <span>중정비 업무 체크리스트</span>
-                  <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-orange-100 text-brand-orange">Rev.7 생산계획팀</span>
+                  <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-orange-100 text-brand-orange">Rev.7
+                    생산계획팀</span>
                 </h2>
                 <p class="text-xs text-gray-400 mt-0.5">162개 표준 C-Check 점검항목 &bull; 실시간 진척도 &bull; 자동 로컬 저장</p>
               </div>
             </div>
-            
+
             <div class="h-6 w-px bg-gray-200 mx-1 hidden sm:block"></div>
 
             <!-- Aircraft Selection Dropdown -->
             <div class="flex items-center space-x-2">
               <label for="chkAircraftSelect" class="text-xs font-bold text-gray-700 whitespace-nowrap">대상 항공기:</label>
-              <select id="chkAircraftSelect" class="text-xs font-semibold bg-orange-50/70 border border-orange-200 text-gray-800 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-orange cursor-pointer">
+              <select id="chkAircraftSelect"
+                class="text-xs font-semibold bg-orange-50/70 border border-orange-200 text-gray-800 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-orange cursor-pointer">
                 <option value="DEFAULT">⭐ [공통 / 표준 체크리스트]</option>
               </select>
             </div>
 
             <!-- Optional MRO info & Date -->
             <div class="flex items-center space-x-2 text-xs">
-              <input type="text" id="chkMroInput" placeholder="MRO 업체 (예: GAMECO)" class="border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 w-36 focus:outline-none focus:ring-1 focus:ring-brand-orange" title="MRO 업체명">
-              <input type="date" id="chkDateInput" class="border border-gray-200 rounded-lg px-2 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-1 focus:ring-brand-orange" title="입고 예정일">
+              <input type="text" id="chkMroInput" placeholder="MRO 업체 (예: GAMECO)"
+                class="border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 w-36 focus:outline-none focus:ring-1 focus:ring-brand-orange"
+                title="MRO 업체명">
+              <input type="date" id="chkDateInput"
+                class="border border-gray-200 rounded-lg px-2 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-1 focus:ring-brand-orange"
+                title="입고 예정일">
             </div>
           </div>
 
           <!-- Right: Action Buttons -->
           <div class="flex items-center flex-wrap gap-2">
             <!-- Print / PDF -->
-            <button id="btnChkPrint" class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-semibold transition-colors shadow-2xs cursor-pointer" title="체크리스트 인쇄 또는 PDF 저장">
+            <button id="btnChkPrint"
+              class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-semibold transition-colors shadow-2xs cursor-pointer"
+              title="체크리스트 인쇄 또는 PDF 저장">
               <span>🖨️</span>
               <span>인쇄 / PDF</span>
             </button>
             <!-- Excel Download -->
-            <button id="btnChkExcel" class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition-colors shadow-sm cursor-pointer" title="현재 상태를 엑셀 파일로 다운로드">
+            <button id="btnChkExcel"
+              class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition-colors shadow-sm cursor-pointer"
+              title="현재 상태를 엑셀 파일로 다운로드">
               <span>📥</span>
               <span>Excel 저장</span>
             </button>
             <!-- Reset -->
-            <button id="btnChkReset" class="inline-flex items-center space-x-1 px-2.5 py-1.5 text-xs text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer" title="현재 선택된 항공기의 체크 및 메모 초기화">
+            <button id="btnChkReset"
+              class="inline-flex items-center space-x-1 px-2.5 py-1.5 text-xs text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+              title="현재 선택된 항공기의 체크 및 메모 초기화">
               <span>🔄</span>
               <span>초기화</span>
             </button>
@@ -480,7 +571,8 @@
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex flex-col justify-between">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">전체 진척도</span>
-            <span id="chkOverallPercentBadge" class="text-xs font-black px-2 py-0.5 rounded-full bg-orange-100 text-brand-orange">0.0%</span>
+            <span id="chkOverallPercentBadge"
+              class="text-xs font-black px-2 py-0.5 rounded-full bg-orange-100 text-brand-orange">0.0%</span>
           </div>
           <div class="my-2">
             <div class="flex items-baseline space-x-1.5">
@@ -488,14 +580,16 @@
               <span class="text-xs text-gray-400 font-semibold">/ 162 건 완료</span>
             </div>
             <div class="w-full bg-gray-100 rounded-full h-2 mt-2 overflow-hidden">
-              <div id="chkOverallProgressBar" class="bg-brand-orange h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+              <div id="chkOverallProgressBar" class="bg-brand-orange h-2 rounded-full transition-all duration-300"
+                style="width: 0%"></div>
             </div>
           </div>
           <p id="chkRemainingText" class="text-[11px] text-gray-400 font-medium">미완료 162건 남음</p>
         </div>
 
         <!-- Category 1 Card -->
-        <div id="cardCat1" class="bg-white rounded-xl shadow-sm border border-gray-200 hover:border-blue-400 p-4 flex flex-col justify-between cursor-pointer transition-all group">
+        <div id="cardCat1"
+          class="bg-white rounded-xl shadow-sm border border-gray-200 hover:border-blue-400 p-4 flex flex-col justify-between cursor-pointer transition-all group">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-blue-700 flex items-center space-x-1.5">
               <span>🛫</span>
@@ -508,14 +602,16 @@
               <span id="chkCat1Count">0</span> <span class="text-xs text-gray-400 font-normal">/ 36건</span>
             </div>
             <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2 overflow-hidden">
-              <div id="chkCat1ProgressBar" class="bg-blue-500 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+              <div id="chkCat1ProgressBar" class="bg-blue-500 h-1.5 rounded-full transition-all duration-300"
+                style="width: 0%"></div>
             </div>
           </div>
           <span class="text-[11px] text-blue-500 group-hover:underline">이 단계만 필터링 &rarr;</span>
         </div>
 
         <!-- Category 2 Card -->
-        <div id="cardCat2" class="bg-white rounded-xl shadow-sm border border-gray-200 hover:border-amber-400 p-4 flex flex-col justify-between cursor-pointer transition-all group">
+        <div id="cardCat2"
+          class="bg-white rounded-xl shadow-sm border border-gray-200 hover:border-amber-400 p-4 flex flex-col justify-between cursor-pointer transition-all group">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-amber-700 flex items-center space-x-1.5">
               <span>🔧</span>
@@ -528,14 +624,16 @@
               <span id="chkCat2Count">0</span> <span class="text-xs text-gray-400 font-normal">/ 115건</span>
             </div>
             <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2 overflow-hidden">
-              <div id="chkCat2ProgressBar" class="bg-amber-500 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+              <div id="chkCat2ProgressBar" class="bg-amber-500 h-1.5 rounded-full transition-all duration-300"
+                style="width: 0%"></div>
             </div>
           </div>
           <span class="text-[11px] text-amber-600 group-hover:underline">이 단계만 필터링 &rarr;</span>
         </div>
 
         <!-- Category 3 Card -->
-        <div id="cardCat3" class="bg-white rounded-xl shadow-sm border border-gray-200 hover:border-emerald-400 p-4 flex flex-col justify-between cursor-pointer transition-all group">
+        <div id="cardCat3"
+          class="bg-white rounded-xl shadow-sm border border-gray-200 hover:border-emerald-400 p-4 flex flex-col justify-between cursor-pointer transition-all group">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-emerald-700 flex items-center space-x-1.5">
               <span>✅</span>
@@ -548,7 +646,8 @@
               <span id="chkCat3Count">0</span> <span class="text-xs text-gray-400 font-normal">/ 11건</span>
             </div>
             <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2 overflow-hidden">
-              <div id="chkCat3ProgressBar" class="bg-emerald-500 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+              <div id="chkCat3ProgressBar" class="bg-emerald-500 h-1.5 rounded-full transition-all duration-300"
+                style="width: 0%"></div>
             </div>
           </div>
           <span class="text-[11px] text-emerald-600 group-hover:underline">이 단계만 필터링 &rarr;</span>
@@ -561,26 +660,32 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
           <!-- Category Tabs -->
           <div class="flex items-center space-x-1 overflow-x-auto text-xs pb-1 sm:pb-0" id="chkCatTabs">
-            <button data-cat="all" class="chk-cat-tab active px-3 py-1.5 font-bold rounded-lg bg-orange-500 text-white shadow-2xs transition-all cursor-pointer">
+            <button data-cat="all"
+              class="chk-cat-tab active px-3 py-1.5 font-bold rounded-lg bg-orange-500 text-white shadow-2xs transition-all cursor-pointer">
               전체 (162)
             </button>
-            <button data-cat="cat1" class="chk-cat-tab px-3 py-1.5 font-semibold rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all cursor-pointer">
+            <button data-cat="cat1"
+              class="chk-cat-tab px-3 py-1.5 font-semibold rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all cursor-pointer">
               1. 입고 전 (36)
             </button>
-            <button data-cat="cat2" class="chk-cat-tab px-3 py-1.5 font-semibold rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all cursor-pointer">
+            <button data-cat="cat2"
+              class="chk-cat-tab px-3 py-1.5 font-semibold rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all cursor-pointer">
               2. 입고 & 수행 중 (115)
             </button>
-            <button data-cat="cat3" class="chk-cat-tab px-3 py-1.5 font-semibold rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all cursor-pointer">
+            <button data-cat="cat3"
+              class="chk-cat-tab px-3 py-1.5 font-semibold rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all cursor-pointer">
               3. 완료 후 (11)
             </button>
           </div>
 
           <!-- Batch Actions -->
           <div class="flex items-center space-x-2 text-xs">
-            <button id="btnChkBatchCheck" class="px-2.5 py-1 font-semibold rounded border border-gray-200 bg-white hover:bg-gray-50 text-emerald-700 transition-colors shadow-2xs cursor-pointer">
+            <button id="btnChkBatchCheck"
+              class="px-2.5 py-1 font-semibold rounded border border-gray-200 bg-white hover:bg-gray-50 text-emerald-700 transition-colors shadow-2xs cursor-pointer">
               ✓ 현재 표시 항목 전체 완료
             </button>
-            <button id="btnChkBatchUncheck" class="px-2.5 py-1 font-semibold rounded border border-gray-200 bg-white hover:bg-gray-50 text-gray-500 transition-colors shadow-2xs cursor-pointer">
+            <button id="btnChkBatchUncheck"
+              class="px-2.5 py-1 font-semibold rounded border border-gray-200 bg-white hover:bg-gray-50 text-gray-500 transition-colors shadow-2xs cursor-pointer">
               ✕ 현재 표시 항목 전체 해제
             </button>
           </div>
@@ -590,7 +695,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-xs">
           <!-- Status Filter -->
           <div class="sm:col-span-3">
-            <select id="chkStatusFilter" class="w-full border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 bg-white focus:outline-none focus:ring-1 focus:ring-brand-orange">
+            <select id="chkStatusFilter"
+              class="w-full border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 bg-white focus:outline-none focus:ring-1 focus:ring-brand-orange">
               <option value="all">모든 진행상태</option>
               <option value="pending">⏳ 미완료 항목만 (Pending)</option>
               <option value="completed">✅ 완료된 항목만 (Done)</option>
@@ -599,7 +705,8 @@
 
           <!-- Department Filter -->
           <div class="sm:col-span-3">
-            <select id="chkDeptFilter" class="w-full border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 bg-white focus:outline-none focus:ring-1 focus:ring-brand-orange">
+            <select id="chkDeptFilter"
+              class="w-full border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 bg-white focus:outline-none focus:ring-1 focus:ring-brand-orange">
               <option value="all">모든 주관부서</option>
               <option value="생산계획팀">생산계획팀</option>
               <option value="정비팀">정비팀</option>
@@ -611,8 +718,10 @@
           <!-- Search Input -->
           <div class="sm:col-span-6 relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-gray-400">🔍</span>
-            <input type="text" id="chkSearchInput" placeholder="업무명, 코드(1-1, 2-5), 비고/메모 실시간 검색..." class="w-full border border-gray-200 rounded-lg pl-8 pr-8 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-orange">
-            <button id="chkSearchClear" class="hidden absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-400 hover:text-gray-600">✕</button>
+            <input type="text" id="chkSearchInput" placeholder="업무명, 코드(1-1, 2-5), 비고/메모 실시간 검색..."
+              class="w-full border border-gray-200 rounded-lg pl-8 pr-8 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-orange">
+            <button id="chkSearchClear"
+              class="hidden absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-400 hover:text-gray-600">✕</button>
           </div>
         </div>
       </div>
@@ -635,7 +744,7 @@
             </tbody>
           </table>
         </div>
-        
+
         <!-- Empty State -->
         <div id="chkEmptyState" class="hidden py-14 text-center text-gray-400 text-xs space-y-1.5">
           <p class="text-2xl">🔍</p>
@@ -669,8 +778,11 @@
   </main>
 
   <!-- Guide Modal -->
-  <div id="guideModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4" style="overscroll-behavior: contain;">
-    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150" style="overscroll-behavior: contain;">
+  <div id="guideModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4"
+    style="overscroll-behavior: contain;">
+    <div
+      class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+      style="overscroll-behavior: contain;">
       <div class="bg-brand-orange text-white px-6 py-4 flex items-center justify-between">
         <h3 class="text-base font-bold flex items-center space-x-2">
           <span>ⓘ</span>
@@ -678,7 +790,8 @@
         </h3>
         <button id="btnCloseGuide" class="text-white/80 hover:text-white text-lg font-bold">✕</button>
       </div>
-      <div class="p-6 overflow-y-auto text-sm text-gray-700 space-y-4 leading-relaxed font-sans" style="overscroll-behavior: contain;">
+      <div class="p-6 overflow-y-auto text-sm text-gray-700 space-y-4 leading-relaxed font-sans"
+        style="overscroll-behavior: contain;">
         <div class="border-b pb-3">
           <h4 class="font-bold text-gray-900 text-base mb-1">목적 및 기본 원칙</h4>
           <p class="text-gray-600 text-xs">WP(Work Package) 분석 결과에 "추가 Man-hour(M/H)"를 더해 최종 소요 일수(TAT)를 보정합니다.</p>
@@ -694,7 +807,7 @@
 
         <div class="space-y-3 text-xs">
           <h4 class="font-bold text-gray-900 text-sm">가중치 적용 항목 및 기준</h4>
-          
+
           <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <p class="font-bold text-gray-800">1) 중정비(C-Check 단계) – 파일명 기준</p>
             <p class="text-gray-600 mt-0.5">• 조건: 파일명에 "4C" 이상 포함 (예: 4C, 6C, 8C 등)</p>
@@ -721,8 +834,10 @@
 
           <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <p class="font-bold text-gray-800">5) Wing Task (지정 Wing 카드 목록)</p>
-            <p class="text-gray-600 mt-0.5">• 대상: 57-020-00-01, 57-170, 57-822, 57-892, 57-180, 57-826, 57-896, 57-190, 57-830, 57-900 계열</p>
-            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +40 M/H (보잉 Standard 공수(0.7 ~ 8.5 M/H) 외 Seal/Gasket 및 Torque 공수 보완, 최대 1회 적용)</p>
+            <p class="text-gray-600 mt-0.5">• 대상: 57-020-00-01, 57-170, 57-822, 57-892, 57-180, 57-826, 57-896, 57-190,
+              57-830, 57-900 계열</p>
+            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +40 M/H (보잉 Standard 공수(0.7 ~ 8.5 M/H) 외 Seal/Gasket
+              및 Torque 공수 보완, 최대 1회 적용)</p>
           </div>
 
           <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
@@ -733,7 +848,8 @@
         </div>
       </div>
       <div class="bg-gray-100 px-6 py-3 border-t text-right">
-        <button id="btnCloseGuideBottom" class="px-4 py-1.5 text-xs font-semibold rounded-lg bg-gray-700 hover:bg-gray-800 text-white transition-colors">
+        <button id="btnCloseGuideBottom"
+          class="px-4 py-1.5 text-xs font-semibold rounded-lg bg-gray-700 hover:bg-gray-800 text-white transition-colors">
           닫기
         </button>
       </div>
@@ -773,9 +889,9 @@
     };
 
     const WING_CODES = new Set([
-      "57-020-00-01","57-170-01-01","57-822-01-01","57-170-02-01","57-892-02-01",
-      "57-180-01-01","57-826-01-01","57-180-02-01","57-896-02-01","57-190-01-01",
-      "57-830-01-01","57-190-02-01","57-900-02-01"
+      "57-020-00-01", "57-170-01-01", "57-822-01-01", "57-170-02-01", "57-892-02-01",
+      "57-180-01-01", "57-826-01-01", "57-180-02-01", "57-896-02-01", "57-190-01-01",
+      "57-830-01-01", "57-190-02-01", "57-900-02-01"
     ]);
 
     // Built-in Aircraft Status Database (Jeju Air Fleet: 45 aircraft based on OPSPEC D085)
@@ -909,7 +1025,7 @@
     function logToTerminal(message) {
       const now = new Date();
       const timeStr = `[${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}] `;
-      
+
       const line = document.createElement('div');
       line.textContent = timeStr + message;
       terminalBody.appendChild(line);
@@ -1525,10 +1641,10 @@
         wetAreaMinApplied = true;
       }
 
-      let calcExplanation = 
+      let calcExplanation =
         `최종 산출식:\n` +
-        `(MPD ${mpdSum.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1})} + AD/SB/EO ${adSum.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1})} + 가중치 ${weights})\n` +
-        `= ${total.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1})} ÷ 100 = ${(total / 100).toFixed(2)}일\n` +
+        `(MPD ${mpdSum.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} + AD/SB/EO ${adSum.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} + 가중치 ${weights})\n` +
+        `= ${total.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ÷ 100 = ${(total / 100).toFixed(2)}일\n` +
         `➔ 소수점 올림 계산하여 ${tatDays}일 예측`;
 
       if (wetAreaMinApplied) {
@@ -1553,7 +1669,7 @@
         reasons,
         calcExplanation,
         missingSheets: (!mpdSheetName && !adSheetName),
-        missingSheetsWarning: (!mpdSheetName && !adSheetName) ? 
+        missingSheetsWarning: (!mpdSheetName && !adSheetName) ?
           `선택하신 파일(${filename})에 'MPD' 및 'AD SB EO' 시트가 존재하지 않습니다. (포함된 시트: ${workbook.SheetNames.join(', ')})` : null
       };
     }
@@ -1605,7 +1721,7 @@
           const file = filesToAnalyze[i];
           const pct = Math.round((i / filesToAnalyze.length) * 100);
           setProgress(pct, `[${i + 1}/${filesToAnalyze.length}] ${file.name} 분석 중...`);
-          
+
           // Allow UI thread to refresh
           await new Promise(r => setTimeout(r, 20));
 
@@ -1638,7 +1754,7 @@
       document.getElementById('kpiTargetCount').textContent = `${results.length}대`;
 
       const sumTotalMh = results.reduce((acc, r) => acc + r.total, 0);
-      document.getElementById('kpiTotalMh').textContent = sumTotalMh.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+      document.getElementById('kpiTotalMh').textContent = sumTotalMh.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
       const avgTat = (results.reduce((acc, r) => acc + r.tatDays, 0) / results.length).toFixed(1);
       const maxTat = Math.max(...results.map(r => r.tatDays));
@@ -1662,10 +1778,10 @@
           <td class="py-2.5 px-3 font-medium text-gray-700">${r.cLevel}</td>
           <td class="py-2.5 px-2 text-gray-500 font-mono">${r.revision}</td>
           <td class="py-2.5 px-2 text-gray-600">${r.ageYears !== '-' ? `${r.ageYears}년` : '-'}</td>
-          <td class="py-2.5 px-3 text-right font-mono text-gray-800">${r.mpdSum.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1})}</td>
-          <td class="py-2.5 px-3 text-right font-mono text-gray-800">${r.adSum.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1})}</td>
+          <td class="py-2.5 px-3 text-right font-mono text-gray-800">${r.mpdSum.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
+          <td class="py-2.5 px-3 text-right font-mono text-gray-800">${r.adSum.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
           <td class="py-2.5 px-3 text-right font-mono ${r.weights > 0 ? 'text-amber-600 font-bold' : 'text-gray-400'}">+${r.weights}</td>
-          <td class="py-2.5 px-3 text-right font-mono font-bold text-gray-900">${r.total.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1})}</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold text-gray-900">${r.total.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
           <td class="py-2.5 px-3 text-center font-bold text-brand-orange text-sm">${r.tatDays}일</td>
           <td class="py-2.5 px-3 text-center">
             <button type="button" class="px-2 py-1 rounded bg-orange-100 hover:bg-orange-200 text-brand-orange font-bold text-[11px] transition-colors">
@@ -1726,9 +1842,8 @@
 
       res.reasons.forEach(item => {
         const card = document.createElement('div');
-        card.className = `p-3.5 rounded-xl border text-xs leading-relaxed transition-all ${
-          item.isNa ? 'bg-gray-50/60 border-gray-200' : 'bg-white border-orange-200/80 shadow-sm'
-        }`;
+        card.className = `p-3.5 rounded-xl border text-xs leading-relaxed transition-all ${item.isNa ? 'bg-gray-50/60 border-gray-200' : 'bg-white border-orange-200/80 shadow-sm'
+          }`;
 
         const badgeBg = item.isNa ? 'bg-gray-200 text-gray-600' : 'bg-orange-100 text-brand-orange';
         const weightColor = item.isNa ? 'text-gray-400' : 'text-brand-orange font-bold';
@@ -1823,8 +1938,8 @@
       XLSX.utils.book_append_sheet(wb, ws, "WP_일괄분석결과");
 
       const now = new Date();
-      const dateStr = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
-      
+      const dateStr = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+
       XLSX.writeFile(wb, `WP_분석결과_요약_${dateStr}.xlsx`);
       logToTerminal(`분석 결과 엑셀 파일 저장 완료: WP_분석결과_요약_${dateStr}.xlsx`);
     });
@@ -1841,11 +1956,11 @@
     });
 
     btnStartAnalysis.addEventListener('click', analyzeWP);
-  
+
     // =========================================================================
     // MODULE 2: HEAVY MAINTENANCE CHECKLIST CONTROLLER
     // =========================================================================
-    const HM_CHECKLIST_TEMPLATE = [{"id": 1, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-1", "title": "계약 시 초도 WP 확보 및 검토", "sublines": [], "rawTask": "1-1 계약 시 초도 WP 확보 및 검토", "lead": "생산계획팀", "related": "정비지원팀", "or": "○"}, {"id": 2, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-2", "title": "초도 WP의 각 담당자 및 유관부서와", "sublines": ["Final Cross-Check 및 자체수행 작업검토"], "rawTask": "1-2 초도 WP의 각 담당자 및 유관부서와 \n        Final Cross-Check 및 자체수행 작업검토", "lead": "생산계획팀", "related": "정비기술팀", "or": "○"}, {"id": 3, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-3", "title": "Pre-docking Physical Inspection 수행", "sublines": [], "rawTask": "1-3 Pre-docking Physical Inspection 수행", "lead": "생산계획팀", "related": "정비팀", "or": "○"}, {"id": 4, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-4", "title": "중정비 입고 전 회의소집 후 WP 확정", "sublines": [], "rawTask": "1-4 중정비 입고 전 회의소집 후 WP 확정", "lead": "생산계획팀", "related": "정비본부 각팀", "or": "○"}, {"id": 5, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-5", "title": "WP 확정 후 정비기획팀을 통하여 MRO", "sublines": ["필요자재, 장비 및 TAT 재확인"], "rawTask": "1-5 WP 확정 후 정비기획팀을 통하여 MRO\n       필요자재, 장비 및 TAT 재확인", "lead": "생산계획팀", "related": "정비지원팀", "or": "○"}, {"id": 6, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-6", "title": "MR 적용여부 확인", "sublines": [], "rawTask": "1-6 MR 적용여부 확인", "lead": "생산계획팀", "related": "정비지원팀", "or": "○"}, {"id": 7, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-7", "title": "WP의 Lessor 최종확인요청", "sublines": [], "rawTask": "1-7 WP의 Lessor 최종확인요청", "lead": "생산계획팀", "related": "정비지원팀", "or": "○"}, {"id": 8, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-8", "title": "MRO Work Flow Chart 확보 후 JJA Work Flow", "sublines": ["Chart 비교하여 TAT 적합성 검토"], "rawTask": "1-8 MRO Work Flow Chart 확보 후 JJA Work Flow \n       Chart 비교하여 TAT 적합성 검토", "lead": "생산계획팀", "related": "정비지원팀", "or": "○"}, {"id": 9, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-9", "title": "TAT의 적합성 검토후 TAT E-Mail 전달", "sublines": [], "rawTask": "1-9 TAT의 적합성 검토후 TAT E-Mail 전달", "lead": "생산계획팀", "related": "정비지원팀", "or": "○"}, {"id": 10, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-10", "title": "해당 MRO의 국가 VISA 필요여부확인", "sublines": [], "rawTask": "1-10 해당 MRO의 국가 VISA 필요여부확인", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 11, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-11", "title": "중정비 계약서 검토", "sublines": [], "rawTask": "1-11 중정비 계약서 검토", "lead": "생산계획팀", "related": "정비지원팀", "or": "○"}, {"id": 12, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-12", "title": "중정비 시 수행되어야 할 결함검토/준비", "sublines": ["(Open NRC 및 Defer Item)"], "rawTask": "1-12 중정비 시 수행되어야 할 결함검토/준비\n         (Open NRC 및 Defer Item)", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 13, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-13", "title": "필요자재 검토 및 선적확인", "sublines": [], "rawTask": "1-13 필요자재 검토 및 선적확인", "lead": "생산계획팀", "related": "정비기재팀", "or": "○"}, {"id": 14, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-14", "title": "중정비 수행계획 기안", "sublines": [], "rawTask": "1-14 중정비 수행계획 기안", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 15, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-15", "title": "중정비 WP의 Detail Review", "sublines": [], "rawTask": "1-15 중정비 WP의 Detail Review", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 16, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-16", "title": "MRO와 공정협의 및 TAT 조절", "sublines": ["- TAT 및 Dock Day 조절 및 관리"], "rawTask": "1-16 MRO와 공정협의 및 TAT 조절\n         - TAT 및 Dock Day 조절 및 관리", "lead": "생산계획팀", "related": "정비지원팀", "or": "○"}, {"id": 17, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-17", "title": "QA에 수령검사원 임명요청 및 STAMP 수령", "sublines": [], "rawTask": "1-17 QA에 수령검사원 임명요청 및 STAMP 수령", "lead": "생산계획팀", "related": "정비품질팀", "or": "○"}, {"id": 18, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-18", "title": "MRO에 WP 관련 자료전달", "sublines": ["- D&B Chart", "- J-Card & EO", "- Last Weight Report,", "- IFS", "- Seat, Lav & Galley CMM", "- AD/SB List", "- Paint Standard", "- Emergency Equip Layout & LOPA", "- Weihging Manual"], "rawTask": "1-18 MRO에 WP 관련 자료전달\n         - D&B Chart\n         - J-Card & EO \n         - Last Weight Report, \n         - IFS\n         - Seat, Lav & Galley CMM\n         - AD/SB List\n         - Paint Standard\n         - Emergency Equip Layout & LOPA\n         - Weihging Manual", "lead": "생산계획팀", "related": "정비품질팀\n정비기술팀", "or": "○"}, {"id": 19, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-19", "title": "Work Order 및 Tally Sheet 생성/접수", "sublines": [], "rawTask": "1-19 Work Order 및 Tally Sheet 생성/접수", "lead": "생산계획팀", "related": "생산계획팀 담당", "or": "○"}, {"id": 20, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-20", "title": "SAP의 Work Order 및 필요자재 Release", "sublines": [], "rawTask": "1-20 SAP의 Work Order 및 필요자재 Release", "lead": "정비팀", "related": "생산계획팀 담당", "or": "○"}, {"id": 21, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-21", "title": "중정비 출장품의", "sublines": [], "rawTask": "1-21 중정비 출장품의", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 22, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-22", "title": "공수비행 일정 및 운항승무원 일정확인", "sublines": [], "rawTask": "1-22 공수비행 일정 및 운항승무원 일정확인", "lead": "생산계획팀", "related": "운항기획팀\n통제센터팀", "or": "○"}, {"id": 23, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-23", "title": "Cabin 장탈품목 및 작업계획 확인", "sublines": [], "rawTask": "1-23 Cabin 장탈품목 및 작업계획 확인", "lead": "생산계획팀", "related": "공장정비팀", "or": "○"}, {"id": 24, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-24", "title": "MRO에 중정비 시 Hangar 출입증 의뢰", "sublines": [], "rawTask": "1-24 MRO에 중정비 시 Hangar 출입증 의뢰", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 25, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-25", "title": "JJA Document for Hand-carry", "sublines": ["- Spare Flight & Maint' Log Book", "- Serviceable / Unserviceable Tag(수기식포함)", "- Defer Log Sticker", "- 예비용 PRPO & TR Sheet (그룹웨어)", "- System / Structure NRC (그룹웨어)"], "rawTask": "1-25 JJA Document for Hand-carry\n          - Spare Flight & Maint' Log Book\n          - Serviceable / Unserviceable Tag(수기식포함)\n          - Defer Log Sticker\n          - 예비용 PRPO & TR Sheet (그룹웨어)\n          - System / Structure NRC (그룹웨어)", "lead": "정비팀", "related": "생산계획팀", "or": "○"}, {"id": 26, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-26", "title": "LDG 교환여부 확인", "sublines": [], "rawTask": "1-26 LDG 교환여부 확인", "lead": "생산계획팀", "related": "정비기술팀\n구매팀", "or": "○"}, {"id": 27, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-27", "title": "LDG 교환 시 선적일자 및 관련 Doc 확인", "sublines": ["- Missing Part List 요청"], "rawTask": "1-27 LDG 교환 시 선적일자 및 관련 Doc 확인\n          - Missing Part List 요청", "lead": "생산계획팀", "related": "정비기술팀\n구매팀", "or": "○"}, {"id": 28, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-28", "title": "MLG 교환 시 FWD Trunnion Support", "sublines": ["Fitting Corrosion 대비 수리장비", "(MIT115A5002) 선적여부 확인"], "rawTask": "1-28 MLG 교환 시 FWD Trunnion Support \n         Fitting Corrosion 대비 수리장비\n         (MIT115A5002) 선적여부 확인", "lead": "생산계획팀", "related": "정비기재팀\n정비지원팀", "or": "○"}, {"id": 29, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-29", "title": "현지 MRO의 항공기 통관 대비 Cabin", "sublines": ["Galley Insert 자물쇠 비밀번호 확인"], "rawTask": "1-29 현지 MRO의 항공기 통관 대비 Cabin\n         Galley Insert 자물쇠 비밀번호 확인", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 30, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-30", "title": "Cockpit Door 비밀번호 확인", "sublines": [], "rawTask": "1-30 Cockpit Door 비밀번호 확인", "lead": "정비팀", "related": "", "or": "○"}, {"id": 31, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-31", "title": "보안물품 하기 확인", "sublines": [], "rawTask": "1-31 보안물품 하기 확인", "lead": "생산계획팀", "related": "객실정비팀", "or": "○"}, {"id": 32, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-32", "title": "NDB Data 차기 Uploading 일자 확인", "sublines": [], "rawTask": "1-32 NDB Data 차기 Uploading 일자 확인", "lead": "생산계획팀", "related": "운항기술팀", "or": "○"}, {"id": 33, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-33", "title": "MRO의 최신 Manual 보유여부 확인", "sublines": [], "rawTask": "1-33 MRO의 최신 Manual 보유여부 확인", "lead": "생산계획팀", "related": "정비기술팀\n매뉴얼 담당", "or": "○"}, {"id": 34, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-34", "title": "SAP & GW 접속을 위한 VPN ID 확보", "sublines": [], "rawTask": "1-34 SAP & GW 접속을 위한 VPN ID 확보", "lead": "생산계획팀\n정비팀\n정비기재팀", "related": "", "or": "○"}, {"id": 35, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-35", "title": "로밍폰 신청 및 수령(필요시)", "sublines": [], "rawTask": "1-35 로밍폰 신청 및 수령(필요시)", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 36, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-36", "title": "정비팀 출장자에게 H/M Check List 배포,", "sublines": ["주요 사항 교육 및 전달."], "rawTask": "1-36 정비팀 출장자에게 H/M Check List 배포,\n        주요 사항 교육 및 전달.", "lead": "생산계획팀", "related": "정비팀", "or": "○"}, {"id": 37, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-1", "title": "Aircraft Input Meeting with MRO", "sublines": ["- 전체적인 일정 브리핑", "- 당사 Requirement 전달", "- Weighing 시 기내 Cart 제거 후 실시 요청", "- 작업 시 유의사항 전달", "- 공정 Detail 협의", "- 작업 전 각 Hole 의 Covering 및 Capping", "- MRO 휴무여부", "- MRO 가용 M/H 확인", "- MRO 야간 Overtime 가능여부"], "rawTask": "2-1 Aircraft Input Meeting with MRO\n       - 전체적인 일정 브리핑\n       - 당사 Requirement 전달\n       - Weighing 시 기내 Cart 제거 후 실시 요청\n       - 작업 시 유의사항 전달\n       - 공정 Detail 협의\n       - 작업 전 각 Hole 의 Covering 및 Capping\n       - MRO 휴무여부\n       - MRO 가용 M/H 확인\n       - MRO 야간 Overtime 가능여부", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 38, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-2", "title": "항공기 MRO 도착 후 LDG Lock Pin", "sublines": ["장착확인"], "rawTask": "2-2 항공기 MRO 도착 후 LDG Lock Pin \n       장착확인", "lead": "정비팀", "related": "MRO", "or": "○"}, {"id": 39, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-3", "title": "항공기 MRO 도착 후 Pilot 결함보고 여부", "sublines": [], "rawTask": "2-3 항공기 MRO 도착 후 Pilot 결함보고 여부", "lead": "정비팀", "related": "생산계획팀", "or": "○"}, {"id": 40, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-4", "title": "항공기 MRO 도착 후 Logging 및 Defer", "sublines": ["Item 확인"], "rawTask": "2-4 항공기 MRO 도착 후 Logging 및 Defer \n        Item 확인", "lead": "정비팀", "related": "생산계획팀", "or": "○"}, {"id": 41, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-5", "title": "항공기 MRO 도착 후 Time & Cycle 확인", "sublines": [], "rawTask": "2-5 항공기 MRO 도착 후 Time & Cycle 확인", "lead": "정비팀", "related": "생산계획팀", "or": "○"}, {"id": 42, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-6", "title": "항공기 MRO 도착 후 잔여연료량 확인", "sublines": [], "rawTask": "2-6 항공기 MRO 도착 후 잔여연료량 확인", "lead": "정비팀", "related": "생산계획팀", "or": "○"}, {"id": 43, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-7", "title": "항공기 MRO 입고 후 Engine Run-up 결과확인", "sublines": ["- Engine Parameter 확인", "- Fuel & Oil Leaking 확인", "- Pneu' Leaking 확인"], "rawTask": "2-7 항공기 MRO 입고 후 Engine Run-up 결과확인\n        - Engine Parameter 확인\n        - Fuel & Oil Leaking 확인\n        - Pneu' Leaking 확인", "lead": "정비팀", "related": "MRO", "or": "○"}, {"id": 44, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-8", "title": "MRO에 Inspection 종료일자 접수", "sublines": ["- Inspection 종료일자 이후 추가 NRC 발행", "억제 및 필요자재 통제"], "rawTask": "2-8 MRO에 Inspection 종료일자 접수 \n        - Inspection 종료일자 이후 추가 NRC 발행\n          억제 및 필요자재 통제", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 45, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-9", "title": "EDTO 항공기 중정비 시 EDTO 정비절차", "sublines": ["충족 수행확인"], "rawTask": "2-9 EDTO 항공기 중정비 시 EDTO 정비절차\n       충족 수행확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 46, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-10", "title": "MRO Daily Report 접수 및 Check", "sublines": [], "rawTask": "2-10 MRO Daily Report 접수 및 Check", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 47, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-11", "title": "Workflow Chart에 따른 공정진행 확인", "sublines": [], "rawTask": "2-11 Workflow Chart에 따른 공정진행 확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 48, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-12", "title": "Daily NRC List 검토 및 확인", "sublines": ["- 감항성/비감항성 결함 구분", "- 소요  M/H의 적정성", "- 결함 관련 MPD 연계여부", "- 결함 관련 MR 연계여부"], "rawTask": "2-12 Daily NRC List 검토 및 확인\n         - 감항성/비감항성 결함 구분\n         - 소요  M/H의 적정성\n         - 결함 관련 MPD 연계여부\n         - 결함 관련 MR 연계여부", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 49, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-13", "title": "중정비 기간 중 주요결함 및 공정내용", "sublines": ["사진촬영"], "rawTask": "2-13 중정비 기간 중 주요결함 및 공정내용\n         사진촬영", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 50, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-14", "title": "중정비 TAT 단축여부 협의", "sublines": [], "rawTask": "2-14 중정비 TAT 단축여부 협의", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 51, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-15", "title": "MRO Critical Defect Item 관리", "sublines": ["- TAT에 영향 또는 과도한 비용 소요 Item"], "rawTask": "2-15 MRO Critical Defect Item 관리\n      - TAT에 영향 또는 과도한 비용 소요 Item", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 52, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-16", "title": "MRO Daily Material List 접수 및 Check", "sublines": [], "rawTask": "2-16 MRO Daily Material List 접수 및 Check", "lead": "생산계획팀\n정비팀\n정비기재팀", "related": "MRO", "or": "○"}, {"id": 53, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-17", "title": "Defueling 확인(Receipt 수령) 및", "sublines": ["구매팀 연료 담당 앞으로 전달"], "rawTask": "2-17 Defueling 확인(Receipt 수령) 및\n         구매팀 연료 담당 앞으로 전달", "lead": "생산계획팀\n정비팀", "related": "구매팀", "or": "○"}, {"id": 54, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-18", "title": "항공기 동체 확인", "sublines": ["- STR Dent, Nick, Corrosion, Damage 및", "Paint Peel Off", "- Fastener Loose 여부", "- Lightening Strike 흔적여부"], "rawTask": "2-18 항공기 동체 확인\n      - STR Dent, Nick, Corrosion, Damage 및 \n        Paint Peel Off\n      - Fastener Loose 여부\n      - Lightening Strike 흔적여부", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 55, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-19", "title": "주재반 Wing/Stabilizer/Vertical 확인", "sublines": ["- Damage, Corrosion 및 Hyd' Leak 상태", "- Wing L/E Crack 여부", "- Wing T/E Area의 Trunbuck, Nut, Screw", "Corrosion 상태", "- Stabilier Lower Skin Crack", "- Vertical HF Access panel Painting 상태", "- Wing Inb'd Aft Flap Lower Skin 상태", "- Flap & Spoiler Delamination 여부"], "rawTask": "2-19 주재반 Wing/Stabilizer/Vertical 확인\n       - Damage, Corrosion 및 Hyd' Leak 상태\n       - Wing L/E Crack 여부\n       - Wing T/E Area의 Trunbuck, Nut, Screw\n         Corrosion 상태\n       - Stabilier Lower Skin Crack\n       - Vertical HF Access panel Painting 상태\n       - Wing Inb'd Aft Flap Lower Skin 상태\n       - Flap & Spoiler Delamination 여부", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 56, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-20", "title": "주재반 항공기 Door 외부상태 확인", "sublines": [], "rawTask": "2-20 주재반 항공기 Door 외부상태 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 57, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-21", "title": "주재반 각 Antenna 상태확인", "sublines": [], "rawTask": "2-21 주재반 각 Antenna 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 58, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-22", "title": "주재반 Nose 및 Main W/W 상태확인", "sublines": ["- Cleaning 상태", "- CIC Apply 상태", "- Crack, Corrosion 및 Hyd' Leak 상태", "- Blade Seal 상태", "- Decal 상태", "- Connector & Backshell Broken 및 Corrod", "- Cable 또는 Wiring Connector 에 CIC 오염"], "rawTask": "2-22 주재반 Nose 및 Main W/W 상태확인\n      - Cleaning 상태\n      - CIC Apply 상태\n      - Crack, Corrosion 및 Hyd' Leak 상태\n      - Blade Seal 상태\n      - Decal 상태\n      - Connector & Backshell Broken 및 Corrod\n      - Cable 또는 Wiring Connector 에 CIC 오염", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 59, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-23", "title": "주재반 항공기 Pax' Window 상태확인", "sublines": ["- Outer pane Polishing 필요 시 Position 및", "Pane P/N & S/N 확보 또는 하단부분에", "Stamping 하여 표시"], "rawTask": "2-23 주재반 항공기 Pax' Window 상태확인\n        - Outer pane Polishing 필요 시 Position 및\n          Pane P/N & S/N 확보 또는 하단부분에\n          Stamping 하여 표시", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 60, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-24", "title": "주재반 항공기 Cockpit Window 상태확인", "sublines": ["- Window Damage 상태", "- Sealing Condition 확인"], "rawTask": "2-24 주재반 항공기 Cockpit Window 상태확인\n        - Window Damage 상태\n        - Sealing Condition 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 61, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-25", "title": "주재반 Cabin Compt' 상태확인", "sublines": ["- Lavatory floor Fitting Area Corrosion", "- Galley Mat 상태", "- Carpet 상태", "- Entry Door 및 Lavatory Door Handle", "Adjustment 상태", "- 각 Light 작동상태", "- Sidewall, Ceiling Panel, Stowage Bin", "외부상태", "- Seat 외부상태", "- Insulation Blanket 청결 및 손상여부", "- CIC 상태", "- Structure Cleaning 상태"], "rawTask": "2-25 주재반 Cabin Compt' 상태확인\n         - Lavatory floor Fitting Area Corrosion\n         - Galley Mat 상태\n         - Carpet 상태\n         - Entry Door 및 Lavatory Door Handle\n           Adjustment 상태\n         - 각 Light 작동상태\n         - Sidewall, Ceiling Panel, Stowage Bin \n           외부상태\n         - Seat 외부상태\n         - Insulation Blanket 청결 및 손상여부\n         - CIC 상태\n         - Structure Cleaning 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 62, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-26", "title": "주재반 E/E 및 FWD Access Compt", "sublines": ["내부상태확인"], "rawTask": "2-26 주재반 E/E 및 FWD Access Compt \n          내부상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 63, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-27", "title": "주재반 Cargo Compt' 상태확인", "sublines": ["- Floor Panel & Sidewall Lining 상태"], "rawTask": "2-27 주재반 Cargo Compt' 상태확인\n         - Floor Panel & Sidewall Lining 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 64, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-28", "title": "주재반 Cabin 내 Emergency Equip'", "sublines": ["Location 상태확인"], "rawTask": "2-28 주재반 Cabin 내 Emergency Equip' \n          Location 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 65, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-29", "title": "주재반 Ram Air Inlet Door의 Gap 또는", "sublines": ["Adjustment 상태확인"], "rawTask": "2-29 주재반 Ram Air Inlet Door의 Gap 또는\n         Adjustment 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 66, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-30", "title": "주재반 APU Compt' 상태확인", "sublines": [], "rawTask": "2-30 주재반 APU Compt' 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 67, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-31", "title": "주재반 Engine Fan & T/R Cowl 상태확인", "sublines": [], "rawTask": "2-31 주재반 Engine Fan & T/R Cowl 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 68, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-32", "title": "주재반 Engine 및 Inlet Cowl 상태확인", "sublines": ["- Blade Errosion, Damage & Spinner Cone", "- Inlet Cowl Fastner Loose 여부", "- Component Hyd' 및 Oil Leak Signal", "- Hyd' Pressure & Supply Line Chaffing", "- Engine STR 상태확인", "- CTAI Duct Louver Crack 상태확인", "- Abradable Shroud Area 상태확인"], "rawTask": "2-32 주재반 Engine 및 Inlet Cowl 상태확인\n        - Blade Errosion, Damage & Spinner Cone\n        - Inlet Cowl Fastner Loose 여부\n        - Component Hyd' 및 Oil Leak Signal\n        - Hyd' Pressure & Supply Line Chaffing\n        - Engine STR 상태확인\n        - CTAI Duct Louver Crack 상태확인\n        - Abradable Shroud Area 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 69, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-33", "title": "주재반 AFT Pressure BLKH Compt", "sublines": ["상태확인", "- Section 48 Access and Blowout Door"], "rawTask": "2-33 주재반 AFT Pressure BLKH Compt \n         상태확인\n        - Section 48 Access and Blowout Door", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 70, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-34", "title": "주재반 항공기 Exterior Placard 상태확인", "sublines": [], "rawTask": "2-34 주재반 항공기 Exterior Placard 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 71, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-35", "title": "주재반 Nose Radome 상태확인", "sublines": [], "rawTask": "2-35 주재반 Nose Radome 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 72, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-36", "title": "주재반 Static Discharger 상태확인", "sublines": [], "rawTask": "2-36 주재반 Static Discharger 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 73, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-37", "title": "주재반 Pitot & Static Port 상태확인", "sublines": [], "rawTask": "2-37 주재반 Pitot & Static Port 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 74, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-38", "title": "주재반 Ram air 및 Air Con' Bay 내부상태", "sublines": ["확인", "- Heat Exchanger Crack 여부", "- Plenum Diffuser Soften 여부"], "rawTask": "2-38 주재반 Ram air 및 Air Con' Bay 내부상태\n         확인\n         - Heat Exchanger Crack 여부\n         - Plenum Diffuser Soften 여부", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 75, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-39", "title": "중정비 Inspection 수행 시 Cleaning 상태", "sublines": [], "rawTask": "2-39 중정비 Inspection 수행 시 Cleaning 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 76, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-40", "title": "FDR Data Download 및 분석 확인", "sublines": ["- FDR Data Download 장비", "- FDR 분석기관", "- FDR Report 접수일자 확인", "- FDR Data 및 Report CD 접수", "- FDR Data Serviceability 확인", "- FDR Report 접수 후 정비본부 전달"], "rawTask": "2-40 FDR Data Download 및 분석 확인\n        - FDR Data Download 장비\n        - FDR 분석기관\n        - FDR Report 접수일자 확인\n        - FDR Data 및 Report CD 접수\n        - FDR Data Serviceability 확인\n        - FDR Report 접수 후 정비본부 전달", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 77, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-41", "title": "MRO 사용 Fluid Type Check", "sublines": ["- Fuel, Oil, Hyd' & LDG Fluid Type 확인"], "rawTask": "2-41 MRO 사용 Fluid Type Check\n        - Fuel, Oil, Hyd' & LDG Fluid Type 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 78, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-42", "title": "주재반 LDG 상태확인", "sublines": ["- LDG 외부상태", "- LDG Inner Cylinder Crome Plate 상태", "- LDG Painting Peel Off", "- LDG Shock Strut Dimension 상태", "- LDG 각 Hyd' Line의 Chaffing 여부", "- Tire & Brake Disk 상태", "- LDG Door 상태"], "rawTask": "2-42 주재반 LDG 상태확인 \n        - LDG 외부상태\n        - LDG Inner Cylinder Crome Plate 상태\n        - LDG Painting Peel Off\n        - LDG Shock Strut Dimension 상태\n        - LDG 각 Hyd' Line의 Chaffing 여부\n        - Tire & Brake Disk 상태\n        - LDG Door 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 79, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-43", "title": "LDG 교환 시 수령점검 Check List 확인", "sublines": ["- 외부 Damage 확인", "- Missing Part 확인", "- LDG MRO 도착일자 확인", "- 사진촬영", "- LDG Shipping Box Damage 확인", "- LDG Original Certificate Doc' 확인"], "rawTask": "2-43 LDG 교환 시 수령점검 Check List 확인\n        - 외부 Damage 확인\n        - Missing Part 확인\n        - LDG MRO 도착일자 확인\n        - 사진촬영\n        - LDG Shipping Box Damage 확인\n        - LDG Original Certificate Doc' 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 80, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-44", "title": "항공기 Access Panel Open/Close 확인", "sublines": [], "rawTask": "2-44 항공기 Access Panel Open/Close 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 81, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-45", "title": "CPCP Item 수행상태 확인", "sublines": [], "rawTask": "2-45 CPCP Item 수행상태 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 82, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-46", "title": "CDCCLs & ALI Item 수행상태 확인", "sublines": [], "rawTask": "2-46 CDCCLs & ALI Item 수행상태 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 83, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-47", "title": "EZAP 및 EWIS Item 수행상태 확인", "sublines": [], "rawTask": "2-47 EZAP 및 EWIS Item 수행상태 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 84, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-48", "title": "장탈된 Access Panel 또는 Part 점검", "sublines": ["- 장탈된 Access Panel Damage 또는", "Paint Condition 확인", "- 장탈된 Access Panel Cleaning 확인", "- 장탈된 Access Panel의 Serviceable", "판단"], "rawTask": "2-48 장탈된 Access Panel 또는 Part 점검\n         - 장탈된 Access Panel Damage 또는\n            Paint Condition 확인\n         - 장탈된 Access Panel Cleaning 확인\n         - 장탈된 Access Panel의 Serviceable \n            판단", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 85, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-49", "title": "장탈된 Cargo Floor panel 및 Sidewall", "sublines": ["Lining 점검", "- 손상유무", "- 수리가능 여부", "- GILLINER 보유여부 및 Fabrication 여부", "- Cleaning 상태"], "rawTask": "2-49 장탈된 Cargo Floor panel 및 Sidewall \n          Lining 점검\n         - 손상유무\n         - 수리가능 여부\n         - GILLINER 보유여부 및 Fabrication 여부\n         - Cleaning 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 86, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-49", "title": "Flap Fairing 점검", "sublines": ["- Free play 상태점검", "- Hole damage 여부", "- Painting Condition", "- Composite damage 여부"], "rawTask": "2-49 Flap Fairing 점검\n         - Free play 상태점검\n         - Hole damage 여부\n         - Painting Condition\n         - Composite damage 여부", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 87, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-50", "title": "MLG 교환 시 Aft Bearing Lub’ Fitting", "sublines": ["오장착 확인", "- Refer to FTD 737NG-FTD-57-1009"], "rawTask": "2-50 MLG 교환 시 Aft Bearing Lub’ Fitting \n         오장착 확인\n         - Refer to FTD 737NG-FTD-57-1009", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 88, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-51", "title": "Fuel Tank 관련 작업시 안전절차 확인", "sublines": ["- MRO 방폭등 사용여부", "- MRO 방화복 착용여부", "- Purge 절차점검"], "rawTask": "2-51 Fuel Tank 관련 작업시 안전절차 확인\n         - MRO 방폭등 사용여부\n         - MRO 방화복 착용여부\n         - Purge 절차점검", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 89, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-52", "title": "A/C Jack-up 시 절차준수 확인", "sublines": ["- Hangar 내에서 Jack-up 요청", "- AMM Jack-up 절차준수 확인"], "rawTask": "2-52 A/C Jack-up 시 절차준수 확인\n         - Hangar 내에서 Jack-up 요청\n         - AMM Jack-up 절차준수 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 90, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-53", "title": "Cabin Floor Panel 상태확인", "sublines": ["- Cabin Floor Panel 장탈 후 내부 STR", "점검 시, Floor Panel 상태점검"], "rawTask": "2-53 Cabin Floor Panel 상태확인\n         - Cabin Floor Panel 장탈 후 내부 STR \n           점검 시, Floor Panel 상태점검", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 91, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-54", "title": "A/C Touch-up 또는 부분 Painting 시", "sublines": ["Paint Spec' 확인"], "rawTask": "2-54 A/C Touch-up 또는 부분 Painting 시\n          Paint Spec' 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 92, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-55", "title": "Fuel Access Door 장착 시 TQ 값", "sublines": ["준수확인"], "rawTask": "2-55 Fuel Access Door 장착 시 TQ 값 \n         준수확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 93, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-56", "title": "Fuel Access Door 장탈착 작업 시", "sublines": ["Gasket 및 Seal을 New Part로 교환", "(57-826-01-01, 57-180-01, 57-180-02-01)"], "rawTask": "2-56 Fuel Access Door 장탈착 작업 시\n         Gasket 및 Seal을 New Part로 교환\n         (57-826-01-01, 57-180-01, 57-180-02-01)", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 94, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-57", "title": "Wiring 작업 시, 관련 System Check", "sublines": [], "rawTask": "2-57 Wiring 작업 시, 관련 System Check", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 95, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-58", "title": "Winglet 작업 또는 Part 교환 시, STC 적용", "sublines": ["여부 확인", "- STC에 의거 장착한 Winglet 의 경우", "APB Winglet Data Manual 사용"], "rawTask": "2-58 Winglet 작업 또는 Part 교환 시, STC 적용\n         여부 확인\n         - STC에 의거 장착한 Winglet 의 경우 \n           APB Winglet Data Manual 사용", "lead": "생산계획팀", "related": "정비기술팀", "or": "○"}, {"id": 96, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-59", "title": "항공기 MPD 작업 공정 진행률 확인", "sublines": [], "rawTask": "2-59 항공기 MPD 작업 공정 진행률 확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 97, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-60", "title": "항공기 EO 작업 공정 진행률 확인", "sublines": [], "rawTask": "2-60 항공기 EO 작업 공정 진행률 확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 98, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-61", "title": "항공기 NRC 작업 공정 진행률 확인", "sublines": [], "rawTask": "2-61 항공기 NRC 작업 공정 진행률 확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 99, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-62", "title": "항공기 필요자재 신청 및 도착일자 확인", "sublines": [], "rawTask": "2-62 항공기 필요자재 신청 및 도착일자 확인", "lead": "정비팀\n정비기재팀", "related": "MRO", "or": "○"}, {"id": 100, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-63", "title": "주재반 Routine Card Insp' Item Double", "sublines": ["Check"], "rawTask": "2-63 주재반 Routine Card Insp' Item Double\n         Check", "lead": "정비팀", "related": "MRO", "or": "○"}, {"id": 101, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-64", "title": "Access Panel Close 전 주재반 최종확인", "sublines": ["- Cleaning 및 CIC 상태", "- Wire 상태", "- STR 및 Component 외부상태", "- Job Card Requirment 수행여부 상태"], "rawTask": "2-64 Access Panel Close 전 주재반 최종확인\n        - Cleaning 및 CIC 상태\n        - Wire 상태\n        - STR 및 Component 외부상태 \n        - Job Card Requirment 수행여부 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 102, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-65", "title": "주재반 Loose Equip' 상태확인", "sublines": ["- Loose Equip' List에 의거 전체 품목 탑재 여부 확인"], "rawTask": "2-65 주재반 Loose Equip' 상태확인\n       - Loose Equip' List에 의거 전체 품목 탑재 여부 확인", "lead": "생산계획팀\n정비팀 출장자", "related": "MRO", "or": "○"}, {"id": 103, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-66", "title": "TAT 영향 Routine Card 선수행 요청", "sublines": ["- Flight Control Surface Free Play Check", "(Limit Over 시 Test Flight 필요)", "- Insp' 후 Limit 초과 시 Boeing Contact", "요구되는 EO", "- No.1 and No.2 Tank booster Pump", "bonding strap attachment for corrosion"], "rawTask": "2-66 TAT 영향 Routine Card 선수행 요청\n        - Flight Control Surface Free Play Check\n          (Limit Over 시 Test Flight 필요)\n        - Insp' 후 Limit 초과 시 Boeing Contact \n          요구되는 EO\n        - No.1 and No.2 Tank booster Pump \n          bonding strap attachment for corrosion", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 104, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-67", "title": "제작사 Contact Item 확인 및 보고", "sublines": ["- 제작사 Contact 전 Ex-change 가능여부", "확인 및 비용비교", "- SR 발행의 적정성 확인", "- SR 발행 시 MRO에 JJA 참조처 전달", "(STR Engineer 및 주재반)", "- SR 발행 시 Repair Insturction 접수일자", "- SR 발행정보 정비본부 공유/보고"], "rawTask": "2-67 제작사 Contact Item 확인 및 보고\n         - 제작사 Contact 전 Ex-change 가능여부\n           확인 및 비용비교\n         - SR 발행의 적정성 확인\n         - SR 발행 시 MRO에 JJA 참조처 전달\n           (STR Engineer 및 주재반)\n         - SR 발행 시 Repair Insturction 접수일자\n         - SR 발행정보 정비본부 공유/보고", "lead": "생산계획팀", "related": "MRO\n정비기술팀", "or": "○"}, {"id": 105, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-68", "title": "Catergory Repair B 이상 Item 보고", "sublines": ["- Cat B 이상 Repair는 향후 반복점검", "요구되므로 보고 후 D&B Chart에 반영"], "rawTask": "2-68 Catergory Repair B 이상 Item 보고\n         - Cat B 이상 Repair는 향후 반복점검 \n           요구되므로 보고 후 D&B Chart에 반영", "lead": "생산계획팀", "related": "MRO\n정비품질팀\n정비기술팀", "or": "○"}, {"id": 106, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-69", "title": "Corrosion Level 2 이상 Item 보고", "sublines": ["- MRO Engineer 및 QA 필히 함께 확인후", "Corrosion Level 결정 및 Email 접수", "- Corrosion 발생 후 60일 이내에 국토부", "보고사항"], "rawTask": "2-69 Corrosion Level 2 이상 Item 보고\n        - MRO Engineer 및 QA 필히 함께 확인후\n          Corrosion Level 결정 및 Email 접수\n        - Corrosion 발생 후 60일 이내에 국토부 \n          보고사항", "lead": "생산계획팀", "related": "MRO\n정비품질팀\n정비기술팀", "or": "○"}, {"id": 107, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-70", "title": "NDB Data Upload 위한 장비확인", "sublines": ["- 항공기 ADL or PDL Type 확인", "- 항공기 PDL Type 시 PDL 장비보유확인"], "rawTask": "2-70 NDB Data Upload 위한 장비확인\n        - 항공기 ADL or PDL Type 확인\n        - 항공기 PDL Type 시 PDL 장비보유확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 108, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-71", "title": "SAP Open & Close 처리조치", "sublines": ["- Rotable Part 교환 시, SAP NRC Open 및", "교환처리", "- Rotable Part 교환 시, 장탈된 Part의", "Unserviceable 반납처리", "- Work Order Close 처리", "- 신품목 개설 및 SAP 자재신청"], "rawTask": "2-71 SAP Open & Close 처리조치\n        - Rotable Part 교환 시, SAP NRC Open 및 \n          교환처리\n        - Rotable Part 교환 시, 장탈된 Part의\n          Unserviceable 반납처리 \n        - Work Order Close 처리\n        - 신품목 개설 및 SAP 자재신청", "lead": "정비팀", "related": "", "or": "○"}, {"id": 109, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-72", "title": "중정비 진행사항 Daily Report 작성/송부", "sublines": [], "rawTask": "2-72 중정비 진행사항 Daily Report 작성/송부", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 110, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-73", "title": "NRC Cancel 시 근거자료 확보", "sublines": ["- 근거자료 확보 후 NRC Cancel"], "rawTask": "2-73 NRC Cancel 시 근거자료 확보\n        - 근거자료 확보 후 NRC Cancel", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 111, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-74", "title": "Routine Card Cancel 시 근거자료 확보", "sublines": [], "rawTask": "2-74 Routine Card Cancel 시 근거자료 확보", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 112, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-75", "title": "Routine Card Document 검토", "sublines": ["- Warning, Caution & Note 란에 Stamp", "확인", "-  Mech' & Insp' Stamp 확인", "-  Value 값 Record 여부확인", "-  Figure에 Stamp 필요여부 확인", "-  요구 시 NDT Report 확인", "-  Part 교환 시, Pick Slip 또는 Certificate", "첨부확인", "-  작업 수행 Option 중 수행한 Option의", "Stamp 및 기록확인", "-  Reg No, 수행 Date 및 Time & Cyc 확인"], "rawTask": "2-75 Routine Card Document 검토\n         - Warning, Caution & Note 란에 Stamp \n           확인\n        -  Mech' & Insp' Stamp 확인\n        -  Value 값 Record 여부확인\n        -  Figure에 Stamp 필요여부 확인\n        -  요구 시 NDT Report 확인\n        -  Part 교환 시, Pick Slip 또는 Certificate \n           첨부확인\n        -  작업 수행 Option 중 수행한 Option의 \n           Stamp 및 기록확인\n        -  Reg No, 수행 Date 및 Time & Cyc 확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 113, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-76", "title": "System NRC Document 검토", "sublines": ["- 연계 MPD Number 여부확인", "- 결함내용 적정성 여부확인", "(Location, Dimension, Manual Limit, 발견", "과정, OP CHK & ETC)", "- Corrective Action의 적정성 여부확인", "(Manual Ref, OP CHK, 필요시 T/S 과정)", "- 필요시 NDT Report 첨부", "- 소요 자재기록 및 Certificate 첨부", "- M/H, 작업 Mech 정보 & Stamp 확인", "- 필요시 사진첨부", "- 작업관련 Reference 첨부"], "rawTask": "2-76 System NRC Document 검토\n        - 연계 MPD Number 여부확인\n        - 결함내용 적정성 여부확인\n          (Location, Dimension, Manual Limit, 발견\n           과정, OP CHK & ETC)\n        - Corrective Action의 적정성 여부확인\n          (Manual Ref, OP CHK, 필요시 T/S 과정)\n        - 필요시 NDT Report 첨부\n        - 소요 자재기록 및 Certificate 첨부\n        - M/H, 작업 Mech 정보 & Stamp 확인\n        - 필요시 사진첨부\n        - 작업관련 Reference 첨부", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 114, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-77", "title": "Structure NRC Document 검토", "sublines": ["- JJA STR NRC 기록 및 사용확인", "- 연계 MPD Number 여부확인", "- Detail Damage Definition 판단확인", "- Detail Damaged Location 확인", "- Detail Damaged Size & Dimension 확인", "- Allowable Limit 여부확인", "- Damage 제거 또는 Blending Out 후 Size", "기록확인", "- SRM Reference & Limitation 확인", "- Corrective Action의 적정성 여부확인", "- NDT 수행여부 확인", "- 필요시 NDT Report 첨부", "- 소요 자재기록 및 Certificate 첨부", "- 필요시 사진첨부", "- 작업관련 SRM Reference 첨부", "- Corrosion Level 기록여부 확인", "- Repair Category 기록여부 확인", "- 반복점검 여부 및 기록여부 확인", "- RDR 또는 FAA 8100-9 Form 첨부확인", "- 해당 결함의 올바른 SRM 적용유무 확인", "- 필요시 Test Flight 여부확인", "- 필요시 DWG 첨부", "- M/H, 작업 Mech 정보 & Stamp 확인", "- Permanent Repair 여부확인"], "rawTask": "2-77 Structure NRC Document 검토\n        - JJA STR NRC 기록 및 사용확인\n        - 연계 MPD Number 여부확인\n        - Detail Damage Definition 판단확인\n        - Detail Damaged Location 확인\n        - Detail Damaged Size & Dimension 확인\n        - Allowable Limit 여부확인\n        - Damage 제거 또는 Blending Out 후 Size \n          기록확인\n        - SRM Reference & Limitation 확인\n        - Corrective Action의 적정성 여부확인\n        - NDT 수행여부 확인\n        - 필요시 NDT Report 첨부\n        - 소요 자재기록 및 Certificate 첨부\n        - 필요시 사진첨부\n        - 작업관련 SRM Reference 첨부\n        - Corrosion Level 기록여부 확인\n        - Repair Category 기록여부 확인\n        - 반복점검 여부 및 기록여부 확인\n        - RDR 또는 FAA 8100-9 Form 첨부확인\n        - 해당 결함의 올바른 SRM 적용유무 확인\n        - 필요시 Test Flight 여부확인\n        - 필요시 DWG 첨부\n        - M/H, 작업 Mech 정보 & Stamp 확인\n        - Permanent Repair 여부확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 115, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-78", "title": "STR NRC List 요청 및 접수", "sublines": [], "rawTask": "2-78 STR NRC List 요청 및 접수", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 116, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-79", "title": "JJA Tally Sheet 및 Work Order 기록 및", "sublines": ["Stamping 확인"], "rawTask": "2-79 JJA Tally Sheet 및 Work Order 기록 및 \n         Stamping 확인", "lead": "정비팀\n생산계획팀", "related": "MRO", "or": "○"}, {"id": 117, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-80", "title": "FLT & MAINT' Logbook 확인", "sublines": ["- AD/SB/EO Logging 확인", "- Work Order Logging 확인", "- Heavy Defect 또는 Critical Defect NRC", "- Defer Clear", "- PILOT Defect Clear", "- Major Component 교환 Logging 확인", "- C-CHK Due Open/Close 확인", "- PRPO 확인", "- C-CHK로 인한 PART 교환 기록 불필요", "(PART CHANGE LIST로 대체)"], "rawTask": "2-80 FLT & MAINT' Logbook 확인\n        - AD/SB/EO Logging 확인\n        - Work Order Logging 확인\n        - Heavy Defect 또는 Critical Defect NRC\n        - Defer Clear\n        - PILOT Defect Clear\n        - Major Component 교환 Logging 확인\n        - C-CHK Due Open/Close 확인\n        - PRPO 확인\n        - C-CHK로 인한 PART 교환 기록 불필요\n          (PART CHANGE LIST로 대체)", "lead": "정비팀\n생산계획팀", "related": "MRO", "or": "○"}, {"id": 118, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-81", "title": "A/C Elect PWR ON 이후 System 결함확인", "sublines": ["- W/P에서 중정비 중 Access Open 또는", "작업수행한 System 관리/확인", "- Final System OP Check 결함확인"], "rawTask": "2-81 A/C Elect PWR ON 이후 System 결함확인\n        - W/P에서 중정비 중 Access Open 또는\n          작업수행한 System 관리/확인\n        - Final System OP Check 결함확인", "lead": "정비팀\n생산계획팀", "related": "MRO", "or": "○"}, {"id": 119, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-82", "title": "A/C Hyd' PWR ON 이후 System Leakage", "sublines": ["확인", "- Component 자제결함인지 연결부위의", "Minor Part인 Seal, Swivel 또는 Fitting", "결함인지 확인"], "rawTask": "2-82 A/C Hyd' PWR ON 이후 System Leakage\n         확인\n        - Component 자제결함인지 연결부위의\n           Minor Part인 Seal, Swivel 또는 Fitting \n           결함인지 확인", "lead": "정비팀\n생산계획팀", "related": "MRO", "or": "○"}, {"id": 120, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-83", "title": "A/C Weigh & Balance 일정 및 수행확인", "sublines": [], "rawTask": "2-83 A/C Weigh & Balance 일정 및 수행확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 121, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-84", "title": "Refueling 연료량 및 일정확인", "sublines": ["- 구매팀과 계약된 연료공급회사 확인"], "rawTask": "2-84 Refueling 연료량 및 일정확인\n         - 구매팀과 계약된 연료공급회사 확인", "lead": "생산계획팀", "related": "구매팀", "or": "○"}, {"id": 122, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-85", "title": "A/C LDG SWING CHK 일정 및 수행확인", "sublines": ["- Hyd' Leak 확인(LDG Body, Downlock", "Act', Retraction Act', Uplock Act' 등", "관련 Component)", "- Time Limit", "- LDG Door to Fuselage Gap Check", "- LDG Door Align", "- Hyd' Cart의 Fluid Type 호환성 확인"], "rawTask": "2-85 A/C LDG SWING CHK 일정 및 수행확인\n         - Hyd' Leak 확인(LDG Body, Downlock\n           Act', Retraction Act', Uplock Act' 등 \n           관련 Component)\n         - Time Limit\n         - LDG Door to Fuselage Gap Check\n         - LDG Door Align\n         - Hyd' Cart의 Fluid Type 호환성 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 123, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-86", "title": "LDG 교환 시 ANTI-SKID TEST 확인", "sublines": ["- 주재반 입회 하에 Test 수행", "- ANTI-SKID TEST에 대한 Email 사전공지", "- 주재반 Test 수행절차 숙지"], "rawTask": "2-86 LDG 교환 시 ANTI-SKID TEST 확인\n        - 주재반 입회 하에 Test 수행\n        - ANTI-SKID TEST에 대한 Email 사전공지\n        - 주재반 Test 수행절차 숙지", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 124, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-87", "title": "Final Engine Run-up 일정 및 수행확인", "sublines": [], "rawTask": "2-87 Final Engine Run-up 일정 및 수행확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 125, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-88", "title": "Test Flight 일정 및 요건확인", "sublines": ["- TF 필요여부/사유 확인", "- TF 공역확인", "- TF 가능 일자 및 시간 확인", "- TF Requirement 및 Work Sheet 확인", "- 조종사 Arrange 확인", "- 조종사에게 TF Requirment 전달", "- TF Slot 확보 확인", "- TF 탑승자 확인", "- TF FLT PLAN 및 연료량 확인", "- TF 후 Logbook 기록확인", "- TF 전 PRPO 수행확인"], "rawTask": "2-88 Test Flight 일정 및 요건확인\n        - TF 필요여부/사유 확인\n        - TF 공역확인\n        - TF 가능 일자 및 시간 확인\n        - TF Requirement 및 Work Sheet 확인\n        - 조종사 Arrange 확인\n        - 조종사에게 TF Requirment 전달\n        - TF Slot 확보 확인\n        - TF 탑승자 확인\n        - TF FLT PLAN 및 연료량 확인\n        - TF 후 Logbook 기록확인\n        - TF 전 PRPO 수행확인", "lead": "생산계획팀", "related": "MRO\n통제센터팀\n운항기술팀", "or": "○"}, {"id": 126, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-89", "title": "Cabin Pressure Check 일정확인", "sublines": [], "rawTask": "2-89 Cabin Pressure Check 일정확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 127, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-90", "title": "MRO에서 요청하는 구매필요자재", "sublines": ["Double Check", "- P/N Recheck 후 자재구매 MRO Confirm", "- 확실한 T/S 후 필요자재 확인", "- Part 호환성 확인", "- NHA 또는 Sub-part 교환가능여부 확인", "- 당사재고확인"], "rawTask": "2-90 MRO에서 요청하는 구매필요자재 \n         Double Check\n        - P/N Recheck 후 자재구매 MRO Confirm\n        - 확실한 T/S 후 필요자재 확인\n        - Part 호환성 확인\n        - NHA 또는 Sub-part 교환가능여부 확인\n        - 당사재고확인", "lead": "정비기재팀", "related": "", "or": "○"}, {"id": 128, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-91", "title": "필요파트의 조달일자가 공정에 영향을", "sublines": ["줄 경우 통제팀장 보고/승인 후 AOG 발주"], "rawTask": "2-91 필요파트의 조달일자가 공정에 영향을 \n         줄 경우 통제팀장 보고/승인 후 AOG 발주", "lead": "생산계획팀", "related": "MRO\n정비기재팀", "or": "○"}, {"id": 129, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-92", "title": "Final Document Check", "sublines": ["- Routine Cards", "- System & STR NRC", "- FDR Report", "- Tally Sheet", "- Weight & Balance Report", "- FLT & Maint' Log Book"], "rawTask": "2-92 Final Document Check\n        - Routine Cards\n        - System & STR NRC\n        - FDR Report\n        - Tally Sheet\n        - Weight & Balance Report\n        - FLT & Maint' Log Book", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 130, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-93", "title": "Final Cabin Comp't Check", "sublines": ["- 객실 Light Check", "- Emergency Light Check", "- Entry & Service Door Rigging Check", "- 비상벨 OP' Check", "- Toilet Flushing Check", "- Emergency & Loose Equip' Check", "- PA System OP' Check", "- Galley, Lavatory or Moon Mat Sealing 상태"], "rawTask": "2-93 Final Cabin Comp't Check\n        - 객실 Light Check\n        - Emergency Light Check\n        - Entry & Service Door Rigging Check\n        - 비상벨 OP' Check\n        - Toilet Flushing Check\n        - Emergency & Loose Equip' Check\n        - PA System OP' Check\n        - Galley, Lavatory or Moon Mat Sealing 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 131, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-94", "title": "Final Engine Run-up Check", "sublines": ["- Oil & Fuel Leaking", "- Pnuematic Leaking", "- Engine Parameter Check", "(Pressure, Temp, N1, N2 & Etc)"], "rawTask": "2-94 Final Engine Run-up Check\n        - Oil & Fuel Leaking\n        - Pnuematic Leaking\n        - Engine Parameter Check \n          (Pressure, Temp, N1, N2 & Etc)", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 132, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-95", "title": "Final Hyd' System Check", "sublines": [], "rawTask": "2-95 Final Hyd' System Check", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 133, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-96", "title": "Final A/C System OP Check & 잔류 부품", "sublines": ["(공용FAK Bin, Emer Equip', 각종 장탈 Parts", "/Panel류)  및 Cabin Insert류(장탈 Minor Parts &", "Convenience items, Waste Bin, Meal Carts..etc)", "Re-store 확인.", "* 해당 항공기 주기되었던 모든 H/G Area 먼저", "확인 필요."], "rawTask": "2-96 Final A/C System OP Check & 잔류 부품 \n        (공용FAK Bin, Emer Equip', 각종 장탈 Parts\n         /Panel류)  및 Cabin Insert류(장탈 Minor Parts &\n        Convenience items, Waste Bin, Meal Carts..etc)\n        Re-store 확인.\n        * 해당 항공기 주기되었던 모든 H/G Area 먼저 \n           확인 필요.", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○"}, {"id": 134, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-97", "title": "Weight & Balance Report 접수 후", "sublines": ["운항기술팀, 정비품질팀 전달"], "rawTask": "2-97 Weight & Balance Report 접수 후 \n         운항기술팀, 정비품질팀 전달", "lead": "생산계획팀", "related": "운항기술팀", "or": "○"}, {"id": 135, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-98", "title": "NDB Data Upload Diskket 및 W/O 확인", "sublines": [], "rawTask": "2-98 NDB Data Upload Diskket 및 W/O 확인", "lead": "생산계획팀", "related": "정비운영팀", "or": "○"}, {"id": 136, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-99", "title": "복귀 Ferry FLT 조종사 Arrange 요청", "sublines": [], "rawTask": "2-99 복귀 Ferry FLT 조종사 Arrange 요청", "lead": "생산계획팀", "related": "운항승무팀", "or": "○"}, {"id": 137, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-100", "title": "복귀 Ferry FLT 진행절차 확인", "sublines": ["- Ferry FLT Plan 및 연료량 접수", "- 조종사 Arrange 확인", "- Ferry FLT 도착공항 확인", "- 세관신고질정 확인", "- 보안물품 상기요청", "- Ferry FLT 출발시간 및 도착시간 확인", "- Ferry FLT GD 등록 Arrange"], "rawTask": "2-100 복귀 Ferry FLT 진행절차 확인\n        - Ferry FLT Plan 및 연료량 접수\n        - 조종사 Arrange 확인\n        - Ferry FLT 도착공항 확인\n        - 세관신고질정 확인\n        - 보안물품 상기요청\n        - Ferry FLT 출발시간 및 도착시간 확인\n        - Ferry FLT GD 등록 Arrange", "lead": "생산계획팀", "related": "운항기술팀\n통제센터팀\n정비기재팀\n정비운영팀\n운항승무팀", "or": "○"}, {"id": 138, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-101", "title": "PRPO Sheet MRO 전달 및 수행확인", "sublines": [], "rawTask": "2-101 PRPO Sheet MRO 전달 및 수행확인", "lead": "정비팀", "related": "MRO", "or": "○"}, {"id": 139, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-102", "title": "Ferry FLT Refueling 확인 및 Receipt", "sublines": [], "rawTask": "2-102 Ferry FLT Refueling 확인 및 Receipt", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 140, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-103", "title": "Crew Meal Arrange", "sublines": [], "rawTask": "2-103 Crew Meal Arrange", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 141, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-104", "title": "중정비 주요내용 조종사 신송", "sublines": ["- Defer Item", "- 중정비 입고 시 Pilot Report 조치사항", "- 결함 Monitoring 사항"], "rawTask": "2-104 중정비 주요내용 조종사 신송\n          - Defer Item\n          - 중정비 입고 시 Pilot Report 조치사항\n          - 결함 Monitoring 사항", "lead": "정비팀", "related": "MRO", "or": "○"}, {"id": 142, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-105", "title": "중정비 종료 후 Ferry FLT 전 주요 DOC'", "sublines": ["MRO 수령", "- MOLIT/FAA/EASA CRS 접수", "- AD/SB Completion List", "- Component Change List"], "rawTask": "2-105 중정비 종료 후 Ferry FLT 전 주요 DOC'\n           MRO 수령\n          - MOLIT/FAA/EASA CRS 접수\n          - AD/SB Completion List\n          - Component Change List", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 143, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-106", "title": "Ferry FLT 전 Final CB Close 확인", "sublines": [], "rawTask": "2-106 Ferry FLT 전 Final CB Close 확인", "lead": "정비팀", "related": "", "or": "○"}, {"id": 144, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-107", "title": "Ferry FLT 국내복귀 전 정비본부 주요", "sublines": ["Doc Email 전달", "- CRS", "- AD/SB List", "- Component Change List"], "rawTask": "2-107 Ferry FLT 국내복귀 전 정비본부 주요 \n            Doc Email 전달\n         - CRS\n         - AD/SB List\n         - Component Change List", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 145, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-108", "title": "Final NRC List 접수", "sublines": [], "rawTask": "2-108 Final NRC List 접수", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 146, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-109", "title": "Final STR NRC List 접수", "sublines": [], "rawTask": "2-109 Final STR NRC List 접수", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 147, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-110", "title": "Chargeable M/H 협의", "sublines": [], "rawTask": "2-110 Chargeable M/H 협의", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 148, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-111", "title": "소요자재 List 접수 및 검토/확인", "sublines": [], "rawTask": "2-111 소요자재 List 접수 및 검토/확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 149, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-112", "title": "Ferry FLT 국내복귀 전 신송사항 전달", "sublines": ["- Customer Follow-up List", "- Open NRC 현황", "- Routine Work Cancel 현황 및 사유", "- 반복점검 항목", "- Defer Item 현황"], "rawTask": "2-112 Ferry FLT 국내복귀 전 신송사항 전달\n         - Customer Follow-up List\n         - Open NRC 현황\n         - Routine Work Cancel 현황 및 사유\n         - 반복점검 항목\n         - Defer Item 현황", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 150, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-113", "title": "MR 연계 Item 공식 Letter 및 자료요청", "sublines": ["- MRO와 MR 자료 사전협의 및 합의"], "rawTask": "2-113 MR 연계 Item 공식 Letter 및 자료요청\n         - MRO와 MR 자료 사전협의 및 합의", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 151, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-114", "title": "MR 연계 소요자재 검토/확인", "sublines": [], "rawTask": "2-114 MR 연계 소요자재 검토/확인", "lead": "생산계획팀", "related": "MRO", "or": "○"}, {"id": 152, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-1", "title": "중정비 Data SAP 입력", "sublines": ["- NRC List 양식에 맞춰 입력(T CODE : ZUPNO)", "- Work Order Close"], "rawTask": "3-1 중정비 Data SAP 입력\n       - NRC List 양식에 맞춰 입력(T CODE : ZUPNO)\n       - Work Order Close", "lead": "생산계획팀\n정비팀", "related": "", "or": "○"}, {"id": 153, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-2", "title": "MR Claim 자료 MRO 접수 및 정비기획 전달", "sublines": [], "rawTask": "3-2 MR Claim 자료 MRO 접수 및 정비기획 전달", "lead": "생산계획팀", "related": "정비지원팀", "or": "○"}, {"id": 154, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-3", "title": "Open NRC Close (15일 이내)", "sublines": ["- 신품목 및 자재신청", "- Order 발행 및 작업완료"], "rawTask": "3-3 Open NRC Close (15일 이내)\n       - 신품목 및 자재신청\n       - Order 발행 및 작업완료", "lead": "정비팀", "related": "", "or": "○"}, {"id": 155, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-4", "title": "항공기 결함 및 신뢰성 Monitoring (14일)", "sublines": [], "rawTask": "3-4 항공기 결함 및 신뢰성 Monitoring (14일)", "lead": "정비품질팀", "related": "정비운영팀", "or": "○"}, {"id": 156, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-5", "title": "M/H 적성성 최종확인 및 승인", "sublines": [], "rawTask": "3-5 M/H 적성성 최종확인 및 승인", "lead": "생산계획팀", "related": "", "or": "○"}, {"id": 157, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-6", "title": "소요자재비용 최종확인 및 승인", "sublines": [], "rawTask": "3-6 소요자재비용 최종확인 및 승인", "lead": "정비기재팀", "related": "", "or": "○"}, {"id": 158, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-7", "title": "Record 접수 및 검토", "sublines": ["- C-CHK Workpackage Doc 접수/검토", "- Document, CD, CRS 등 확인", "- 최종 확인 후 정비품질팀으로 배송", "- 주소 : JEJU AIR,  1F AIR SIDE #336,", "AIR SUPPORT CENTER", "70 HANEUL-GIL, GANGSEO-GU", "SEOUL, KOREA 07505", "NOTIFY PARTY: JANG, GYUNG TAEK", "MAIL : gtjang@jejuair.net", "TEL : (82)70-7420-1460", "CELL : (82)10-8643-8103"], "rawTask": "3-7 Record 접수 및 검토\n       - C-CHK Workpackage Doc 접수/검토\n       - Document, CD, CRS 등 확인\n       - 최종 확인 후 정비품질팀으로 배송\n       - 주소 : JEJU AIR,  1F AIR SIDE #336,\n                    AIR SUPPORT CENTER\n                    70 HANEUL-GIL, GANGSEO-GU \n                    SEOUL, KOREA 07505 \n                    NOTIFY PARTY: JANG, GYUNG TAEK\n                    MAIL : gtjang@jejuair.net\n                    TEL : (82)70-7420-1460 \n                    CELL : (82)10-8643-8103", "lead": "생산계획팀", "related": "정비품질팀", "or": "○"}, {"id": 159, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-8", "title": "Record 보관", "sublines": [], "rawTask": "3-8 Record 보관", "lead": "정비품질팀", "related": "", "or": "○"}, {"id": 160, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-9", "title": "중정비 수행주요내용 및 비용보고", "sublines": ["- 구매팀 협조문 접수 후 보고"], "rawTask": "3-9 중정비 수행주요내용 및 비용보고\n      - 구매팀 협조문 접수 후 보고", "lead": "생산계획팀", "related": "구매팀", "or": "○"}, {"id": 161, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-10", "title": "중정비 디브리핑 참석 후 종결", "sublines": ["- 구매팀 요청에 따라 유관부서 담당자들과", "개선사항 회의 및 주요내용 디브리핑"], "rawTask": "3-10 중정비 디브리핑 참석 후 종결\n      - 구매팀 요청에 따라 유관부서 담당자들과\n         개선사항 회의 및 주요내용 디브리핑", "lead": "생산계획팀", "related": "정비지원팀\n구매팀", "or": "○"}, {"id": 162, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-11", "title": "중정비 이력관리 리스트에 정보입력", "sublines": [], "rawTask": "3-11 중정비 이력관리 리스트에 정보입력", "lead": "생산계획팀", "related": "", "or": "○"}];
+    const HM_CHECKLIST_TEMPLATE = [{ "id": 1, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-1", "title": "계약 시 초도 WP 확보 및 검토", "sublines": [], "rawTask": "1-1 계약 시 초도 WP 확보 및 검토", "lead": "생산계획팀", "related": "정비지원팀", "or": "○" }, { "id": 2, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-2", "title": "초도 WP의 각 담당자 및 유관부서와", "sublines": ["Final Cross-Check 및 자체수행 작업검토"], "rawTask": "1-2 초도 WP의 각 담당자 및 유관부서와 \n        Final Cross-Check 및 자체수행 작업검토", "lead": "생산계획팀", "related": "정비기술팀", "or": "○" }, { "id": 3, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-3", "title": "Pre-docking Physical Inspection 수행", "sublines": [], "rawTask": "1-3 Pre-docking Physical Inspection 수행", "lead": "생산계획팀", "related": "정비팀", "or": "○" }, { "id": 4, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-4", "title": "중정비 입고 전 회의소집 후 WP 확정", "sublines": [], "rawTask": "1-4 중정비 입고 전 회의소집 후 WP 확정", "lead": "생산계획팀", "related": "정비본부 각팀", "or": "○" }, { "id": 5, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-5", "title": "WP 확정 후 정비기획팀을 통하여 MRO", "sublines": ["필요자재, 장비 및 TAT 재확인"], "rawTask": "1-5 WP 확정 후 정비기획팀을 통하여 MRO\n       필요자재, 장비 및 TAT 재확인", "lead": "생산계획팀", "related": "정비지원팀", "or": "○" }, { "id": 6, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-6", "title": "MR 적용여부 확인", "sublines": [], "rawTask": "1-6 MR 적용여부 확인", "lead": "생산계획팀", "related": "정비지원팀", "or": "○" }, { "id": 7, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-7", "title": "WP의 Lessor 최종확인요청", "sublines": [], "rawTask": "1-7 WP의 Lessor 최종확인요청", "lead": "생산계획팀", "related": "정비지원팀", "or": "○" }, { "id": 8, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-8", "title": "MRO Work Flow Chart 확보 후 JJA Work Flow", "sublines": ["Chart 비교하여 TAT 적합성 검토"], "rawTask": "1-8 MRO Work Flow Chart 확보 후 JJA Work Flow \n       Chart 비교하여 TAT 적합성 검토", "lead": "생산계획팀", "related": "정비지원팀", "or": "○" }, { "id": 9, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-9", "title": "TAT의 적합성 검토후 TAT E-Mail 전달", "sublines": [], "rawTask": "1-9 TAT의 적합성 검토후 TAT E-Mail 전달", "lead": "생산계획팀", "related": "정비지원팀", "or": "○" }, { "id": 10, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-10", "title": "해당 MRO의 국가 VISA 필요여부확인", "sublines": [], "rawTask": "1-10 해당 MRO의 국가 VISA 필요여부확인", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 11, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-11", "title": "중정비 계약서 검토", "sublines": [], "rawTask": "1-11 중정비 계약서 검토", "lead": "생산계획팀", "related": "정비지원팀", "or": "○" }, { "id": 12, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-12", "title": "중정비 시 수행되어야 할 결함검토/준비", "sublines": ["(Open NRC 및 Defer Item)"], "rawTask": "1-12 중정비 시 수행되어야 할 결함검토/준비\n         (Open NRC 및 Defer Item)", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 13, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-13", "title": "필요자재 검토 및 선적확인", "sublines": [], "rawTask": "1-13 필요자재 검토 및 선적확인", "lead": "생산계획팀", "related": "정비기재팀", "or": "○" }, { "id": 14, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-14", "title": "중정비 수행계획 기안", "sublines": [], "rawTask": "1-14 중정비 수행계획 기안", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 15, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-15", "title": "중정비 WP의 Detail Review", "sublines": [], "rawTask": "1-15 중정비 WP의 Detail Review", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 16, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-16", "title": "MRO와 공정협의 및 TAT 조절", "sublines": ["- TAT 및 Dock Day 조절 및 관리"], "rawTask": "1-16 MRO와 공정협의 및 TAT 조절\n         - TAT 및 Dock Day 조절 및 관리", "lead": "생산계획팀", "related": "정비지원팀", "or": "○" }, { "id": 17, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-17", "title": "QA에 수령검사원 임명요청 및 STAMP 수령", "sublines": [], "rawTask": "1-17 QA에 수령검사원 임명요청 및 STAMP 수령", "lead": "생산계획팀", "related": "정비품질팀", "or": "○" }, { "id": 18, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-18", "title": "MRO에 WP 관련 자료전달", "sublines": ["- D&B Chart", "- J-Card & EO", "- Last Weight Report,", "- IFS", "- Seat, Lav & Galley CMM", "- AD/SB List", "- Paint Standard", "- Emergency Equip Layout & LOPA", "- Weihging Manual"], "rawTask": "1-18 MRO에 WP 관련 자료전달\n         - D&B Chart\n         - J-Card & EO \n         - Last Weight Report, \n         - IFS\n         - Seat, Lav & Galley CMM\n         - AD/SB List\n         - Paint Standard\n         - Emergency Equip Layout & LOPA\n         - Weihging Manual", "lead": "생산계획팀", "related": "정비품질팀\n정비기술팀", "or": "○" }, { "id": 19, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-19", "title": "Work Order 및 Tally Sheet 생성/접수", "sublines": [], "rawTask": "1-19 Work Order 및 Tally Sheet 생성/접수", "lead": "생산계획팀", "related": "생산계획팀 담당", "or": "○" }, { "id": 20, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-20", "title": "SAP의 Work Order 및 필요자재 Release", "sublines": [], "rawTask": "1-20 SAP의 Work Order 및 필요자재 Release", "lead": "정비팀", "related": "생산계획팀 담당", "or": "○" }, { "id": 21, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-21", "title": "중정비 출장품의", "sublines": [], "rawTask": "1-21 중정비 출장품의", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 22, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-22", "title": "공수비행 일정 및 운항승무원 일정확인", "sublines": [], "rawTask": "1-22 공수비행 일정 및 운항승무원 일정확인", "lead": "생산계획팀", "related": "운항기획팀\n통제센터팀", "or": "○" }, { "id": 23, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-23", "title": "Cabin 장탈품목 및 작업계획 확인", "sublines": [], "rawTask": "1-23 Cabin 장탈품목 및 작업계획 확인", "lead": "생산계획팀", "related": "공장정비팀", "or": "○" }, { "id": 24, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-24", "title": "MRO에 중정비 시 Hangar 출입증 의뢰", "sublines": [], "rawTask": "1-24 MRO에 중정비 시 Hangar 출입증 의뢰", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 25, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-25", "title": "JJA Document for Hand-carry", "sublines": ["- Spare Flight & Maint' Log Book", "- Serviceable / Unserviceable Tag(수기식포함)", "- Defer Log Sticker", "- 예비용 PRPO & TR Sheet (그룹웨어)", "- System / Structure NRC (그룹웨어)"], "rawTask": "1-25 JJA Document for Hand-carry\n          - Spare Flight & Maint' Log Book\n          - Serviceable / Unserviceable Tag(수기식포함)\n          - Defer Log Sticker\n          - 예비용 PRPO & TR Sheet (그룹웨어)\n          - System / Structure NRC (그룹웨어)", "lead": "정비팀", "related": "생산계획팀", "or": "○" }, { "id": 26, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-26", "title": "LDG 교환여부 확인", "sublines": [], "rawTask": "1-26 LDG 교환여부 확인", "lead": "생산계획팀", "related": "정비기술팀\n구매팀", "or": "○" }, { "id": 27, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-27", "title": "LDG 교환 시 선적일자 및 관련 Doc 확인", "sublines": ["- Missing Part List 요청"], "rawTask": "1-27 LDG 교환 시 선적일자 및 관련 Doc 확인\n          - Missing Part List 요청", "lead": "생산계획팀", "related": "정비기술팀\n구매팀", "or": "○" }, { "id": 28, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-28", "title": "MLG 교환 시 FWD Trunnion Support", "sublines": ["Fitting Corrosion 대비 수리장비", "(MIT115A5002) 선적여부 확인"], "rawTask": "1-28 MLG 교환 시 FWD Trunnion Support \n         Fitting Corrosion 대비 수리장비\n         (MIT115A5002) 선적여부 확인", "lead": "생산계획팀", "related": "정비기재팀\n정비지원팀", "or": "○" }, { "id": 29, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-29", "title": "현지 MRO의 항공기 통관 대비 Cabin", "sublines": ["Galley Insert 자물쇠 비밀번호 확인"], "rawTask": "1-29 현지 MRO의 항공기 통관 대비 Cabin\n         Galley Insert 자물쇠 비밀번호 확인", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 30, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-30", "title": "Cockpit Door 비밀번호 확인", "sublines": [], "rawTask": "1-30 Cockpit Door 비밀번호 확인", "lead": "정비팀", "related": "", "or": "○" }, { "id": 31, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-31", "title": "보안물품 하기 확인", "sublines": [], "rawTask": "1-31 보안물품 하기 확인", "lead": "생산계획팀", "related": "객실정비팀", "or": "○" }, { "id": 32, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-32", "title": "NDB Data 차기 Uploading 일자 확인", "sublines": [], "rawTask": "1-32 NDB Data 차기 Uploading 일자 확인", "lead": "생산계획팀", "related": "운항기술팀", "or": "○" }, { "id": 33, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-33", "title": "MRO의 최신 Manual 보유여부 확인", "sublines": [], "rawTask": "1-33 MRO의 최신 Manual 보유여부 확인", "lead": "생산계획팀", "related": "정비기술팀\n매뉴얼 담당", "or": "○" }, { "id": 34, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-34", "title": "SAP & GW 접속을 위한 VPN ID 확보", "sublines": [], "rawTask": "1-34 SAP & GW 접속을 위한 VPN ID 확보", "lead": "생산계획팀\n정비팀\n정비기재팀", "related": "", "or": "○" }, { "id": 35, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-35", "title": "로밍폰 신청 및 수령(필요시)", "sublines": [], "rawTask": "1-35 로밍폰 신청 및 수령(필요시)", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 36, "catId": "cat1", "catShort": "1.입고전", "category": "1. 중정비 입고 전 Check Item", "code": "1-36", "title": "정비팀 출장자에게 H/M Check List 배포,", "sublines": ["주요 사항 교육 및 전달."], "rawTask": "1-36 정비팀 출장자에게 H/M Check List 배포,\n        주요 사항 교육 및 전달.", "lead": "생산계획팀", "related": "정비팀", "or": "○" }, { "id": 37, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-1", "title": "Aircraft Input Meeting with MRO", "sublines": ["- 전체적인 일정 브리핑", "- 당사 Requirement 전달", "- Weighing 시 기내 Cart 제거 후 실시 요청", "- 작업 시 유의사항 전달", "- 공정 Detail 협의", "- 작업 전 각 Hole 의 Covering 및 Capping", "- MRO 휴무여부", "- MRO 가용 M/H 확인", "- MRO 야간 Overtime 가능여부"], "rawTask": "2-1 Aircraft Input Meeting with MRO\n       - 전체적인 일정 브리핑\n       - 당사 Requirement 전달\n       - Weighing 시 기내 Cart 제거 후 실시 요청\n       - 작업 시 유의사항 전달\n       - 공정 Detail 협의\n       - 작업 전 각 Hole 의 Covering 및 Capping\n       - MRO 휴무여부\n       - MRO 가용 M/H 확인\n       - MRO 야간 Overtime 가능여부", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 38, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-2", "title": "항공기 MRO 도착 후 LDG Lock Pin", "sublines": ["장착확인"], "rawTask": "2-2 항공기 MRO 도착 후 LDG Lock Pin \n       장착확인", "lead": "정비팀", "related": "MRO", "or": "○" }, { "id": 39, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-3", "title": "항공기 MRO 도착 후 Pilot 결함보고 여부", "sublines": [], "rawTask": "2-3 항공기 MRO 도착 후 Pilot 결함보고 여부", "lead": "정비팀", "related": "생산계획팀", "or": "○" }, { "id": 40, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-4", "title": "항공기 MRO 도착 후 Logging 및 Defer", "sublines": ["Item 확인"], "rawTask": "2-4 항공기 MRO 도착 후 Logging 및 Defer \n        Item 확인", "lead": "정비팀", "related": "생산계획팀", "or": "○" }, { "id": 41, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-5", "title": "항공기 MRO 도착 후 Time & Cycle 확인", "sublines": [], "rawTask": "2-5 항공기 MRO 도착 후 Time & Cycle 확인", "lead": "정비팀", "related": "생산계획팀", "or": "○" }, { "id": 42, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-6", "title": "항공기 MRO 도착 후 잔여연료량 확인", "sublines": [], "rawTask": "2-6 항공기 MRO 도착 후 잔여연료량 확인", "lead": "정비팀", "related": "생산계획팀", "or": "○" }, { "id": 43, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-7", "title": "항공기 MRO 입고 후 Engine Run-up 결과확인", "sublines": ["- Engine Parameter 확인", "- Fuel & Oil Leaking 확인", "- Pneu' Leaking 확인"], "rawTask": "2-7 항공기 MRO 입고 후 Engine Run-up 결과확인\n        - Engine Parameter 확인\n        - Fuel & Oil Leaking 확인\n        - Pneu' Leaking 확인", "lead": "정비팀", "related": "MRO", "or": "○" }, { "id": 44, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-8", "title": "MRO에 Inspection 종료일자 접수", "sublines": ["- Inspection 종료일자 이후 추가 NRC 발행", "억제 및 필요자재 통제"], "rawTask": "2-8 MRO에 Inspection 종료일자 접수 \n        - Inspection 종료일자 이후 추가 NRC 발행\n          억제 및 필요자재 통제", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 45, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-9", "title": "EDTO 항공기 중정비 시 EDTO 정비절차", "sublines": ["충족 수행확인"], "rawTask": "2-9 EDTO 항공기 중정비 시 EDTO 정비절차\n       충족 수행확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 46, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-10", "title": "MRO Daily Report 접수 및 Check", "sublines": [], "rawTask": "2-10 MRO Daily Report 접수 및 Check", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 47, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-11", "title": "Workflow Chart에 따른 공정진행 확인", "sublines": [], "rawTask": "2-11 Workflow Chart에 따른 공정진행 확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 48, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-12", "title": "Daily NRC List 검토 및 확인", "sublines": ["- 감항성/비감항성 결함 구분", "- 소요  M/H의 적정성", "- 결함 관련 MPD 연계여부", "- 결함 관련 MR 연계여부"], "rawTask": "2-12 Daily NRC List 검토 및 확인\n         - 감항성/비감항성 결함 구분\n         - 소요  M/H의 적정성\n         - 결함 관련 MPD 연계여부\n         - 결함 관련 MR 연계여부", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 49, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-13", "title": "중정비 기간 중 주요결함 및 공정내용", "sublines": ["사진촬영"], "rawTask": "2-13 중정비 기간 중 주요결함 및 공정내용\n         사진촬영", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 50, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-14", "title": "중정비 TAT 단축여부 협의", "sublines": [], "rawTask": "2-14 중정비 TAT 단축여부 협의", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 51, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-15", "title": "MRO Critical Defect Item 관리", "sublines": ["- TAT에 영향 또는 과도한 비용 소요 Item"], "rawTask": "2-15 MRO Critical Defect Item 관리\n      - TAT에 영향 또는 과도한 비용 소요 Item", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 52, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-16", "title": "MRO Daily Material List 접수 및 Check", "sublines": [], "rawTask": "2-16 MRO Daily Material List 접수 및 Check", "lead": "생산계획팀\n정비팀\n정비기재팀", "related": "MRO", "or": "○" }, { "id": 53, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-17", "title": "Defueling 확인(Receipt 수령) 및", "sublines": ["구매팀 연료 담당 앞으로 전달"], "rawTask": "2-17 Defueling 확인(Receipt 수령) 및\n         구매팀 연료 담당 앞으로 전달", "lead": "생산계획팀\n정비팀", "related": "구매팀", "or": "○" }, { "id": 54, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-18", "title": "항공기 동체 확인", "sublines": ["- STR Dent, Nick, Corrosion, Damage 및", "Paint Peel Off", "- Fastener Loose 여부", "- Lightening Strike 흔적여부"], "rawTask": "2-18 항공기 동체 확인\n      - STR Dent, Nick, Corrosion, Damage 및 \n        Paint Peel Off\n      - Fastener Loose 여부\n      - Lightening Strike 흔적여부", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 55, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-19", "title": "주재반 Wing/Stabilizer/Vertical 확인", "sublines": ["- Damage, Corrosion 및 Hyd' Leak 상태", "- Wing L/E Crack 여부", "- Wing T/E Area의 Trunbuck, Nut, Screw", "Corrosion 상태", "- Stabilier Lower Skin Crack", "- Vertical HF Access panel Painting 상태", "- Wing Inb'd Aft Flap Lower Skin 상태", "- Flap & Spoiler Delamination 여부"], "rawTask": "2-19 주재반 Wing/Stabilizer/Vertical 확인\n       - Damage, Corrosion 및 Hyd' Leak 상태\n       - Wing L/E Crack 여부\n       - Wing T/E Area의 Trunbuck, Nut, Screw\n         Corrosion 상태\n       - Stabilier Lower Skin Crack\n       - Vertical HF Access panel Painting 상태\n       - Wing Inb'd Aft Flap Lower Skin 상태\n       - Flap & Spoiler Delamination 여부", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 56, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-20", "title": "주재반 항공기 Door 외부상태 확인", "sublines": [], "rawTask": "2-20 주재반 항공기 Door 외부상태 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 57, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-21", "title": "주재반 각 Antenna 상태확인", "sublines": [], "rawTask": "2-21 주재반 각 Antenna 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 58, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-22", "title": "주재반 Nose 및 Main W/W 상태확인", "sublines": ["- Cleaning 상태", "- CIC Apply 상태", "- Crack, Corrosion 및 Hyd' Leak 상태", "- Blade Seal 상태", "- Decal 상태", "- Connector & Backshell Broken 및 Corrod", "- Cable 또는 Wiring Connector 에 CIC 오염"], "rawTask": "2-22 주재반 Nose 및 Main W/W 상태확인\n      - Cleaning 상태\n      - CIC Apply 상태\n      - Crack, Corrosion 및 Hyd' Leak 상태\n      - Blade Seal 상태\n      - Decal 상태\n      - Connector & Backshell Broken 및 Corrod\n      - Cable 또는 Wiring Connector 에 CIC 오염", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 59, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-23", "title": "주재반 항공기 Pax' Window 상태확인", "sublines": ["- Outer pane Polishing 필요 시 Position 및", "Pane P/N & S/N 확보 또는 하단부분에", "Stamping 하여 표시"], "rawTask": "2-23 주재반 항공기 Pax' Window 상태확인\n        - Outer pane Polishing 필요 시 Position 및\n          Pane P/N & S/N 확보 또는 하단부분에\n          Stamping 하여 표시", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 60, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-24", "title": "주재반 항공기 Cockpit Window 상태확인", "sublines": ["- Window Damage 상태", "- Sealing Condition 확인"], "rawTask": "2-24 주재반 항공기 Cockpit Window 상태확인\n        - Window Damage 상태\n        - Sealing Condition 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 61, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-25", "title": "주재반 Cabin Compt' 상태확인", "sublines": ["- Lavatory floor Fitting Area Corrosion", "- Galley Mat 상태", "- Carpet 상태", "- Entry Door 및 Lavatory Door Handle", "Adjustment 상태", "- 각 Light 작동상태", "- Sidewall, Ceiling Panel, Stowage Bin", "외부상태", "- Seat 외부상태", "- Insulation Blanket 청결 및 손상여부", "- CIC 상태", "- Structure Cleaning 상태"], "rawTask": "2-25 주재반 Cabin Compt' 상태확인\n         - Lavatory floor Fitting Area Corrosion\n         - Galley Mat 상태\n         - Carpet 상태\n         - Entry Door 및 Lavatory Door Handle\n           Adjustment 상태\n         - 각 Light 작동상태\n         - Sidewall, Ceiling Panel, Stowage Bin \n           외부상태\n         - Seat 외부상태\n         - Insulation Blanket 청결 및 손상여부\n         - CIC 상태\n         - Structure Cleaning 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 62, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-26", "title": "주재반 E/E 및 FWD Access Compt", "sublines": ["내부상태확인"], "rawTask": "2-26 주재반 E/E 및 FWD Access Compt \n          내부상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 63, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-27", "title": "주재반 Cargo Compt' 상태확인", "sublines": ["- Floor Panel & Sidewall Lining 상태"], "rawTask": "2-27 주재반 Cargo Compt' 상태확인\n         - Floor Panel & Sidewall Lining 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 64, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-28", "title": "주재반 Cabin 내 Emergency Equip'", "sublines": ["Location 상태확인"], "rawTask": "2-28 주재반 Cabin 내 Emergency Equip' \n          Location 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 65, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-29", "title": "주재반 Ram Air Inlet Door의 Gap 또는", "sublines": ["Adjustment 상태확인"], "rawTask": "2-29 주재반 Ram Air Inlet Door의 Gap 또는\n         Adjustment 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 66, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-30", "title": "주재반 APU Compt' 상태확인", "sublines": [], "rawTask": "2-30 주재반 APU Compt' 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 67, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-31", "title": "주재반 Engine Fan & T/R Cowl 상태확인", "sublines": [], "rawTask": "2-31 주재반 Engine Fan & T/R Cowl 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 68, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-32", "title": "주재반 Engine 및 Inlet Cowl 상태확인", "sublines": ["- Blade Errosion, Damage & Spinner Cone", "- Inlet Cowl Fastner Loose 여부", "- Component Hyd' 및 Oil Leak Signal", "- Hyd' Pressure & Supply Line Chaffing", "- Engine STR 상태확인", "- CTAI Duct Louver Crack 상태확인", "- Abradable Shroud Area 상태확인"], "rawTask": "2-32 주재반 Engine 및 Inlet Cowl 상태확인\n        - Blade Errosion, Damage & Spinner Cone\n        - Inlet Cowl Fastner Loose 여부\n        - Component Hyd' 및 Oil Leak Signal\n        - Hyd' Pressure & Supply Line Chaffing\n        - Engine STR 상태확인\n        - CTAI Duct Louver Crack 상태확인\n        - Abradable Shroud Area 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 69, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-33", "title": "주재반 AFT Pressure BLKH Compt", "sublines": ["상태확인", "- Section 48 Access and Blowout Door"], "rawTask": "2-33 주재반 AFT Pressure BLKH Compt \n         상태확인\n        - Section 48 Access and Blowout Door", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 70, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-34", "title": "주재반 항공기 Exterior Placard 상태확인", "sublines": [], "rawTask": "2-34 주재반 항공기 Exterior Placard 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 71, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-35", "title": "주재반 Nose Radome 상태확인", "sublines": [], "rawTask": "2-35 주재반 Nose Radome 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 72, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-36", "title": "주재반 Static Discharger 상태확인", "sublines": [], "rawTask": "2-36 주재반 Static Discharger 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 73, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-37", "title": "주재반 Pitot & Static Port 상태확인", "sublines": [], "rawTask": "2-37 주재반 Pitot & Static Port 상태확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 74, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-38", "title": "주재반 Ram air 및 Air Con' Bay 내부상태", "sublines": ["확인", "- Heat Exchanger Crack 여부", "- Plenum Diffuser Soften 여부"], "rawTask": "2-38 주재반 Ram air 및 Air Con' Bay 내부상태\n         확인\n         - Heat Exchanger Crack 여부\n         - Plenum Diffuser Soften 여부", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 75, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-39", "title": "중정비 Inspection 수행 시 Cleaning 상태", "sublines": [], "rawTask": "2-39 중정비 Inspection 수행 시 Cleaning 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 76, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-40", "title": "FDR Data Download 및 분석 확인", "sublines": ["- FDR Data Download 장비", "- FDR 분석기관", "- FDR Report 접수일자 확인", "- FDR Data 및 Report CD 접수", "- FDR Data Serviceability 확인", "- FDR Report 접수 후 정비본부 전달"], "rawTask": "2-40 FDR Data Download 및 분석 확인\n        - FDR Data Download 장비\n        - FDR 분석기관\n        - FDR Report 접수일자 확인\n        - FDR Data 및 Report CD 접수\n        - FDR Data Serviceability 확인\n        - FDR Report 접수 후 정비본부 전달", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 77, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-41", "title": "MRO 사용 Fluid Type Check", "sublines": ["- Fuel, Oil, Hyd' & LDG Fluid Type 확인"], "rawTask": "2-41 MRO 사용 Fluid Type Check\n        - Fuel, Oil, Hyd' & LDG Fluid Type 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 78, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-42", "title": "주재반 LDG 상태확인", "sublines": ["- LDG 외부상태", "- LDG Inner Cylinder Crome Plate 상태", "- LDG Painting Peel Off", "- LDG Shock Strut Dimension 상태", "- LDG 각 Hyd' Line의 Chaffing 여부", "- Tire & Brake Disk 상태", "- LDG Door 상태"], "rawTask": "2-42 주재반 LDG 상태확인 \n        - LDG 외부상태\n        - LDG Inner Cylinder Crome Plate 상태\n        - LDG Painting Peel Off\n        - LDG Shock Strut Dimension 상태\n        - LDG 각 Hyd' Line의 Chaffing 여부\n        - Tire & Brake Disk 상태\n        - LDG Door 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 79, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-43", "title": "LDG 교환 시 수령점검 Check List 확인", "sublines": ["- 외부 Damage 확인", "- Missing Part 확인", "- LDG MRO 도착일자 확인", "- 사진촬영", "- LDG Shipping Box Damage 확인", "- LDG Original Certificate Doc' 확인"], "rawTask": "2-43 LDG 교환 시 수령점검 Check List 확인\n        - 외부 Damage 확인\n        - Missing Part 확인\n        - LDG MRO 도착일자 확인\n        - 사진촬영\n        - LDG Shipping Box Damage 확인\n        - LDG Original Certificate Doc' 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 80, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-44", "title": "항공기 Access Panel Open/Close 확인", "sublines": [], "rawTask": "2-44 항공기 Access Panel Open/Close 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 81, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-45", "title": "CPCP Item 수행상태 확인", "sublines": [], "rawTask": "2-45 CPCP Item 수행상태 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 82, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-46", "title": "CDCCLs & ALI Item 수행상태 확인", "sublines": [], "rawTask": "2-46 CDCCLs & ALI Item 수행상태 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 83, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-47", "title": "EZAP 및 EWIS Item 수행상태 확인", "sublines": [], "rawTask": "2-47 EZAP 및 EWIS Item 수행상태 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 84, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-48", "title": "장탈된 Access Panel 또는 Part 점검", "sublines": ["- 장탈된 Access Panel Damage 또는", "Paint Condition 확인", "- 장탈된 Access Panel Cleaning 확인", "- 장탈된 Access Panel의 Serviceable", "판단"], "rawTask": "2-48 장탈된 Access Panel 또는 Part 점검\n         - 장탈된 Access Panel Damage 또는\n            Paint Condition 확인\n         - 장탈된 Access Panel Cleaning 확인\n         - 장탈된 Access Panel의 Serviceable \n            판단", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 85, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-49", "title": "장탈된 Cargo Floor panel 및 Sidewall", "sublines": ["Lining 점검", "- 손상유무", "- 수리가능 여부", "- GILLINER 보유여부 및 Fabrication 여부", "- Cleaning 상태"], "rawTask": "2-49 장탈된 Cargo Floor panel 및 Sidewall \n          Lining 점검\n         - 손상유무\n         - 수리가능 여부\n         - GILLINER 보유여부 및 Fabrication 여부\n         - Cleaning 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 86, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-49", "title": "Flap Fairing 점검", "sublines": ["- Free play 상태점검", "- Hole damage 여부", "- Painting Condition", "- Composite damage 여부"], "rawTask": "2-49 Flap Fairing 점검\n         - Free play 상태점검\n         - Hole damage 여부\n         - Painting Condition\n         - Composite damage 여부", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 87, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-50", "title": "MLG 교환 시 Aft Bearing Lub’ Fitting", "sublines": ["오장착 확인", "- Refer to FTD 737NG-FTD-57-1009"], "rawTask": "2-50 MLG 교환 시 Aft Bearing Lub’ Fitting \n         오장착 확인\n         - Refer to FTD 737NG-FTD-57-1009", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 88, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-51", "title": "Fuel Tank 관련 작업시 안전절차 확인", "sublines": ["- MRO 방폭등 사용여부", "- MRO 방화복 착용여부", "- Purge 절차점검"], "rawTask": "2-51 Fuel Tank 관련 작업시 안전절차 확인\n         - MRO 방폭등 사용여부\n         - MRO 방화복 착용여부\n         - Purge 절차점검", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 89, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-52", "title": "A/C Jack-up 시 절차준수 확인", "sublines": ["- Hangar 내에서 Jack-up 요청", "- AMM Jack-up 절차준수 확인"], "rawTask": "2-52 A/C Jack-up 시 절차준수 확인\n         - Hangar 내에서 Jack-up 요청\n         - AMM Jack-up 절차준수 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 90, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-53", "title": "Cabin Floor Panel 상태확인", "sublines": ["- Cabin Floor Panel 장탈 후 내부 STR", "점검 시, Floor Panel 상태점검"], "rawTask": "2-53 Cabin Floor Panel 상태확인\n         - Cabin Floor Panel 장탈 후 내부 STR \n           점검 시, Floor Panel 상태점검", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 91, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-54", "title": "A/C Touch-up 또는 부분 Painting 시", "sublines": ["Paint Spec' 확인"], "rawTask": "2-54 A/C Touch-up 또는 부분 Painting 시\n          Paint Spec' 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 92, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-55", "title": "Fuel Access Door 장착 시 TQ 값", "sublines": ["준수확인"], "rawTask": "2-55 Fuel Access Door 장착 시 TQ 값 \n         준수확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 93, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-56", "title": "Fuel Access Door 장탈착 작업 시", "sublines": ["Gasket 및 Seal을 New Part로 교환", "(57-826-01-01, 57-180-01, 57-180-02-01)"], "rawTask": "2-56 Fuel Access Door 장탈착 작업 시\n         Gasket 및 Seal을 New Part로 교환\n         (57-826-01-01, 57-180-01, 57-180-02-01)", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 94, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-57", "title": "Wiring 작업 시, 관련 System Check", "sublines": [], "rawTask": "2-57 Wiring 작업 시, 관련 System Check", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 95, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-58", "title": "Winglet 작업 또는 Part 교환 시, STC 적용", "sublines": ["여부 확인", "- STC에 의거 장착한 Winglet 의 경우", "APB Winglet Data Manual 사용"], "rawTask": "2-58 Winglet 작업 또는 Part 교환 시, STC 적용\n         여부 확인\n         - STC에 의거 장착한 Winglet 의 경우 \n           APB Winglet Data Manual 사용", "lead": "생산계획팀", "related": "정비기술팀", "or": "○" }, { "id": 96, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-59", "title": "항공기 MPD 작업 공정 진행률 확인", "sublines": [], "rawTask": "2-59 항공기 MPD 작업 공정 진행률 확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 97, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-60", "title": "항공기 EO 작업 공정 진행률 확인", "sublines": [], "rawTask": "2-60 항공기 EO 작업 공정 진행률 확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 98, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-61", "title": "항공기 NRC 작업 공정 진행률 확인", "sublines": [], "rawTask": "2-61 항공기 NRC 작업 공정 진행률 확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 99, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-62", "title": "항공기 필요자재 신청 및 도착일자 확인", "sublines": [], "rawTask": "2-62 항공기 필요자재 신청 및 도착일자 확인", "lead": "정비팀\n정비기재팀", "related": "MRO", "or": "○" }, { "id": 100, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-63", "title": "주재반 Routine Card Insp' Item Double", "sublines": ["Check"], "rawTask": "2-63 주재반 Routine Card Insp' Item Double\n         Check", "lead": "정비팀", "related": "MRO", "or": "○" }, { "id": 101, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-64", "title": "Access Panel Close 전 주재반 최종확인", "sublines": ["- Cleaning 및 CIC 상태", "- Wire 상태", "- STR 및 Component 외부상태", "- Job Card Requirment 수행여부 상태"], "rawTask": "2-64 Access Panel Close 전 주재반 최종확인\n        - Cleaning 및 CIC 상태\n        - Wire 상태\n        - STR 및 Component 외부상태 \n        - Job Card Requirment 수행여부 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 102, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-65", "title": "주재반 Loose Equip' 상태확인", "sublines": ["- Loose Equip' List에 의거 전체 품목 탑재 여부 확인"], "rawTask": "2-65 주재반 Loose Equip' 상태확인\n       - Loose Equip' List에 의거 전체 품목 탑재 여부 확인", "lead": "생산계획팀\n정비팀 출장자", "related": "MRO", "or": "○" }, { "id": 103, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-66", "title": "TAT 영향 Routine Card 선수행 요청", "sublines": ["- Flight Control Surface Free Play Check", "(Limit Over 시 Test Flight 필요)", "- Insp' 후 Limit 초과 시 Boeing Contact", "요구되는 EO", "- No.1 and No.2 Tank booster Pump", "bonding strap attachment for corrosion"], "rawTask": "2-66 TAT 영향 Routine Card 선수행 요청\n        - Flight Control Surface Free Play Check\n          (Limit Over 시 Test Flight 필요)\n        - Insp' 후 Limit 초과 시 Boeing Contact \n          요구되는 EO\n        - No.1 and No.2 Tank booster Pump \n          bonding strap attachment for corrosion", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 104, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-67", "title": "제작사 Contact Item 확인 및 보고", "sublines": ["- 제작사 Contact 전 Ex-change 가능여부", "확인 및 비용비교", "- SR 발행의 적정성 확인", "- SR 발행 시 MRO에 JJA 참조처 전달", "(STR Engineer 및 주재반)", "- SR 발행 시 Repair Insturction 접수일자", "- SR 발행정보 정비본부 공유/보고"], "rawTask": "2-67 제작사 Contact Item 확인 및 보고\n         - 제작사 Contact 전 Ex-change 가능여부\n           확인 및 비용비교\n         - SR 발행의 적정성 확인\n         - SR 발행 시 MRO에 JJA 참조처 전달\n           (STR Engineer 및 주재반)\n         - SR 발행 시 Repair Insturction 접수일자\n         - SR 발행정보 정비본부 공유/보고", "lead": "생산계획팀", "related": "MRO\n정비기술팀", "or": "○" }, { "id": 105, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-68", "title": "Catergory Repair B 이상 Item 보고", "sublines": ["- Cat B 이상 Repair는 향후 반복점검", "요구되므로 보고 후 D&B Chart에 반영"], "rawTask": "2-68 Catergory Repair B 이상 Item 보고\n         - Cat B 이상 Repair는 향후 반복점검 \n           요구되므로 보고 후 D&B Chart에 반영", "lead": "생산계획팀", "related": "MRO\n정비품질팀\n정비기술팀", "or": "○" }, { "id": 106, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-69", "title": "Corrosion Level 2 이상 Item 보고", "sublines": ["- MRO Engineer 및 QA 필히 함께 확인후", "Corrosion Level 결정 및 Email 접수", "- Corrosion 발생 후 60일 이내에 국토부", "보고사항"], "rawTask": "2-69 Corrosion Level 2 이상 Item 보고\n        - MRO Engineer 및 QA 필히 함께 확인후\n          Corrosion Level 결정 및 Email 접수\n        - Corrosion 발생 후 60일 이내에 국토부 \n          보고사항", "lead": "생산계획팀", "related": "MRO\n정비품질팀\n정비기술팀", "or": "○" }, { "id": 107, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-70", "title": "NDB Data Upload 위한 장비확인", "sublines": ["- 항공기 ADL or PDL Type 확인", "- 항공기 PDL Type 시 PDL 장비보유확인"], "rawTask": "2-70 NDB Data Upload 위한 장비확인\n        - 항공기 ADL or PDL Type 확인\n        - 항공기 PDL Type 시 PDL 장비보유확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 108, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-71", "title": "SAP Open & Close 처리조치", "sublines": ["- Rotable Part 교환 시, SAP NRC Open 및", "교환처리", "- Rotable Part 교환 시, 장탈된 Part의", "Unserviceable 반납처리", "- Work Order Close 처리", "- 신품목 개설 및 SAP 자재신청"], "rawTask": "2-71 SAP Open & Close 처리조치\n        - Rotable Part 교환 시, SAP NRC Open 및 \n          교환처리\n        - Rotable Part 교환 시, 장탈된 Part의\n          Unserviceable 반납처리 \n        - Work Order Close 처리\n        - 신품목 개설 및 SAP 자재신청", "lead": "정비팀", "related": "", "or": "○" }, { "id": 109, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-72", "title": "중정비 진행사항 Daily Report 작성/송부", "sublines": [], "rawTask": "2-72 중정비 진행사항 Daily Report 작성/송부", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 110, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-73", "title": "NRC Cancel 시 근거자료 확보", "sublines": ["- 근거자료 확보 후 NRC Cancel"], "rawTask": "2-73 NRC Cancel 시 근거자료 확보\n        - 근거자료 확보 후 NRC Cancel", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 111, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-74", "title": "Routine Card Cancel 시 근거자료 확보", "sublines": [], "rawTask": "2-74 Routine Card Cancel 시 근거자료 확보", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 112, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-75", "title": "Routine Card Document 검토", "sublines": ["- Warning, Caution & Note 란에 Stamp", "확인", "-  Mech' & Insp' Stamp 확인", "-  Value 값 Record 여부확인", "-  Figure에 Stamp 필요여부 확인", "-  요구 시 NDT Report 확인", "-  Part 교환 시, Pick Slip 또는 Certificate", "첨부확인", "-  작업 수행 Option 중 수행한 Option의", "Stamp 및 기록확인", "-  Reg No, 수행 Date 및 Time & Cyc 확인"], "rawTask": "2-75 Routine Card Document 검토\n         - Warning, Caution & Note 란에 Stamp \n           확인\n        -  Mech' & Insp' Stamp 확인\n        -  Value 값 Record 여부확인\n        -  Figure에 Stamp 필요여부 확인\n        -  요구 시 NDT Report 확인\n        -  Part 교환 시, Pick Slip 또는 Certificate \n           첨부확인\n        -  작업 수행 Option 중 수행한 Option의 \n           Stamp 및 기록확인\n        -  Reg No, 수행 Date 및 Time & Cyc 확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 113, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-76", "title": "System NRC Document 검토", "sublines": ["- 연계 MPD Number 여부확인", "- 결함내용 적정성 여부확인", "(Location, Dimension, Manual Limit, 발견", "과정, OP CHK & ETC)", "- Corrective Action의 적정성 여부확인", "(Manual Ref, OP CHK, 필요시 T/S 과정)", "- 필요시 NDT Report 첨부", "- 소요 자재기록 및 Certificate 첨부", "- M/H, 작업 Mech 정보 & Stamp 확인", "- 필요시 사진첨부", "- 작업관련 Reference 첨부"], "rawTask": "2-76 System NRC Document 검토\n        - 연계 MPD Number 여부확인\n        - 결함내용 적정성 여부확인\n          (Location, Dimension, Manual Limit, 발견\n           과정, OP CHK & ETC)\n        - Corrective Action의 적정성 여부확인\n          (Manual Ref, OP CHK, 필요시 T/S 과정)\n        - 필요시 NDT Report 첨부\n        - 소요 자재기록 및 Certificate 첨부\n        - M/H, 작업 Mech 정보 & Stamp 확인\n        - 필요시 사진첨부\n        - 작업관련 Reference 첨부", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 114, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-77", "title": "Structure NRC Document 검토", "sublines": ["- JJA STR NRC 기록 및 사용확인", "- 연계 MPD Number 여부확인", "- Detail Damage Definition 판단확인", "- Detail Damaged Location 확인", "- Detail Damaged Size & Dimension 확인", "- Allowable Limit 여부확인", "- Damage 제거 또는 Blending Out 후 Size", "기록확인", "- SRM Reference & Limitation 확인", "- Corrective Action의 적정성 여부확인", "- NDT 수행여부 확인", "- 필요시 NDT Report 첨부", "- 소요 자재기록 및 Certificate 첨부", "- 필요시 사진첨부", "- 작업관련 SRM Reference 첨부", "- Corrosion Level 기록여부 확인", "- Repair Category 기록여부 확인", "- 반복점검 여부 및 기록여부 확인", "- RDR 또는 FAA 8100-9 Form 첨부확인", "- 해당 결함의 올바른 SRM 적용유무 확인", "- 필요시 Test Flight 여부확인", "- 필요시 DWG 첨부", "- M/H, 작업 Mech 정보 & Stamp 확인", "- Permanent Repair 여부확인"], "rawTask": "2-77 Structure NRC Document 검토\n        - JJA STR NRC 기록 및 사용확인\n        - 연계 MPD Number 여부확인\n        - Detail Damage Definition 판단확인\n        - Detail Damaged Location 확인\n        - Detail Damaged Size & Dimension 확인\n        - Allowable Limit 여부확인\n        - Damage 제거 또는 Blending Out 후 Size \n          기록확인\n        - SRM Reference & Limitation 확인\n        - Corrective Action의 적정성 여부확인\n        - NDT 수행여부 확인\n        - 필요시 NDT Report 첨부\n        - 소요 자재기록 및 Certificate 첨부\n        - 필요시 사진첨부\n        - 작업관련 SRM Reference 첨부\n        - Corrosion Level 기록여부 확인\n        - Repair Category 기록여부 확인\n        - 반복점검 여부 및 기록여부 확인\n        - RDR 또는 FAA 8100-9 Form 첨부확인\n        - 해당 결함의 올바른 SRM 적용유무 확인\n        - 필요시 Test Flight 여부확인\n        - 필요시 DWG 첨부\n        - M/H, 작업 Mech 정보 & Stamp 확인\n        - Permanent Repair 여부확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 115, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-78", "title": "STR NRC List 요청 및 접수", "sublines": [], "rawTask": "2-78 STR NRC List 요청 및 접수", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 116, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-79", "title": "JJA Tally Sheet 및 Work Order 기록 및", "sublines": ["Stamping 확인"], "rawTask": "2-79 JJA Tally Sheet 및 Work Order 기록 및 \n         Stamping 확인", "lead": "정비팀\n생산계획팀", "related": "MRO", "or": "○" }, { "id": 117, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-80", "title": "FLT & MAINT' Logbook 확인", "sublines": ["- AD/SB/EO Logging 확인", "- Work Order Logging 확인", "- Heavy Defect 또는 Critical Defect NRC", "- Defer Clear", "- PILOT Defect Clear", "- Major Component 교환 Logging 확인", "- C-CHK Due Open/Close 확인", "- PRPO 확인", "- C-CHK로 인한 PART 교환 기록 불필요", "(PART CHANGE LIST로 대체)"], "rawTask": "2-80 FLT & MAINT' Logbook 확인\n        - AD/SB/EO Logging 확인\n        - Work Order Logging 확인\n        - Heavy Defect 또는 Critical Defect NRC\n        - Defer Clear\n        - PILOT Defect Clear\n        - Major Component 교환 Logging 확인\n        - C-CHK Due Open/Close 확인\n        - PRPO 확인\n        - C-CHK로 인한 PART 교환 기록 불필요\n          (PART CHANGE LIST로 대체)", "lead": "정비팀\n생산계획팀", "related": "MRO", "or": "○" }, { "id": 118, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-81", "title": "A/C Elect PWR ON 이후 System 결함확인", "sublines": ["- W/P에서 중정비 중 Access Open 또는", "작업수행한 System 관리/확인", "- Final System OP Check 결함확인"], "rawTask": "2-81 A/C Elect PWR ON 이후 System 결함확인\n        - W/P에서 중정비 중 Access Open 또는\n          작업수행한 System 관리/확인\n        - Final System OP Check 결함확인", "lead": "정비팀\n생산계획팀", "related": "MRO", "or": "○" }, { "id": 119, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-82", "title": "A/C Hyd' PWR ON 이후 System Leakage", "sublines": ["확인", "- Component 자제결함인지 연결부위의", "Minor Part인 Seal, Swivel 또는 Fitting", "결함인지 확인"], "rawTask": "2-82 A/C Hyd' PWR ON 이후 System Leakage\n         확인\n        - Component 자제결함인지 연결부위의\n           Minor Part인 Seal, Swivel 또는 Fitting \n           결함인지 확인", "lead": "정비팀\n생산계획팀", "related": "MRO", "or": "○" }, { "id": 120, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-83", "title": "A/C Weigh & Balance 일정 및 수행확인", "sublines": [], "rawTask": "2-83 A/C Weigh & Balance 일정 및 수행확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 121, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-84", "title": "Refueling 연료량 및 일정확인", "sublines": ["- 구매팀과 계약된 연료공급회사 확인"], "rawTask": "2-84 Refueling 연료량 및 일정확인\n         - 구매팀과 계약된 연료공급회사 확인", "lead": "생산계획팀", "related": "구매팀", "or": "○" }, { "id": 122, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-85", "title": "A/C LDG SWING CHK 일정 및 수행확인", "sublines": ["- Hyd' Leak 확인(LDG Body, Downlock", "Act', Retraction Act', Uplock Act' 등", "관련 Component)", "- Time Limit", "- LDG Door to Fuselage Gap Check", "- LDG Door Align", "- Hyd' Cart의 Fluid Type 호환성 확인"], "rawTask": "2-85 A/C LDG SWING CHK 일정 및 수행확인\n         - Hyd' Leak 확인(LDG Body, Downlock\n           Act', Retraction Act', Uplock Act' 등 \n           관련 Component)\n         - Time Limit\n         - LDG Door to Fuselage Gap Check\n         - LDG Door Align\n         - Hyd' Cart의 Fluid Type 호환성 확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 123, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-86", "title": "LDG 교환 시 ANTI-SKID TEST 확인", "sublines": ["- 주재반 입회 하에 Test 수행", "- ANTI-SKID TEST에 대한 Email 사전공지", "- 주재반 Test 수행절차 숙지"], "rawTask": "2-86 LDG 교환 시 ANTI-SKID TEST 확인\n        - 주재반 입회 하에 Test 수행\n        - ANTI-SKID TEST에 대한 Email 사전공지\n        - 주재반 Test 수행절차 숙지", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 124, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-87", "title": "Final Engine Run-up 일정 및 수행확인", "sublines": [], "rawTask": "2-87 Final Engine Run-up 일정 및 수행확인", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 125, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-88", "title": "Test Flight 일정 및 요건확인", "sublines": ["- TF 필요여부/사유 확인", "- TF 공역확인", "- TF 가능 일자 및 시간 확인", "- TF Requirement 및 Work Sheet 확인", "- 조종사 Arrange 확인", "- 조종사에게 TF Requirment 전달", "- TF Slot 확보 확인", "- TF 탑승자 확인", "- TF FLT PLAN 및 연료량 확인", "- TF 후 Logbook 기록확인", "- TF 전 PRPO 수행확인"], "rawTask": "2-88 Test Flight 일정 및 요건확인\n        - TF 필요여부/사유 확인\n        - TF 공역확인\n        - TF 가능 일자 및 시간 확인\n        - TF Requirement 및 Work Sheet 확인\n        - 조종사 Arrange 확인\n        - 조종사에게 TF Requirment 전달\n        - TF Slot 확보 확인\n        - TF 탑승자 확인\n        - TF FLT PLAN 및 연료량 확인\n        - TF 후 Logbook 기록확인\n        - TF 전 PRPO 수행확인", "lead": "생산계획팀", "related": "MRO\n통제센터팀\n운항기술팀", "or": "○" }, { "id": 126, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-89", "title": "Cabin Pressure Check 일정확인", "sublines": [], "rawTask": "2-89 Cabin Pressure Check 일정확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 127, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-90", "title": "MRO에서 요청하는 구매필요자재", "sublines": ["Double Check", "- P/N Recheck 후 자재구매 MRO Confirm", "- 확실한 T/S 후 필요자재 확인", "- Part 호환성 확인", "- NHA 또는 Sub-part 교환가능여부 확인", "- 당사재고확인"], "rawTask": "2-90 MRO에서 요청하는 구매필요자재 \n         Double Check\n        - P/N Recheck 후 자재구매 MRO Confirm\n        - 확실한 T/S 후 필요자재 확인\n        - Part 호환성 확인\n        - NHA 또는 Sub-part 교환가능여부 확인\n        - 당사재고확인", "lead": "정비기재팀", "related": "", "or": "○" }, { "id": 128, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-91", "title": "필요파트의 조달일자가 공정에 영향을", "sublines": ["줄 경우 통제팀장 보고/승인 후 AOG 발주"], "rawTask": "2-91 필요파트의 조달일자가 공정에 영향을 \n         줄 경우 통제팀장 보고/승인 후 AOG 발주", "lead": "생산계획팀", "related": "MRO\n정비기재팀", "or": "○" }, { "id": 129, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-92", "title": "Final Document Check", "sublines": ["- Routine Cards", "- System & STR NRC", "- FDR Report", "- Tally Sheet", "- Weight & Balance Report", "- FLT & Maint' Log Book"], "rawTask": "2-92 Final Document Check\n        - Routine Cards\n        - System & STR NRC\n        - FDR Report\n        - Tally Sheet\n        - Weight & Balance Report\n        - FLT & Maint' Log Book", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 130, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-93", "title": "Final Cabin Comp't Check", "sublines": ["- 객실 Light Check", "- Emergency Light Check", "- Entry & Service Door Rigging Check", "- 비상벨 OP' Check", "- Toilet Flushing Check", "- Emergency & Loose Equip' Check", "- PA System OP' Check", "- Galley, Lavatory or Moon Mat Sealing 상태"], "rawTask": "2-93 Final Cabin Comp't Check\n        - 객실 Light Check\n        - Emergency Light Check\n        - Entry & Service Door Rigging Check\n        - 비상벨 OP' Check\n        - Toilet Flushing Check\n        - Emergency & Loose Equip' Check\n        - PA System OP' Check\n        - Galley, Lavatory or Moon Mat Sealing 상태", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 131, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-94", "title": "Final Engine Run-up Check", "sublines": ["- Oil & Fuel Leaking", "- Pnuematic Leaking", "- Engine Parameter Check", "(Pressure, Temp, N1, N2 & Etc)"], "rawTask": "2-94 Final Engine Run-up Check\n        - Oil & Fuel Leaking\n        - Pnuematic Leaking\n        - Engine Parameter Check \n          (Pressure, Temp, N1, N2 & Etc)", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 132, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-95", "title": "Final Hyd' System Check", "sublines": [], "rawTask": "2-95 Final Hyd' System Check", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 133, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-96", "title": "Final A/C System OP Check & 잔류 부품", "sublines": ["(공용FAK Bin, Emer Equip', 각종 장탈 Parts", "/Panel류)  및 Cabin Insert류(장탈 Minor Parts &", "Convenience items, Waste Bin, Meal Carts..etc)", "Re-store 확인.", "* 해당 항공기 주기되었던 모든 H/G Area 먼저", "확인 필요."], "rawTask": "2-96 Final A/C System OP Check & 잔류 부품 \n        (공용FAK Bin, Emer Equip', 각종 장탈 Parts\n         /Panel류)  및 Cabin Insert류(장탈 Minor Parts &\n        Convenience items, Waste Bin, Meal Carts..etc)\n        Re-store 확인.\n        * 해당 항공기 주기되었던 모든 H/G Area 먼저 \n           확인 필요.", "lead": "생산계획팀\n정비팀", "related": "MRO", "or": "○" }, { "id": 134, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-97", "title": "Weight & Balance Report 접수 후", "sublines": ["운항기술팀, 정비품질팀 전달"], "rawTask": "2-97 Weight & Balance Report 접수 후 \n         운항기술팀, 정비품질팀 전달", "lead": "생산계획팀", "related": "운항기술팀", "or": "○" }, { "id": 135, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-98", "title": "NDB Data Upload Diskket 및 W/O 확인", "sublines": [], "rawTask": "2-98 NDB Data Upload Diskket 및 W/O 확인", "lead": "생산계획팀", "related": "정비운영팀", "or": "○" }, { "id": 136, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-99", "title": "복귀 Ferry FLT 조종사 Arrange 요청", "sublines": [], "rawTask": "2-99 복귀 Ferry FLT 조종사 Arrange 요청", "lead": "생산계획팀", "related": "운항승무팀", "or": "○" }, { "id": 137, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-100", "title": "복귀 Ferry FLT 진행절차 확인", "sublines": ["- Ferry FLT Plan 및 연료량 접수", "- 조종사 Arrange 확인", "- Ferry FLT 도착공항 확인", "- 세관신고질정 확인", "- 보안물품 상기요청", "- Ferry FLT 출발시간 및 도착시간 확인", "- Ferry FLT GD 등록 Arrange"], "rawTask": "2-100 복귀 Ferry FLT 진행절차 확인\n        - Ferry FLT Plan 및 연료량 접수\n        - 조종사 Arrange 확인\n        - Ferry FLT 도착공항 확인\n        - 세관신고질정 확인\n        - 보안물품 상기요청\n        - Ferry FLT 출발시간 및 도착시간 확인\n        - Ferry FLT GD 등록 Arrange", "lead": "생산계획팀", "related": "운항기술팀\n통제센터팀\n정비기재팀\n정비운영팀\n운항승무팀", "or": "○" }, { "id": 138, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-101", "title": "PRPO Sheet MRO 전달 및 수행확인", "sublines": [], "rawTask": "2-101 PRPO Sheet MRO 전달 및 수행확인", "lead": "정비팀", "related": "MRO", "or": "○" }, { "id": 139, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-102", "title": "Ferry FLT Refueling 확인 및 Receipt", "sublines": [], "rawTask": "2-102 Ferry FLT Refueling 확인 및 Receipt", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 140, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-103", "title": "Crew Meal Arrange", "sublines": [], "rawTask": "2-103 Crew Meal Arrange", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 141, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-104", "title": "중정비 주요내용 조종사 신송", "sublines": ["- Defer Item", "- 중정비 입고 시 Pilot Report 조치사항", "- 결함 Monitoring 사항"], "rawTask": "2-104 중정비 주요내용 조종사 신송\n          - Defer Item\n          - 중정비 입고 시 Pilot Report 조치사항\n          - 결함 Monitoring 사항", "lead": "정비팀", "related": "MRO", "or": "○" }, { "id": 142, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-105", "title": "중정비 종료 후 Ferry FLT 전 주요 DOC'", "sublines": ["MRO 수령", "- MOLIT/FAA/EASA CRS 접수", "- AD/SB Completion List", "- Component Change List"], "rawTask": "2-105 중정비 종료 후 Ferry FLT 전 주요 DOC'\n           MRO 수령\n          - MOLIT/FAA/EASA CRS 접수\n          - AD/SB Completion List\n          - Component Change List", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 143, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-106", "title": "Ferry FLT 전 Final CB Close 확인", "sublines": [], "rawTask": "2-106 Ferry FLT 전 Final CB Close 확인", "lead": "정비팀", "related": "", "or": "○" }, { "id": 144, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-107", "title": "Ferry FLT 국내복귀 전 정비본부 주요", "sublines": ["Doc Email 전달", "- CRS", "- AD/SB List", "- Component Change List"], "rawTask": "2-107 Ferry FLT 국내복귀 전 정비본부 주요 \n            Doc Email 전달\n         - CRS\n         - AD/SB List\n         - Component Change List", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 145, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-108", "title": "Final NRC List 접수", "sublines": [], "rawTask": "2-108 Final NRC List 접수", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 146, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-109", "title": "Final STR NRC List 접수", "sublines": [], "rawTask": "2-109 Final STR NRC List 접수", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 147, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-110", "title": "Chargeable M/H 협의", "sublines": [], "rawTask": "2-110 Chargeable M/H 협의", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 148, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-111", "title": "소요자재 List 접수 및 검토/확인", "sublines": [], "rawTask": "2-111 소요자재 List 접수 및 검토/확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 149, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-112", "title": "Ferry FLT 국내복귀 전 신송사항 전달", "sublines": ["- Customer Follow-up List", "- Open NRC 현황", "- Routine Work Cancel 현황 및 사유", "- 반복점검 항목", "- Defer Item 현황"], "rawTask": "2-112 Ferry FLT 국내복귀 전 신송사항 전달\n         - Customer Follow-up List\n         - Open NRC 현황\n         - Routine Work Cancel 현황 및 사유\n         - 반복점검 항목\n         - Defer Item 현황", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 150, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-113", "title": "MR 연계 Item 공식 Letter 및 자료요청", "sublines": ["- MRO와 MR 자료 사전협의 및 합의"], "rawTask": "2-113 MR 연계 Item 공식 Letter 및 자료요청\n         - MRO와 MR 자료 사전협의 및 합의", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 151, "catId": "cat2", "catShort": "2.수행중", "category": "2. 중정비 입고 및 수행 중 Check Item", "code": "2-114", "title": "MR 연계 소요자재 검토/확인", "sublines": [], "rawTask": "2-114 MR 연계 소요자재 검토/확인", "lead": "생산계획팀", "related": "MRO", "or": "○" }, { "id": 152, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-1", "title": "중정비 Data SAP 입력", "sublines": ["- NRC List 양식에 맞춰 입력(T CODE : ZUPNO)", "- Work Order Close"], "rawTask": "3-1 중정비 Data SAP 입력\n       - NRC List 양식에 맞춰 입력(T CODE : ZUPNO)\n       - Work Order Close", "lead": "생산계획팀\n정비팀", "related": "", "or": "○" }, { "id": 153, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-2", "title": "MR Claim 자료 MRO 접수 및 정비기획 전달", "sublines": [], "rawTask": "3-2 MR Claim 자료 MRO 접수 및 정비기획 전달", "lead": "생산계획팀", "related": "정비지원팀", "or": "○" }, { "id": 154, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-3", "title": "Open NRC Close (15일 이내)", "sublines": ["- 신품목 및 자재신청", "- Order 발행 및 작업완료"], "rawTask": "3-3 Open NRC Close (15일 이내)\n       - 신품목 및 자재신청\n       - Order 발행 및 작업완료", "lead": "정비팀", "related": "", "or": "○" }, { "id": 155, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-4", "title": "항공기 결함 및 신뢰성 Monitoring (14일)", "sublines": [], "rawTask": "3-4 항공기 결함 및 신뢰성 Monitoring (14일)", "lead": "정비품질팀", "related": "정비운영팀", "or": "○" }, { "id": 156, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-5", "title": "M/H 적성성 최종확인 및 승인", "sublines": [], "rawTask": "3-5 M/H 적성성 최종확인 및 승인", "lead": "생산계획팀", "related": "", "or": "○" }, { "id": 157, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-6", "title": "소요자재비용 최종확인 및 승인", "sublines": [], "rawTask": "3-6 소요자재비용 최종확인 및 승인", "lead": "정비기재팀", "related": "", "or": "○" }, { "id": 158, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-7", "title": "Record 접수 및 검토", "sublines": ["- C-CHK Workpackage Doc 접수/검토", "- Document, CD, CRS 등 확인", "- 최종 확인 후 정비품질팀으로 배송", "- 주소 : JEJU AIR,  1F AIR SIDE #336,", "AIR SUPPORT CENTER", "70 HANEUL-GIL, GANGSEO-GU", "SEOUL, KOREA 07505", "NOTIFY PARTY: JANG, GYUNG TAEK", "MAIL : gtjang@jejuair.net", "TEL : (82)70-7420-1460", "CELL : (82)10-8643-8103"], "rawTask": "3-7 Record 접수 및 검토\n       - C-CHK Workpackage Doc 접수/검토\n       - Document, CD, CRS 등 확인\n       - 최종 확인 후 정비품질팀으로 배송\n       - 주소 : JEJU AIR,  1F AIR SIDE #336,\n                    AIR SUPPORT CENTER\n                    70 HANEUL-GIL, GANGSEO-GU \n                    SEOUL, KOREA 07505 \n                    NOTIFY PARTY: JANG, GYUNG TAEK\n                    MAIL : gtjang@jejuair.net\n                    TEL : (82)70-7420-1460 \n                    CELL : (82)10-8643-8103", "lead": "생산계획팀", "related": "정비품질팀", "or": "○" }, { "id": 159, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-8", "title": "Record 보관", "sublines": [], "rawTask": "3-8 Record 보관", "lead": "정비품질팀", "related": "", "or": "○" }, { "id": 160, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-9", "title": "중정비 수행주요내용 및 비용보고", "sublines": ["- 구매팀 협조문 접수 후 보고"], "rawTask": "3-9 중정비 수행주요내용 및 비용보고\n      - 구매팀 협조문 접수 후 보고", "lead": "생산계획팀", "related": "구매팀", "or": "○" }, { "id": 161, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-10", "title": "중정비 디브리핑 참석 후 종결", "sublines": ["- 구매팀 요청에 따라 유관부서 담당자들과", "개선사항 회의 및 주요내용 디브리핑"], "rawTask": "3-10 중정비 디브리핑 참석 후 종결\n      - 구매팀 요청에 따라 유관부서 담당자들과\n         개선사항 회의 및 주요내용 디브리핑", "lead": "생산계획팀", "related": "정비지원팀\n구매팀", "or": "○" }, { "id": 162, "catId": "cat3", "catShort": "3.완료후", "category": "3. 중정비 완료 후 Follow-up Item", "code": "3-11", "title": "중정비 이력관리 리스트에 정보입력", "sublines": [], "rawTask": "3-11 중정비 이력관리 리스트에 정보입력", "lead": "생산계획팀", "related": "", "or": "○" }];
 
     const chkStorageKey = 'JEJU_HM_CHECKLIST_DATA_V1';
     let checklistStorage = {};
@@ -1907,8 +2022,10 @@
       tails.forEach(tail => {
         const opt = document.createElement('option');
         opt.value = tail;
-        const info = DEFAULT_AIRCRAFT_STATUS[tail];
-        opt.textContent = `${tail} (${info.type}, 기령 ${info.age}년)`;
+        const mfgDate = DEFAULT_AIRCRAFT_STATUS[tail];
+        const age = calculateYearsFrom(mfgDate);
+        const ageStr = age !== null ? `${age.toFixed(1)}년` : '-';
+        opt.textContent = `${tail} (기령 ${ageStr}, 제조 ${mfgDate})`;
         chkAircraftSelect.appendChild(opt);
       });
 
@@ -1951,7 +2068,7 @@
     function renderChecklist() {
       const currentTail = chkAircraftSelect.value;
       const tailData = getTailData(currentTail);
-      
+
       // Update Inputs
       chkMroInput.value = tailData.mro || '';
       chkDateInput.value = tailData.inputDate || '';
@@ -2034,11 +2151,11 @@
         }
 
         // Departments formatted
-        const leadBadges = item.lead.split('\n').filter(Boolean).map(l => 
+        const leadBadges = item.lead.split('\n').filter(Boolean).map(l =>
           `<span class="inline-block px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold text-[10px]">${escapeHtml(l)}</span>`
         ).join(' ');
 
-        const relBadges = item.related ? item.related.split('\n').filter(Boolean).map(r => 
+        const relBadges = item.related ? item.related.split('\n').filter(Boolean).map(r =>
           `<span class="inline-block px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px]">${escapeHtml(r)}</span>`
         ).join(' ') : '';
 
@@ -2085,7 +2202,7 @@
       // Update Progress UI
       const totalCount = HM_CHECKLIST_TEMPLATE.length; // 162
       const overallPercent = ((totalCompleted / totalCount) * 100).toFixed(1);
-      
+
       chkOverallPercentBadge.textContent = `${overallPercent}%`;
       chkOverallCompletedText.textContent = totalCompleted;
       chkOverallProgressBar.style.width = `${overallPercent}%`;
@@ -2110,7 +2227,13 @@
       chkCat3ProgressBar.style.width = `${cat3Percent}%`;
 
       // Update Print Header Details
-      const tailLabel = currentTail === 'DEFAULT' ? '공통 / 표준 체크리스트' : `${currentTail} (${DEFAULT_AIRCRAFT_STATUS[currentTail]?.type || 'B737-800'})`;
+      let tailLabel = '공통 / 표준 체크리스트';
+      if (currentTail !== 'DEFAULT') {
+        const mfg = DEFAULT_AIRCRAFT_STATUS[currentTail];
+        const age = calculateYearsFrom(mfg);
+        const ageStr = age !== null ? `${age.toFixed(1)}년` : '-';
+        tailLabel = `${currentTail} (B737-800, 기령 ${ageStr})`;
+      }
       document.getElementById('printTailNumber').textContent = tailLabel;
       const mroText = (tailData.mro ? tailData.mro + ' / ' : '') + (tailData.inputDate || '미정');
       document.getElementById('printMroSchedule').textContent = mroText;
@@ -2139,7 +2262,7 @@
         const id = target.dataset.id;
         const isChecked = target.checked;
         if (!tailData.items[id]) tailData.items[id] = { checked: false, checkedAt: '', notes: '' };
-        
+
         tailData.items[id].checked = isChecked;
         tailData.items[id].checkedAt = isChecked ? getFormattedTimestamp() : '';
         saveChecklistStorage();
@@ -2202,7 +2325,7 @@
     // Filters & Search
     chkStatusFilter.addEventListener('change', renderChecklist);
     chkDeptFilter.addEventListener('change', renderChecklist);
-    
+
     chkSearchInput.addEventListener('input', () => {
       if (chkSearchInput.value.trim()) {
         chkSearchClear.classList.remove('hidden');
@@ -2329,4 +2452,5 @@
 
   </script>
 </body>
+
 </html>
