@@ -323,7 +323,7 @@
           <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <p class="font-bold text-gray-800">5) Wing Task (지정 Wing 카드 목록)</p>
             <p class="text-gray-600 mt-0.5">• 대상: 57-020-00-01, 57-170, 57-822, 57-892, 57-180, 57-826, 57-896, 57-190, 57-830, 57-900 계열</p>
-            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +40 M/H (Seal/Gasket 및 Torque 공수 보완, 최대 1회 적용)</p>
+            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +40 M/H (보잉 Standard 공수(0.7 ~ 8.5 M/H) 외 Seal/Gasket 및 Torque 공수 보완, 최대 1회 적용)</p>
           </div>
 
           <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
@@ -1036,7 +1036,7 @@
             tag: 'Wing Task',
             title: `해당 Wing Task Card 총 ${foundWingCodes.length}건 포함 확인`,
             weight: '+40 M/H',
-            reason: 'BOEING STANDARD 공수(예: 6.0 M/H)만으로는 Seal/Gasket 점검·교환 및 Manual Torque 준수 작업까지 반영하기 어려워 보정치로 보완함',
+            reason: 'BOEING STANDARD 공수(0.7 ~ 8.5 M/H)만으로는 Seal/Gasket 점검·교환 및 Manual Torque 준수 작업까지 반영하기 어려워 보정치로 보완함',
             note: '목록 중 여러 개가 발견되어도 최대 40 M/H만 적용됨',
             isNa: false,
             taskItems: wingItems

@@ -92,7 +92,7 @@ WEIGHT_GUIDE_TEXT = """
   - 57-190-02-01
   - 57-900-02-01
 - 적용: +40 M/H (여러 개가 발견되어도 최대 40 M/H 1회만 적용)
-- 적용 사유: 일부 Wing Task는 BOEING STANDARD 공수(예: 6.0 M/H)만으로는 Seal/Gasket 점검·교환 및 Manual Torque 준수 작업까지 반영하기 어려워 보정치로 보완합니다.
+- 적용 사유: 일부 Wing Task는 BOEING STANDARD 공수(0.7 ~ 8.5 M/H)만으로는 Seal/Gasket 점검·교환 및 Manual Torque 준수 작업까지 반영하기 어려워 보정치로 보완합니다.
 
 6) 보정 작업 항목(개별 코드)
 - 조건: MPD 시트 C열에 "27-108-00-01" 포함 → +50 M/H
