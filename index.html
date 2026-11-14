@@ -89,23 +89,24 @@
           </p>
         </div>
 
-        <!-- WP File Dropzone -->
-        <div class="space-y-1.5">
-          <label class="block text-sm font-semibold text-gray-700">
-            1. Work Package 파일 <span class="text-brand-orange">*</span>
+        <!-- WP File Dropzone (Primary Hero) -->
+        <div class="space-y-2">
+          <label class="block text-sm font-bold text-gray-800 flex items-center justify-between">
+            <span>Work Package 파일 업로드 <span class="text-brand-orange">*</span></span>
+            <span class="text-xs font-normal text-gray-400">Final Workpackage 엑셀 파일(.xlsx, .xls)</span>
           </label>
-          <div id="wpDropzone" class="relative border-2 border-dashed border-gray-300 hover:border-brand-orange rounded-xl p-5 text-center transition-colors cursor-pointer bg-gray-50/50 hover:bg-orange-50/30 group">
+          <div id="wpDropzone" class="relative border-2 border-dashed border-orange-300 hover:border-brand-orange rounded-xl p-6 text-center transition-all cursor-pointer bg-orange-50/20 hover:bg-orange-50/50 group shadow-sm">
             <input type="file" id="wpFileInput" accept=".xlsx, .xls" class="hidden">
-            <div id="wpEmptyState" class="flex flex-col items-center justify-center space-y-2 pointer-events-none">
-              <div class="w-10 h-10 rounded-full bg-orange-100 text-brand-orange flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+            <div id="wpEmptyState" class="flex flex-col items-center justify-center space-y-2.5 pointer-events-none">
+              <div class="w-12 h-12 rounded-full bg-orange-100 text-brand-orange flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-inner">
                 📄
               </div>
               <div>
-                <p class="text-sm font-medium text-gray-700">클릭하거나 파일을 여기로 드래그 앤 드롭</p>
-                <p class="text-xs text-gray-400">지원 형식: .xlsx, .xls</p>
+                <p class="text-sm font-bold text-gray-800">클릭하거나 Work Package 파일을 여기로 드래그 앤 드롭</p>
+                <p class="text-xs text-gray-500 mt-0.5">이 파일 하나만 올리고 바로 [분석 시작]을 누르시면 됩니다</p>
               </div>
             </div>
-            <div id="wpSelectedState" class="hidden flex items-center justify-between bg-white p-3 rounded-lg border border-orange-200">
+            <div id="wpSelectedState" class="hidden flex items-center justify-between bg-white p-3.5 rounded-lg border border-orange-200 shadow-sm">
               <div class="flex items-center space-x-3 overflow-hidden text-left">
                 <span class="text-2xl text-brand-orange">📊</span>
                 <div class="truncate">
@@ -113,43 +114,53 @@
                   <p id="wpFileSize" class="text-xs text-gray-500"></p>
                 </div>
               </div>
-              <button type="button" id="wpRemoveBtn" class="p-1 text-gray-400 hover:text-red-500 rounded-md transition-colors" title="파일 삭제">
+              <button type="button" id="wpRemoveBtn" class="p-1.5 text-gray-400 hover:text-red-500 rounded-md transition-colors" title="파일 삭제">
                 ✕
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Aircraft Status File Dropzone -->
-        <div class="space-y-1.5">
-          <div class="flex items-center justify-between">
-            <label class="block text-sm font-semibold text-gray-700">
-              2. 항공기 상태 파일 (Aircraft Status)
-            </label>
-            <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">
-              선택 사항 (미등록 시 제주항공 45대 기령 DB 자동 활용)
-            </span>
-          </div>
-          <div id="stDropzone" class="relative border-2 border-dashed border-gray-300 hover:border-brand-orange rounded-xl p-5 text-center transition-colors cursor-pointer bg-gray-50/50 hover:bg-orange-50/30 group">
-            <input type="file" id="stFileInput" accept=".xlsx, .xls" class="hidden">
-            <div id="stEmptyState" class="flex flex-col items-center justify-center space-y-2 pointer-events-none">
-              <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                🛩
-              </div>
-              <div>
-                <p class="text-sm font-medium text-gray-700">최신 파일이 있다면 클릭하거나 여기로 드래그 앤 드롭</p>
-                <p class="text-xs text-gray-400">비워둘 경우 내장된 기령 데이터(45대)로 자동 판정됩니다</p>
-              </div>
+        <!-- Built-in DB Active Banner & Optional Override Toggle -->
+        <div class="bg-emerald-50/80 border border-emerald-200 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div class="flex items-center space-x-2.5">
+            <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+            <div>
+              <p class="text-xs font-bold text-emerald-950">제주항공 45대 기령 DB 탑재 완료 (HL7213 ~ HL8766)</p>
+              <p class="text-[11px] text-emerald-700">별도 상태 파일 없이도 기령 15년 이상 여부(+30 M/H)가 자동 계산됩니다.</p>
             </div>
-            <div id="stSelectedState" class="hidden flex items-center justify-between bg-white p-3 rounded-lg border border-blue-200">
-              <div class="flex items-center space-x-3 overflow-hidden text-left">
-                <span class="text-2xl text-blue-600">📋</span>
+          </div>
+          <button type="button" id="btnToggleCustomStatus" class="text-xs font-semibold text-emerald-800 hover:text-emerald-950 underline text-left sm:text-right shrink-0">
+            + 최신 파일 직접 등록 (선택)
+          </button>
+        </div>
+
+        <!-- Aircraft Status File Dropzone (Collapsible Secondary Option) -->
+        <div id="stContainer" class="hidden space-y-1.5 p-4 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-gray-700">
+              최신 항공기 상태 파일 업로드 (선택 사항)
+            </label>
+            <button type="button" id="btnCloseCustomStatus" class="text-xs text-gray-400 hover:text-gray-600">
+              접기 ✕
+            </button>
+          </div>
+          <p class="text-[11px] text-gray-500 mb-2">신규 도입기 등 최신 현황 파일이 있을 경우에만 업로드하세요. (미등록 시 내장 DB 적용)</p>
+          <div id="stDropzone" class="relative border border-dashed border-gray-300 hover:border-blue-400 rounded-lg p-3 text-center transition-colors cursor-pointer bg-white hover:bg-blue-50/20 group">
+            <input type="file" id="stFileInput" accept=".xlsx, .xls" class="hidden">
+            <div id="stEmptyState" class="flex items-center justify-center space-x-2 pointer-events-none py-1">
+              <span class="text-base">🛩</span>
+              <p class="text-xs font-medium text-gray-600">클릭하거나 파일을 여기로 드래그 앤 드롭</p>
+            </div>
+            <div id="stSelectedState" class="hidden flex items-center justify-between bg-blue-50/40 p-2 rounded border border-blue-200">
+              <div class="flex items-center space-x-2 overflow-hidden text-left">
+                <span class="text-lg text-blue-600">📋</span>
                 <div class="truncate">
-                  <p id="stFileName" class="text-sm font-bold text-gray-800 truncate"></p>
-                  <p id="stFileSize" class="text-xs text-gray-500"></p>
+                  <p id="stFileName" class="text-xs font-bold text-gray-800 truncate"></p>
+                  <p id="stFileSize" class="text-[10px] text-gray-500"></p>
                 </div>
               </div>
-              <button type="button" id="stRemoveBtn" class="p-1 text-gray-400 hover:text-red-500 rounded-md transition-colors" title="파일 삭제">
+              <button type="button" id="stRemoveBtn" class="p-1 text-gray-400 hover:text-red-500 rounded" title="파일 삭제">
                 ✕
               </button>
             </div>
@@ -526,6 +537,18 @@
     });
 
     // Dropzone Events - ST
+    const stContainer = document.getElementById('stContainer');
+    const btnToggleCustomStatus = document.getElementById('btnToggleCustomStatus');
+    const btnCloseCustomStatus = document.getElementById('btnCloseCustomStatus');
+
+    btnToggleCustomStatus.addEventListener('click', () => {
+      stContainer.classList.toggle('hidden');
+    });
+
+    btnCloseCustomStatus.addEventListener('click', () => {
+      stContainer.classList.add('hidden');
+    });
+
     stDropzone.addEventListener('click', (e) => {
       if (e.target.closest('#stRemoveBtn')) return;
       stFileInput.click();
