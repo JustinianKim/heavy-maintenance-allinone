@@ -1096,6 +1096,11 @@
       resultView.classList.add('hidden');
       inputView.classList.remove('hidden');
       setProgress(0, '시스템 준비됨');
+      // 다시 분석 시 콘솔 로그 자동 초기화
+      terminalBody.innerHTML = `
+        <div class="text-gray-500">Work Package 분석기 Web Engine 준비 완료.</div>
+        <div class="text-gray-500">엑셀 파일을 선택하거나 끌어다 놓은 뒤 [분석 시작]을 누르세요.</div>
+      `;
     });
 
     btnStartAnalysis.addEventListener('click', analyzeWP);
