@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work Package 분석기 - Jeju Air</title>
+  <link rel="icon" type="image/png" href="app_icon.png">
+  <!-- SheetJS for client-side Excel parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- Google Fonts & Tailwind CSS CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: '#FF7F00',
+              hover: '#E67200',
+              light: '#FFF5EB',
+              dark: '#C86200'
+            }
+          },
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Consolas', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #c5c5c5; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #999; }
+    .terminal-scroll::-webkit-scrollbar-track { background: #121212; }
+    .terminal-scroll::-webkit-scrollbar-thumb { background: #333; }
+    .terminal-scroll::-webkit-scrollbar-thumb:hover { background: #555; }
+    
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .animate-pulse-soft { animation: pulse-soft 2s infinite ease-in-out; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col font-sans selection:bg-orange-100 selection:text-orange-900">
+
+  <!-- Header -->
+  <header class="bg-brand-orange text-white shadow-md sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center font-bold text-xl shadow-inner">
+          ✈
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight">Work Package 분석기</h1>
+          <p class="text-xs text-orange-100 -mt-0.5">Heavy Maintenance TAT & M/H Estimator</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button id="btnOpenGuide" class="inline-flex items-center space-x-1 px-3 py-1.5 text-xs font-semibold rounded-md border border-white/60 hover:bg-white hover:text-brand-orange transition-all duration-150">
+          <span>ⓘ</span>
+          <span>산출 기준 가이드</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Grid Layout -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- Left Column: Input or Result Screen (7 cols) -->
+    <div class="lg:col-span-7 flex flex-col space-y-5">
+
+      <!-- ================= INPUT VIEW ================= -->
+      <section id="inputView" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col space-y-6">
+        <div>
+          <h2 class="text-lg font-bold text-gray-900 flex items-center space-x-2">
+            <span>📂 파일 업로드 및 분석 준비</span>
+          </h2>
+          <p class="text-xs text-gray-500 mt-1">
+            분석할 Work Package 엑셀 파일과 최신 Aircraft Status 엑셀 파일을 업로드하세요. 파일은 외부 서버로 전송되지 않고 브라우저 내부에서만 안전하게 분석됩니다.
+          </p>
+        </div>
+
+        <!-- WP File Dropzone -->
+        <div class="space-y-1.5">
+          <label class="block text-sm font-semibold text-gray-700">
+            1. Work Package 파일 <span class="text-brand-orange">*</span>
+          </label>
+          <div id="wpDropzone" class="relative border-2 border-dashed border-gray-300 hover:border-brand-orange rounded-xl p-5 text-center transition-colors cursor-pointer bg-gray-50/50 hover:bg-orange-50/30 group">
+            <input type="file" id="wpFileInput" accept=".xlsx, .xls" class="hidden">
+            <div id="wpEmptyState" class="flex flex-col items-center justify-center space-y-2 pointer-events-none">
+              <div class="w-10 h-10 rounded-full bg-orange-100 text-brand-orange flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+                📄
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-700">클릭하거나 파일을 여기로 드래그 앤 드롭</p>
+                <p class="text-xs text-gray-400">지원 형식: .xlsx, .xls</p>
+              </div>
+            </div>
+            <div id="wpSelectedState" class="hidden flex items-center justify-between bg-white p-3 rounded-lg border border-orange-200">
+              <div class="flex items-center space-x-3 overflow-hidden text-left">
+                <span class="text-2xl text-brand-orange">📊</span>
+                <div class="truncate">
+                  <p id="wpFileName" class="text-sm font-bold text-gray-800 truncate"></p>
+                  <p id="wpFileSize" class="text-xs text-gray-500"></p>
+                </div>
+              </div>
+              <button type="button" id="wpRemoveBtn" class="p-1 text-gray-400 hover:text-red-500 rounded-md transition-colors" title="파일 삭제">
+                ✕
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aircraft Status File Dropzone -->
+        <div class="space-y-1.5">
+          <label class="block text-sm font-semibold text-gray-700">
+            2. 항공기 상태 파일 (Aircraft Status) <span class="text-brand-orange">*</span>
+          </label>
+          <div id="stDropzone" class="relative border-2 border-dashed border-gray-300 hover:border-brand-orange rounded-xl p-5 text-center transition-colors cursor-pointer bg-gray-50/50 hover:bg-orange-50/30 group">
+            <input type="file" id="stFileInput" accept=".xlsx, .xls" class="hidden">
+            <div id="stEmptyState" class="flex flex-col items-center justify-center space-y-2 pointer-events-none">
+              <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+                🛩
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-700">클릭하거나 파일을 여기로 드래그 앤 드롭</p>
+                <p class="text-xs text-gray-400">지원 형식: .xlsx, .xls</p>
+              </div>
+            </div>
+            <div id="stSelectedState" class="hidden flex items-center justify-between bg-white p-3 rounded-lg border border-blue-200">
+              <div class="flex items-center space-x-3 overflow-hidden text-left">
+                <span class="text-2xl text-blue-600">📋</span>
+                <div class="truncate">
+                  <p id="stFileName" class="text-sm font-bold text-gray-800 truncate"></p>
+                  <p id="stFileSize" class="text-xs text-gray-500"></p>
+                </div>
+              </div>
+              <button type="button" id="stRemoveBtn" class="p-1 text-gray-400 hover:text-red-500 rounded-md transition-colors" title="파일 삭제">
+                ✕
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress and Actions -->
+        <div class="pt-2 space-y-3">
+          <!-- Progress bar -->
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs font-semibold text-gray-500">
+              <span id="progressBarStatus">시스템 준비됨</span>
+              <span id="progressBarPercent">0%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div id="progressBarFill" class="bg-brand-orange h-2 rounded-full transition-all duration-200" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Run Button -->
+          <button id="btnStartAnalysis" class="w-full py-3.5 px-4 bg-brand-orange hover:bg-brand-hover text-white font-bold rounded-xl shadow transition-all duration-150 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            <span id="btnRunIcon">⚡</span>
+            <span id="btnRunText">분석 시작</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= RESULT VIEW ================= -->
+      <section id="resultView" class="hidden bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col space-y-5">
+        <div class="flex items-center justify-between border-b pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 flex items-center space-x-2">
+              <span>📊 분석 결과 리포트</span>
+            </h2>
+            <p id="resAnalysisTarget" class="text-xs text-gray-500 mt-0.5"></p>
+          </div>
+          <button id="btnBackToInput" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-gray-800 hover:bg-black text-white transition-colors">
+            다시 분석
+          </button>
+        </div>
+
+        <!-- Summary Stat Cards -->
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-center">
+            <p class="text-xs font-semibold text-gray-500">MPD 합계</p>
+            <p id="resMpdSum" class="text-xl sm:text-2xl font-bold text-brand-orange mt-1">0.0</p>
+            <p class="text-[11px] text-gray-400 mt-0.5">Man-Hours</p>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-center">
+            <p class="text-xs font-semibold text-gray-500">AD/SB/EO</p>
+            <p id="resAdSum" class="text-xl sm:text-2xl font-bold text-brand-orange mt-1">0.0</p>
+            <p class="text-[11px] text-gray-400 mt-0.5">Man-Hours</p>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-center">
+            <p class="text-xs font-semibold text-gray-500">가중치 보정</p>
+            <p id="resWeights" class="text-xl sm:text-2xl font-bold text-amber-600 mt-1">+0</p>
+            <p class="text-[11px] text-gray-400 mt-0.5">M/H 추가</p>
+          </div>
+        </div>
+
+        <!-- TAT Highlight Banner -->
+        <div class="bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl p-5 text-center shadow-sm">
+          <p class="text-xs font-semibold tracking-wider uppercase text-orange-100">예측 Turn Around Time (TAT)</p>
+          <div class="flex items-baseline justify-center space-x-1.5 my-1">
+            <span id="resTatDays" class="text-4xl sm:text-5xl font-black">0</span>
+            <span class="text-2xl font-bold">일</span>
+          </div>
+          <p id="resTotalMhSub" class="text-xs text-orange-100"></p>
+        </div>
+
+        <!-- Breakdown List -->
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold text-gray-800">가중치 적용 내역 및 상세 로직</h3>
+          <div id="resReasonsContainer" class="space-y-2.5">
+            <!-- Dynamic Reason Cards -->
+          </div>
+        </div>
+
+        <!-- Logic Formula Card -->
+        <div class="bg-orange-50/60 border border-orange-200 rounded-xl p-4 text-center">
+          <p class="text-xs font-bold text-brand-orange mb-1">최종 산출 근거 공식</p>
+          <p id="resCalculationLogic" class="text-xs text-gray-700 font-mono whitespace-pre-line leading-relaxed"></p>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Right Column: Live Terminal Log (5 cols) -->
+    <div class="lg:col-span-5 flex flex-col h-[600px] lg:h-auto">
+      <div class="bg-[#18181B] rounded-xl shadow-sm border border-gray-800 flex flex-col h-full overflow-hidden">
+        <!-- Terminal Header -->
+        <div class="bg-[#27272A] px-4 py-2.5 flex items-center justify-between border-b border-gray-800">
+          <div class="flex items-center space-x-2">
+            <div class="flex space-x-1.5">
+              <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+            </div>
+            <span class="text-xs font-mono font-medium text-gray-300 ml-2">분석 진행 로그 (Console)</span>
+          </div>
+          <button id="btnClearTerminal" class="text-[11px] text-gray-400 hover:text-white transition-colors">
+            로그 지우기
+          </button>
+        </div>
+
+        <!-- Terminal Output -->
+        <div id="terminalBody" class="flex-1 p-4 font-mono text-xs text-green-400 bg-black overflow-y-auto terminal-scroll leading-relaxed whitespace-pre-wrap select-text">
+          <div class="text-gray-500">Work Package 분석기 Web Engine 준비 완료.</div>
+          <div class="text-gray-500">엑셀 파일을 선택하거나 끌어다 놓은 뒤 [분석 시작]을 누르세요.</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Guide Modal -->
+  <div id="guideModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div class="bg-brand-orange text-white px-6 py-4 flex items-center justify-between">
+        <h3 class="text-base font-bold flex items-center space-x-2">
+          <span>ⓘ</span>
+          <span>가중치 및 TAT 산출 기준 가이드</span>
+        </h3>
+        <button id="btnCloseGuide" class="text-white/80 hover:text-white text-lg font-bold">✕</button>
+      </div>
+      <div class="p-6 overflow-y-auto text-sm text-gray-700 space-y-4 leading-relaxed font-sans">
+        <div class="border-b pb-3">
+          <h4 class="font-bold text-gray-900 text-base mb-1">목적 및 기본 원칙</h4>
+          <p class="text-gray-600 text-xs">WP(Work Package) 분석 결과에 "추가 Man-hour(M/H)"를 더해 최종 소요 일수(TAT)를 보정합니다.</p>
+        </div>
+
+        <div class="bg-orange-50 border border-orange-200 rounded-lg p-3 text-xs">
+          <p class="font-bold text-brand-orange mb-1">최종 산출 로직</p>
+          <ul class="list-disc list-inside space-y-0.5 text-gray-800">
+            <li><strong>Total M/H</strong> = MPD 합계 + AD/SB/EO 합계 + 가중치 합계</li>
+            <li><strong>TAT(일)</strong> = ceil(Total M/H / 100) (소수점 올림 처리)</li>
+          </ul>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <h4 class="font-bold text-gray-900 text-sm">가중치 적용 항목 및 기준</h4>
+          
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="font-bold text-gray-800">1) 중정비(C-Check 단계) – 파일명 기준</p>
+            <p class="text-gray-600 mt-0.5">• 조건: 파일명에 "4C" 이상 포함 (예: 4C, 6C, 8C 등)</p>
+            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +30 M/H (4C 이상이면 최고 C값 기준 1회 적용)</p>
+          </div>
+
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="font-bold text-gray-800">2) 노후 항공기 – 기령 기준</p>
+            <p class="text-gray-600 mt-0.5">• 조건: 파일명에서 HL기번(HL####) 추출 후 Status 파일에서 제작일 확인, 기령 15년 이상</p>
+            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +30 M/H</p>
+          </div>
+
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="font-bold text-gray-800">3) Wet Area Access Task</p>
+            <p class="text-gray-600 mt-0.5">• 조건: MPD 시트 C열에 "53-380-00-01" 포함 (빨간색/취소선 제외)</p>
+            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +300 M/H (단, Wet Area 포함 시 최소 TAT는 12일 보정)</p>
+          </div>
+
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="font-bold text-gray-800">4) 보정 작업 항목 (990 계열)</p>
+            <p class="text-gray-600 mt-0.5">• 조건: MPD 시트 C열에 53-990-00-30J 또는 53-990-00-50J 포함</p>
+            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +10 M/H (FWD GALLEY 장탈 반영, 복수 포함되어도 1회만 적용)</p>
+          </div>
+
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="font-bold text-gray-800">5) Wing Task (지정 Wing 카드 목록)</p>
+            <p class="text-gray-600 mt-0.5">• 대상: 57-020-00-01, 57-170, 57-822, 57-892, 57-180, 57-826, 57-896, 57-190, 57-830, 57-900 계열</p>
+            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +40 M/H (Seal/Gasket 및 Torque 공수 보완, 최대 1회 적용)</p>
+          </div>
+
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="font-bold text-gray-800">6) 보정 작업 항목 (개별 코드)</p>
+            <p class="text-gray-600 mt-0.5">• 27-108-00-01 (Stabilizer trim actuator 장탈): +50 M/H</p>
+            <p class="text-gray-600 mt-0.5">• 47-310-00-01 (NGS 열교환기 세척): +10 M/H</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gray-100 px-6 py-3 border-t text-right">
+        <button id="btnCloseGuideBottom" class="px-4 py-1.5 text-xs font-semibold rounded-lg bg-gray-700 hover:bg-gray-800 text-white transition-colors">
+          닫기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-white border-t border-gray-200 py-3 text-center text-xs text-gray-400 mt-auto">
+    Jeju Air Work Package Analyzer &bull; Pure Client-Side Safe Engine
+  </footer>
+
+  <!-- Main JavaScript Logic -->
+  <script>
+    // Constants & Dictionaries
+    const TASK_DESCRIPTIONS = {
+      "53-380-00-01": "WET AREA ACCESS",
+      "53-990-00-30J": "FWD GALLEY REMOVAL (Potential)",
+      "53-990-00-50J": "FWD GALLEY REMOVAL (Potential)",
+      "27-108-00-01": "Remove the stabilizer trim actuator for restoration",
+      "47-310-00-01": "Restore (clean) the Nitrogen Generation System (NGS) heat exchanger (off aircraft)",
+      "57-020-00-01": "Wing Leading Edge",
+      "57-170-01-01": "Wing Fuel System - Left",
+      "57-822-01-01": "Wing Fuel System - Left Check",
+      "57-170-02-01": "Wing Fuel System - Right",
+      "57-892-02-01": "Wing Fuel System - Right Check",
+      "57-180-01-01": "Wing Leading Edge Systems - Left",
+      "57-826-01-01": "Wing Systems Check - Left",
+      "57-180-02-01": "Wing Leading Edge Systems - Right",
+      "57-896-02-01": "Wing Systems Check - Right",
+      "57-190-01-01": "Wing Tip Assembly - Left",
+      "57-830-01-01": "Wing Tip Systems Check - Left",
+      "57-190-02-01": "Wing Tip Assembly - Right",
+      "57-900-02-01": "Wing Tip Systems Check - Right"
+    };
+
+    const WING_CODES = new Set([
+      "57-020-00-01","57-170-01-01","57-822-01-01","57-170-02-01","57-892-02-01",
+      "57-180-01-01","57-826-01-01","57-180-02-01","57-896-02-01","57-190-01-01",
+      "57-830-01-01","57-190-02-01","57-900-02-01"
+    ]);
+
+    // Global App State
+    let wpFile = null;
+    let stFile = null;
+
+    // DOM Elements
+    const wpDropzone = document.getElementById('wpDropzone');
+    const wpFileInput = document.getElementById('wpFileInput');
+    const wpEmptyState = document.getElementById('wpEmptyState');
+    const wpSelectedState = document.getElementById('wpSelectedState');
+    const wpFileName = document.getElementById('wpFileName');
+    const wpFileSize = document.getElementById('wpFileSize');
+    const wpRemoveBtn = document.getElementById('wpRemoveBtn');
+
+    const stDropzone = document.getElementById('stDropzone');
+    const stFileInput = document.getElementById('stFileInput');
+    const stEmptyState = document.getElementById('stEmptyState');
+    const stSelectedState = document.getElementById('stSelectedState');
+    const stFileName = document.getElementById('stFileName');
+    const stFileSize = document.getElementById('stFileSize');
+    const stRemoveBtn = document.getElementById('stRemoveBtn');
+
+    const progressBarFill = document.getElementById('progressBarFill');
+    const progressBarStatus = document.getElementById('progressBarStatus');
+    const progressBarPercent = document.getElementById('progressBarPercent');
+    const btnStartAnalysis = document.getElementById('btnStartAnalysis');
+    const btnRunText = document.getElementById('btnRunText');
+    const terminalBody = document.getElementById('terminalBody');
+    const btnClearTerminal = document.getElementById('btnClearTerminal');
+
+    const inputView = document.getElementById('inputView');
+    const resultView = document.getElementById('resultView');
+    const btnBackToInput = document.getElementById('btnBackToInput');
+
+    const guideModal = document.getElementById('guideModal');
+    const btnOpenGuide = document.getElementById('btnOpenGuide');
+    const btnCloseGuide = document.getElementById('btnCloseGuide');
+    const btnCloseGuideBottom = document.getElementById('btnCloseGuideBottom');
+
+    // Logging Utility
+    function logToTerminal(message, isProgress = false) {
+      const now = new Date();
+      const timeStr = `[${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}] `;
+      
+      const line = document.createElement('div');
+      line.textContent = timeStr + message;
+      terminalBody.appendChild(line);
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+
+    btnClearTerminal.addEventListener('click', () => {
+      terminalBody.innerHTML = '<div class="text-gray-500">로그가 초기화되었습니다.</div>';
+    });
+
+    // File Utilities
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    function setWpFile(file) {
+      wpFile = file;
+      if (file) {
+        wpFileName.textContent = file.name;
+        wpFileSize.textContent = formatBytes(file.size);
+        wpEmptyState.classList.add('hidden');
+        wpSelectedState.classList.remove('hidden');
+        logToTerminal(`Work Package 파일 선택됨: ${file.name} (${formatBytes(file.size)})`);
+      } else {
+        wpFileInput.value = '';
+        wpEmptyState.classList.remove('hidden');
+        wpSelectedState.classList.add('hidden');
+      }
+    }
+
+    function setStFile(file) {
+      stFile = file;
+      if (file) {
+        stFileName.textContent = file.name;
+        stFileSize.textContent = formatBytes(file.size);
+        stEmptyState.classList.add('hidden');
+        stSelectedState.classList.remove('hidden');
+        logToTerminal(`항공기 상태 파일 선택됨: ${file.name} (${formatBytes(file.size)})`);
+      } else {
+        stFileInput.value = '';
+        stEmptyState.classList.remove('hidden');
+        stSelectedState.classList.add('hidden');
+      }
+    }
+
+    // Dropzone Events - WP
+    wpDropzone.addEventListener('click', (e) => {
+      if (e.target.closest('#wpRemoveBtn')) return;
+      wpFileInput.click();
+    });
+    wpFileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) setWpFile(e.target.files[0]);
+    });
+    wpRemoveBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setWpFile(null);
+    });
+
+    // Dropzone Events - ST
+    stDropzone.addEventListener('click', (e) => {
+      if (e.target.closest('#stRemoveBtn')) return;
+      stFileInput.click();
+    });
+    stFileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) setStFile(e.target.files[0]);
+    });
+    stRemoveBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setStFile(null);
+    });
+
+    // Drag and Drop Effects
+    [
+      { zone: wpDropzone, setter: setWpFile },
+      { zone: stDropzone, setter: setStFile }
+    ].forEach(({ zone, setter }) => {
+      zone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        zone.classList.add('border-brand-orange', 'bg-orange-50/50');
+      });
+      zone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        zone.classList.remove('border-brand-orange', 'bg-orange-50/50');
+      });
+      zone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        zone.classList.remove('border-brand-orange', 'bg-orange-50/50');
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          setter(e.dataTransfer.files[0]);
+        }
+      });
+    });
+
+    // Guide Modal
+    btnOpenGuide.addEventListener('click', () => guideModal.classList.remove('hidden'));
+    btnCloseGuide.addEventListener('click', () => guideModal.classList.add('hidden'));
+    btnCloseGuideBottom.addEventListener('click', () => guideModal.classList.add('hidden'));
+    guideModal.addEventListener('click', (e) => {
+      if (e.target === guideModal) guideModal.classList.add('hidden');
+    });
+
+    // Progress updates
+    function setProgress(percent, statusText) {
+      progressBarFill.style.width = `${percent}%`;
+      progressBarPercent.textContent = `${Math.round(percent)}%`;
+      if (statusText) {
+        progressBarStatus.textContent = statusText;
+        logToTerminal(statusText);
+      }
+    }
+
+    // Helper: Number conversion
+    function toNumber(val) {
+      if (val === null || val === undefined) return null;
+      if (typeof val === 'number') return isNaN(val) ? null : val;
+      const clean = String(val).replace(/,/g, '').trim();
+      const num = parseFloat(clean);
+      return isNaN(num) ? null : num;
+    }
+
+    // Helper: Extract HL
+    function extractHL(filename) {
+      const match = filename.toUpperCase().match(/(HL\d{4})/);
+      return match ? match[1] : null;
+    }
+
+    // Helper: Extract C Level
+    function extractCLevel(filename) {
+      const matches = [...filename.toUpperCase().matchAll(/(\d+)C/g)];
+      if (!matches || matches.length === 0) return null;
+      const vals = matches.map(m => parseInt(m[1], 10));
+      return Math.max(...vals);
+    }
+
+    // Helper: Calculate years from date
+    function calculateYearsFrom(dateVal) {
+      if (!dateVal) return null;
+      const now = new Date();
+      let d = null;
+
+      if (dateVal instanceof Date) {
+        d = dateVal;
+      } else if (typeof dateVal === 'number') {
+        // Excel serial date: 25569 days between 1970 and 1900
+        if (dateVal > 1000) {
+          d = new Date((dateVal - 25569) * 86400 * 1000);
+        } else {
+          // year alone like 2012
+          d = new Date(dateVal, 0, 1);
+        }
+      } else if (typeof dateVal === 'string') {
+        const s = dateVal.trim();
+        const parsed = new Date(s);
+        if (!isNaN(parsed.getTime())) {
+          d = parsed;
+        } else {
+          // Try YYYY.MM.DD or YYYY/MM/DD
+          const parts = s.split(/[-./]/);
+          if (parts.length >= 3) {
+            d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+          } else if (parts.length === 1 && /^\d{4}$/.test(parts[0])) {
+            d = new Date(parseInt(parts[0]), 0, 1);
+          }
+        }
+      }
+
+      if (!d || isNaN(d.getTime())) return null;
+      const diffMs = now.getTime() - d.getTime();
+      return diffMs / (1000 * 60 * 60 * 24 * 365.25);
+    }
+
+    // Helper: Cell Red Color / Strike detection (SheetJS)
+    function isCellRedOrStrike(cell) {
+      if (!cell) return false;
+      // If SheetJS parsed styles
+      if (cell.s) {
+        const font = cell.s.font;
+        const fill = cell.s.fill;
+        if (font && font.strike) return true;
+        if (font && font.color && font.color.rgb) {
+          const rgb = String(font.color.rgb).toUpperCase();
+          if (rgb.includes('FF0000') || rgb === 'RED') return true;
+        }
+        if (fill && fill.fgColor && fill.fgColor.rgb) {
+          const rgb = String(fill.fgColor.rgb).toUpperCase();
+          if (rgb.includes('FF0000') || rgb === 'RED') return true;
+        }
+      }
+      return false;
+    }
+
+    // Read File as ArrayBuffer
+    function readFileAsArrayBuffer(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = (e) => reject(new Error('파일 읽기 실패'));
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    // Parse Aircraft Status File for Mfg Date of HL code
+    async function getMfgDateFromStatus(file, hlCode) {
+      const data = await readFileAsArrayBuffer(file);
+      const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+      const firstSheetName = workbook.SheetNames[0];
+      const ws = workbook.Sheets[firstSheetName];
+      const range = XLSX.utils.decode_range(ws['!ref'] || 'A1:Z100');
+
+      // Col C = index 2, Col W = index 22
+      for (let R = range.s.r; R <= range.e.r; ++R) {
+        const cellC = ws[XLSX.utils.encode_cell({ r: R, c: 2 })];
+        if (cellC && String(cellC.v).trim().toUpperCase() === hlCode) {
+          const cellW = ws[XLSX.utils.encode_cell({ r: R, c: 22 })];
+          if (cellW) return cellW.v;
+        }
+      }
+      return null;
+    }
+
+    // Core Analysis Engine
+    async function analyzeWP() {
+      if (!wpFile || !stFile) {
+        alert('Work Package 파일과 항공기 상태 파일을 모두 선택해 주세요.');
+        return;
+      }
+
+      btnStartAnalysis.disabled = true;
+      btnRunText.textContent = '분석 진행 중...';
+      logToTerminal('================= 분석 프로세스 시작 =================');
+      logToTerminal(`Work Package: ${wpFile.name}`);
+      logToTerminal(`Aircraft Status: ${stFile.name}`);
+
+      try {
+        const reasons = [];
+        let weights = 0;
+        const filename = wpFile.name;
+
+        // 1. C-Level
+        setProgress(5, '파일명 기반 중정비 단계 분석 중...');
+        const cLevel = extractCLevel(filename);
+        if (cLevel && cLevel >= 4) {
+          weights += 30;
+          reasons.push({
+            tag: '중정비',
+            title: `${cLevel}C 단계 확인`,
+            weight: '+30 M/H',
+            reason: '4C 이상의 고단계 중정비는 Structure 결함 발생 빈도가 높음',
+            note: '',
+            isNa: false,
+            taskItems: []
+          });
+          logToTerminal(`[중정비] ${cLevel}C 확인 (+30 M/H)`);
+        } else if (cLevel) {
+          reasons.push({
+            tag: '중정비',
+            title: `${cLevel}C 단계 (4C 미만 가중치 미적용)`,
+            weight: '미적용',
+            reason: '',
+            note: '',
+            isNa: true,
+            taskItems: []
+          });
+          logToTerminal(`[중정비] ${cLevel}C 확인 (4C 미만으로 미적용)`);
+        } else {
+          reasons.push({
+            tag: '중정비',
+            title: '단계 확인 불가 (가중치 미적용)',
+            weight: '미적용',
+            reason: '',
+            note: '',
+            isNa: true,
+            taskItems: []
+          });
+        }
+
+        // 2. HL Age
+        setProgress(12, '항공기 상태 파일에서 기령(제작일) 확인 중...');
+        const hl = extractHL(filename);
+        if (hl) {
+          logToTerminal(`파일명에서 기번 ${hl} 추출 완료. 제작일 검색 중...`);
+          const mfgDate = await getMfgDateFromStatus(stFile, hl);
+          const years = calculateYearsFrom(mfgDate);
+          if (years && years >= 15) {
+            weights += 30;
+            reasons.push({
+              tag: '노후 항공기',
+              title: `${hl} 기령 ${years.toFixed(1)}년 확인`,
+              weight: '+30 M/H',
+              reason: '15년 이상의 기령은 균열과 부식에 취약함',
+              note: '',
+              isNa: false,
+              taskItems: []
+            });
+            logToTerminal(`[노후 항공기] ${hl} 기령 ${years.toFixed(1)}년 확인 (+30 M/H)`);
+          } else if (years) {
+            reasons.push({
+              tag: '노후 항공기',
+              title: `해당 없음 (${hl}, 기령: ${years.toFixed(1)}년)`,
+              weight: '미적용',
+              reason: '',
+              note: '',
+              isNa: true,
+              taskItems: []
+            });
+            logToTerminal(`[노후 항공기] ${hl} 기령 ${years.toFixed(1)}년 (15년 미만으로 미적용)`);
+          } else {
+            reasons.push({
+              tag: '노후 항공기',
+              title: `${hl} 제작일 정보 없음`,
+              weight: '미적용',
+              reason: '',
+              note: '',
+              isNa: true,
+              taskItems: []
+            });
+            logToTerminal(`[노후 항공기] ${hl} 제작일 정보 없음 (미적용)`);
+          }
+        } else {
+          reasons.push({
+            tag: '노후 항공기',
+            title: '파일명에서 HL기번을 찾을 수 없음',
+            weight: '미적용',
+            reason: '',
+            note: '',
+            isNa: true,
+            taskItems: []
+          });
+        }
+
+        // 3. Parse Work Package Excel
+        setProgress(25, 'Work Package 엑셀 시트 파싱 시작...');
+        const wpData = await readFileAsArrayBuffer(wpFile);
+        const workbook = XLSX.read(wpData, { type: 'array', cellStyles: true });
+
+        // Find MPD Sheet
+        const mpdSheetName = workbook.SheetNames.find(n => n.toUpperCase().includes('MPD'));
+        let mpdSum = 0.0;
+        let found53_380 = false;
+        let found53_990_30j = false;
+        let found53_990_50j = false;
+        let foundWing = false;
+        const foundWingCodes = [];
+        let found27_108 = false;
+        let found47_310 = false;
+        const taskDesc = {};
+
+        if (mpdSheetName) {
+          logToTerminal(`MPD 시트 발견: [${mpdSheetName}] 분석 진행...`);
+          const ws = workbook.Sheets[mpdSheetName];
+          const range = XLSX.utils.decode_range(ws['!ref'] || 'A1:O100');
+          const totalRows = range.e.r - range.s.r + 1;
+
+          for (let R = range.s.r; R <= range.e.r; ++R) {
+            if (R % 500 === 0) {
+              const pct = 25 + Math.round(((R - range.s.r) / totalRows) * 35);
+              setProgress(pct, `MPD 데이터 분석 중... (${R - range.s.r + 1}/${totalRows}행)`);
+              // Let UI breath
+              await new Promise(r => setTimeout(r, 0));
+            }
+
+            const cellA = ws[XLSX.utils.encode_cell({ r: R, c: 0 })];
+            const aVal = cellA ? cellA.v : null;
+
+            const cellC = ws[XLSX.utils.encode_cell({ r: R, c: 2 })];
+            const cVal = cellC ? String(cellC.v || '') : '';
+
+            // Extract row description helper
+            function getRowDesc() {
+              for (let C = 3; C <= 9; ++C) {
+                const cell = ws[XLSX.utils.encode_cell({ r: R, c: C })];
+                if (cell && typeof cell.v === 'string' && cell.v.trim()) {
+                  return cell.v.trim().replace(/[\r\n]+/g, ' ');
+                }
+              }
+              return '';
+            }
+
+            // Check 53-380-00-01 (Wet Area)
+            if (cVal.includes('53-380-00-01')) {
+              if (!isCellRedOrStrike(cellC)) {
+                found53_380 = true;
+                const d = getRowDesc();
+                if (d && !taskDesc['53-380-00-01']) taskDesc['53-380-00-01'] = d;
+              }
+            }
+
+            // Check 990 Series
+            if (cVal.includes('53-990-00-30J')) found53_990_30j = true;
+            if (cVal.includes('53-990-00-50J')) found53_990_50j = true;
+
+            // Check Wing Tasks
+            WING_CODES.forEach(w => {
+              if (cVal.includes(w)) {
+                if (!isCellRedOrStrike(cellC)) {
+                  foundWing = true;
+                  if (!foundWingCodes.includes(w)) foundWingCodes.push(w);
+                }
+              }
+            });
+
+            // Check individual codes
+            if (cVal.includes('27-108-00-01')) found27_108 = true;
+            if (cVal.includes('47-310-00-01')) found47_310 = true;
+
+            // Extract description for found codes
+            ['53-990-00-30J', '53-990-00-50J', '27-108-00-01', '47-310-00-01'].forEach(code => {
+              if (cVal.includes(code) && !taskDesc[code]) {
+                const d = getRowDesc();
+                if (d) taskDesc[code] = d;
+              }
+            });
+
+            // Sum MPD M/H (Col O = index 14)
+            if (aVal !== null && aVal !== undefined && String(aVal).trim()) {
+              const cellO = ws[XLSX.utils.encode_cell({ r: R, c: 14 })];
+              if (cellO && !isCellRedOrStrike(cellO)) {
+                const num = toNumber(cellO.v);
+                if (num) mpdSum += num;
+              }
+            }
+          }
+          logToTerminal(`MPD 시트 완료: 합계 ${mpdSum.toFixed(1)} M/H`);
+        } else {
+          logToTerminal('⚠️ MPD 시트를 찾을 수 없습니다.');
+        }
+
+        // Find AD SB EO Sheet
+        setProgress(65, 'AD/SB/EO 시트 파싱 시작...');
+        const adSheetName = workbook.SheetNames.find(n => n.toUpperCase().includes('AD SB EO'));
+        let adSum = 0.0;
+
+        if (adSheetName) {
+          logToTerminal(`AD/SB/EO 시트 발견: [${adSheetName}] 분석 진행...`);
+          const ws = workbook.Sheets[adSheetName];
+          const range = XLSX.utils.decode_range(ws['!ref'] || 'A1:D100');
+          const totalRows = range.e.r - range.s.r + 1;
+
+          for (let R = range.s.r; R <= range.e.r; ++R) {
+            if (R % 500 === 0) {
+              const pct = 65 + Math.round(((R - range.s.r) / totalRows) * 25);
+              setProgress(pct, `AD/SB/EO 데이터 분석 중... (${R - range.s.r + 1}/${totalRows}행)`);
+              await new Promise(r => setTimeout(r, 0));
+            }
+
+            const cellA = ws[XLSX.utils.encode_cell({ r: R, c: 0 })];
+            const aVal = cellA ? cellA.v : null;
+
+            if (aVal !== null && aVal !== undefined && String(aVal).trim()) {
+              const cellD = ws[XLSX.utils.encode_cell({ r: R, c: 3 })];
+              if (cellD && !isCellRedOrStrike(cellD)) {
+                const num = toNumber(cellD.v);
+                if (num) adSum += num;
+              }
+            }
+          }
+          logToTerminal(`AD/SB/EO 시트 완료: 합계 ${adSum.toFixed(1)} M/H`);
+        } else {
+          logToTerminal('⚠️ AD/SB/EO 시트를 찾을 수 없습니다.');
+        }
+
+        // Apply Weights & Factors
+        setProgress(95, '가중치 합산 및 예측 TAT 산출 중...');
+
+        function formatTask(code) {
+          const desc = taskDesc[code] || TASK_DESCRIPTIONS[code];
+          return desc ? `${code} (${desc})` : `${code} (Description 미등록)`;
+        }
+
+        // 3. Wet Area
+        if (found53_380) {
+          weights += 300;
+          reasons.push({
+            tag: 'Wet Area',
+            title: `${formatTask('53-380-00-01')} 포함 확인`,
+            weight: '+300 M/H',
+            reason: 'Wet Area Access 작업 포함',
+            note: '계산 결과가 12일 미만일 경우 최소 12일로 보정됨',
+            isNa: false,
+            taskItems: []
+          });
+          logToTerminal('[Wet Area] 53-380-00-01 발견 (+300 M/H)');
+        }
+
+        // 4. 990 Series
+        const codes990 = [];
+        if (found53_990_30j) codes990.push('53-990-00-30J');
+        if (found53_990_50j) codes990.push('53-990-00-50J');
+        if (codes990.length > 0) {
+          weights += 10;
+          reasons.push({
+            tag: '보정 작업 항목',
+            title: `${codes990.map(formatTask).join(', ')} 포함 확인`,
+            weight: '+10 M/H',
+            reason: 'FWD GALLEY 장탈이 필요한 작업이 포함될 수 있어 보정치로 보완함',
+            note: '여러 개가 있어도 가중치는 1회만 적용됨',
+            isNa: false,
+            taskItems: []
+          });
+          logToTerminal(`[보정 항목] 990 계열 (${codes990.join(', ')}) 발견 (+10 M/H)`);
+        }
+
+        // 5. Wing Task
+        if (foundWing) {
+          weights += 40;
+          const wingItems = foundWingCodes.map(code => `${code} (${TASK_DESCRIPTIONS[code] || 'Unknown'})`);
+          reasons.push({
+            tag: 'Wing Task',
+            title: `해당 Wing Task Card 총 ${foundWingCodes.length}건 포함 확인`,
+            weight: '+40 M/H',
+            reason: 'BOEING STANDARD 공수(예: 6.0 M/H)만으로는 Seal/Gasket 점검·교환 및 Manual Torque 준수 작업까지 반영하기 어려워 보정치로 보완함',
+            note: '목록 중 여러 개가 발견되어도 최대 40 M/H만 적용됨',
+            isNa: false,
+            taskItems: wingItems
+          });
+          logToTerminal(`[Wing Task] ${foundWingCodes.length}개 카드 발견 (+40 M/H)`);
+        }
+
+        // 6. 27-108
+        if (found27_108) {
+          weights += 50;
+          reasons.push({
+            tag: '보정 작업 항목',
+            title: `${formatTask('27-108-00-01')} 포함 확인`,
+            weight: '+50 M/H',
+            reason: 'BOEING STANDARD MANHOUR(6.0)만으로는 실제 작업 반영이 부족하여 보정치로 보완함',
+            note: '',
+            isNa: false,
+            taskItems: []
+          });
+          logToTerminal('[보정 항목] 27-108-00-01 발견 (+50 M/H)');
+        }
+
+        // 7. 47-310
+        if (found47_310) {
+          weights += 10;
+          reasons.push({
+            tag: '보정 작업 항목',
+            title: `${formatTask('47-310-00-01')} 포함 확인`,
+            weight: '+10 M/H',
+            reason: 'BOEING STANDARD MANHOUR(0.5)만으로는 실제 작업 반영이 부족하여 보정치로 보완함',
+            note: '',
+            isNa: false,
+            taskItems: []
+          });
+          logToTerminal('[보정 항목] 47-310-00-01 발견 (+10 M/H)');
+        }
+
+        // Final Calculations
+        const total = mpdSum + adSum + weights;
+        let tatDays = Math.ceil(total / 100.0);
+        let wetAreaMinApplied = false;
+
+        if (found53_380 && tatDays < 12) {
+          tatDays = 12;
+          wetAreaMinApplied = true;
+        }
+
+        let calcExplanation = 
+          `최종 산출식:\n` +
+          `(MPD ${mpdSum.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1})} + AD/SB/EO ${adSum.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1})} + 가중치 ${weights})\n` +
+          `= ${total.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1})} ÷ 100 = ${(total / 100).toFixed(2)}일\n` +
+          `➔ 소수점 올림 계산하여 ${tatDays}일 예측`;
+
+        if (wetAreaMinApplied) {
+          calcExplanation += '\n➔ Wet Area 포함으로 최소 12일 보정 적용';
+        }
+
+        setProgress(100, '분석 완료!');
+        logToTerminal(`================= 분석 성공 완료 =================`);
+        logToTerminal(`총 Man-Hour: ${total.toFixed(1)} M/H | 최종 예측 TAT: ${tatDays}일`);
+
+        // Display Results in UI
+        displayResults({
+          filename: wpFile.name,
+          mpdSum,
+          adSum,
+          weights,
+          total,
+          tatDays,
+          reasons,
+          calcExplanation
+        });
+
+      } catch (err) {
+        console.error(err);
+        logToTerminal(`❌ 분석 오류 발생: ${err.message}`);
+        alert(`분석 중 오류가 발생했습니다: ${err.message}`);
+      } finally {
+        btnStartAnalysis.disabled = false;
+        btnRunText.textContent = '분석 시작';
+      }
+    }
+
+    // Render Results
+    function displayResults(res) {
+      document.getElementById('resAnalysisTarget').textContent = `대상: ${res.filename}`;
+      document.getElementById('resMpdSum').textContent = res.mpdSum.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+      document.getElementById('resAdSum').textContent = res.adSum.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+      document.getElementById('resWeights').textContent = `+${res.weights}`;
+      document.getElementById('resTatDays').textContent = res.tatDays;
+      document.getElementById('resTotalMhSub').textContent = `총 작업 공수(Total M/H): ${res.total.toLocaleString('ko-KR', {minimumFractionDigits: 1, maximumFractionDigits: 1})} M/H`;
+      document.getElementById('resCalculationLogic').textContent = res.calcExplanation;
+
+      const container = document.getElementById('resReasonsContainer');
+      container.innerHTML = '';
+
+      res.reasons.forEach(item => {
+        const card = document.createElement('div');
+        card.className = `p-3.5 rounded-xl border text-xs leading-relaxed transition-all ${
+          item.isNa ? 'bg-gray-50/60 border-gray-200' : 'bg-white border-orange-200/80 shadow-sm'
+        }`;
+
+        const badgeBg = item.isNa ? 'bg-gray-200 text-gray-600' : 'bg-orange-100 text-brand-orange';
+        const weightColor = item.isNa ? 'text-gray-400' : 'text-brand-orange font-bold';
+
+        let taskItemsHtml = '';
+        if (item.taskItems && item.taskItems.length > 0) {
+          taskItemsHtml = `
+            <div class="mt-2 p-2 bg-gray-50 rounded-lg border border-gray-200 space-y-1">
+              ${item.taskItems.map(t => `<div class="text-gray-700 flex items-start space-x-1"><span class="text-brand-orange font-bold">•</span><span>${t}</span></div>`).join('')}
+            </div>
+          `;
+        }
+
+        let descHtml = '';
+        if (item.reason) {
+          descHtml += `<p class="text-gray-500 mt-1"><span class="font-medium text-gray-700">사유:</span> ${item.reason}</p>`;
+        }
+        if (item.note) {
+          descHtml += `<p class="text-gray-400 mt-0.5"><span class="font-medium text-gray-600">비고:</span> ${item.note}</p>`;
+        }
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="px-2 py-0.5 rounded text-[11px] font-bold ${badgeBg}">${item.tag}</span>
+              <span class="font-bold text-gray-800">${item.title}</span>
+            </div>
+            <span class="${weightColor}">${item.weight}</span>
+          </div>
+          ${taskItemsHtml}
+          ${descHtml}
+        `;
+
+        container.appendChild(card);
+      });
+
+      // Switch View
+      inputView.classList.add('hidden');
+      resultView.classList.remove('hidden');
+    }
+
+    // Back to Input
+    btnBackToInput.addEventListener('click', () => {
+      resultView.classList.add('hidden');
+      inputView.classList.remove('hidden');
+      setProgress(0, '시스템 준비됨');
+    });
+
+    btnStartAnalysis.addEventListener('click', analyzeWP);
+  </script>
+</body>
+</html>
