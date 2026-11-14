@@ -11,7 +11,7 @@
   <script src="vendor/xlsx.full.min.js"></script>
   <script>
     if (typeof XLSX === 'undefined') {
-      document.write('<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"><\/script>');
+      document.write('<scr' + 'ipt src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></scr' + 'ipt>');
     }
   </script>
 
@@ -19,7 +19,7 @@
   <script src="vendor/tailwind.min.js"></script>
   <script>
     if (typeof tailwind === 'undefined') {
-      document.write('<script src="https://cdn.tailwindcss.com"><\/script>');
+      document.write('<scr' + 'ipt src="https://cdn.tailwindcss.com"></scr' + 'ipt>');
     }
   </script>
   <script>
@@ -518,13 +518,26 @@
 
             <div class="h-6 w-px bg-gray-200 mx-1 hidden sm:block"></div>
 
-            <!-- Aircraft Selection Dropdown -->
-            <div class="flex items-center space-x-2">
-              <label for="chkAircraftSelect" class="text-xs font-bold text-gray-700 whitespace-nowrap">대상 항공기:</label>
-              <select id="chkAircraftSelect"
-                class="text-xs font-semibold bg-orange-50/70 border border-orange-200 text-gray-800 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-orange cursor-pointer">
-                <option value="DEFAULT">⭐ [공통 / 표준 체크리스트]</option>
-              </select>
+            <!-- Searchable Aircraft Combobox (Direct typing & number filtering) -->
+            <div class="flex items-center space-x-2 relative" id="chkComboboxContainer">
+              <label for="chkAircraftInput" class="text-xs font-bold text-gray-700 whitespace-nowrap">대상 항공기:</label>
+              <div class="relative w-64 sm:w-72">
+                <div class="flex items-center relative">
+                  <input type="text" id="chkAircraftInput"
+                    placeholder="기번 입력/검색 (예: 8032)"
+                    autocomplete="off"
+                    class="w-full text-xs font-semibold bg-orange-50/80 border border-orange-200 text-gray-800 rounded-lg pl-2.5 pr-7 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-orange shadow-2xs transition-all cursor-pointer">
+                  <button type="button" id="chkAircraftToggleBtn" class="absolute right-2 text-gray-400 hover:text-brand-orange text-[10px] cursor-pointer" title="전체 목록 열기/닫기">
+                    ▼
+                  </button>
+                </div>
+                <input type="hidden" id="chkAircraftValue" value="DEFAULT">
+
+                <!-- Dropdown List Options -->
+                <div id="chkAircraftDropdownList" class="hidden absolute left-0 top-full mt-1 w-full max-h-64 overflow-y-auto bg-white border border-gray-200 rounded-xl shadow-xl z-50 divide-y divide-gray-100 text-xs">
+                  <!-- Populated dynamically based on typed text -->
+                </div>
+              </div>
             </div>
 
             <!-- Optional MRO info & Date -->
@@ -1973,7 +1986,20 @@
     }
 
     // Checklist DOM Elements
-    const chkAircraftSelect = document.getElementById('chkAircraftSelect');
+    // Checklist DOM Elements & Combobox
+    const chkAircraftInput = document.getElementById('chkAircraftInput');
+    const chkAircraftToggleBtn = document.getElementById('chkAircraftToggleBtn');
+    const chkAircraftValue = document.getElementById('chkAircraftValue');
+    const chkAircraftDropdownList = document.getElementById('chkAircraftDropdownList');
+
+    // Compatibility proxy so existing code using chkAircraftSelect works seamlessly
+    const chkAircraftSelect = {
+      get value() { return chkAircraftValue.value; },
+      set value(v) { selectAircraft(v, false); },
+      addEventListener: function(event, callback) {
+        // Handled directly inside selectAircraft
+      }
+    };
     const chkMroInput = document.getElementById('chkMroInput');
     const chkDateInput = document.getElementById('chkDateInput');
     const btnChkPrint = document.getElementById('btnChkPrint');
@@ -2016,22 +2042,131 @@
     // State Variables
     let currentActiveCat = 'all'; // 'all', 'cat1', 'cat2', 'cat3'
 
-    // Populate Aircraft Select with 45 Aircraft + Default
+    let aircraftListData = [];
+
+    // Populate Aircraft Combobox with 45 Aircraft + Default
     function initAircraftSelect() {
+      aircraftListData = [
+        { value: 'DEFAULT', label: '⭐ [공통 / 표준 체크리스트]', searchKey: '공통 표준 default' }
+      ];
+
       const tails = Object.keys(DEFAULT_AIRCRAFT_STATUS).sort();
       tails.forEach(tail => {
-        const opt = document.createElement('option');
-        opt.value = tail;
         const mfgDate = DEFAULT_AIRCRAFT_STATUS[tail];
         const age = calculateYearsFrom(mfgDate);
         const ageStr = age !== null ? `${age.toFixed(1)}년` : '-';
-        opt.textContent = `${tail} (기령 ${ageStr}, 제조 ${mfgDate})`;
-        chkAircraftSelect.appendChild(opt);
+        const numOnly = tail.replace(/\D/g, '');
+        aircraftListData.push({
+          value: tail,
+          label: `${tail} (기령 ${ageStr}, 제조 ${mfgDate})`,
+          shortLabel: tail,
+          searchKey: `${tail} ${numOnly} ${mfgDate}`.toLowerCase()
+        });
       });
 
+      let initialTail = 'DEFAULT';
       if (checklistStorage._lastSelectedTail && (checklistStorage._lastSelectedTail === 'DEFAULT' || DEFAULT_AIRCRAFT_STATUS[checklistStorage._lastSelectedTail])) {
-        chkAircraftSelect.value = checklistStorage._lastSelectedTail;
+        initialTail = checklistStorage._lastSelectedTail;
       }
+      selectAircraft(initialTail, false);
+      setupComboboxEvents();
+    }
+
+    function filterAircraftList(query) {
+      chkAircraftDropdownList.innerHTML = '';
+      const q = (query || '').trim().toLowerCase();
+
+      const matched = aircraftListData.filter(item => {
+        if (!q) return true;
+        return item.searchKey.includes(q) || item.label.toLowerCase().includes(q);
+      });
+
+      if (matched.length === 0) {
+        chkAircraftDropdownList.innerHTML = '<div class="py-3 px-3 text-center text-gray-400 text-xs">일치하는 항공기 기번이 없습니다.</div>';
+        chkAircraftDropdownList.classList.remove('hidden');
+        return;
+      }
+
+      matched.forEach(item => {
+        const div = document.createElement('div');
+        const isCurrent = item.value === chkAircraftValue.value;
+        div.className = `py-2 px-3 cursor-pointer flex items-center justify-between hover:bg-orange-50 transition-colors ${isCurrent ? 'bg-orange-50/80 font-bold text-brand-orange' : 'text-gray-700'}`;
+        
+        let displayHtml = escapeHtml(item.label);
+        if (q && q.length >= 2) {
+          const reg = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+          displayHtml = displayHtml.replace(reg, '<span class="bg-orange-200 text-orange-900 rounded px-0.5 font-black">$1</span>');
+        }
+
+        div.innerHTML = `
+          <div class="truncate">${displayHtml}</div>
+          ${isCurrent ? '<span class="text-xs text-brand-orange font-bold ml-1">✓</span>' : ''}
+        `;
+
+        div.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          selectAircraft(item.value, true);
+        });
+
+        chkAircraftDropdownList.appendChild(div);
+      });
+
+      chkAircraftDropdownList.classList.remove('hidden');
+    }
+
+    function selectAircraft(tail, triggerRender = true) {
+      const found = aircraftListData.find(a => a.value === tail) || aircraftListData[0];
+      chkAircraftValue.value = found.value;
+      chkAircraftInput.value = found.label;
+      chkAircraftDropdownList.classList.add('hidden');
+
+      if (triggerRender) {
+        saveChecklistStorage();
+        renderChecklist();
+      }
+    }
+
+    function setupComboboxEvents() {
+      chkAircraftInput.addEventListener('focus', () => {
+        chkAircraftInput.select();
+        filterAircraftList(chkAircraftInput.value);
+      });
+
+      chkAircraftInput.addEventListener('input', () => {
+        filterAircraftList(chkAircraftInput.value);
+      });
+
+      chkAircraftToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (chkAircraftDropdownList.classList.contains('hidden')) {
+          chkAircraftInput.focus();
+          filterAircraftList('');
+        } else {
+          chkAircraftDropdownList.classList.add('hidden');
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#chkComboboxContainer')) {
+          chkAircraftDropdownList.classList.add('hidden');
+          const cur = aircraftListData.find(a => a.value === chkAircraftValue.value);
+          if (cur) chkAircraftInput.value = cur.label;
+        }
+      });
+
+      chkAircraftInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const firstOption = chkAircraftDropdownList.querySelector('div[class*="cursor-pointer"]');
+          if (firstOption) {
+            firstOption.dispatchEvent(new MouseEvent('mousedown'));
+          }
+        } else if (e.key === 'Escape') {
+          chkAircraftDropdownList.classList.add('hidden');
+          const cur = aircraftListData.find(a => a.value === chkAircraftValue.value);
+          if (cur) chkAircraftInput.value = cur.label;
+        }
+      });
     }
 
     function getTailData(tail) {
