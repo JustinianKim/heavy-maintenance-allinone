@@ -675,74 +675,49 @@
         </div>
       </div>
 
-      <!-- Filter, Search & Batch Bar (Hidden in Print) -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 no-print space-y-3">
-        <!-- Category Tabs & Quick Batch Actions -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
-          <!-- Category Tabs -->
-          <div class="flex items-center space-x-1 overflow-x-auto text-xs pb-1 sm:pb-0" id="chkCatTabs">
-            <button data-cat="all"
-              class="chk-cat-tab active px-3 py-1.5 font-bold rounded-lg bg-orange-500 text-white shadow-2xs transition-all cursor-pointer">
-              전체 (162)
-            </button>
-            <button data-cat="cat1"
-              class="chk-cat-tab px-3 py-1.5 font-semibold rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all cursor-pointer">
-              1. 입고 전 (36)
-            </button>
-            <button data-cat="cat2"
-              class="chk-cat-tab px-3 py-1.5 font-semibold rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all cursor-pointer">
-              2. 입고 & 수행 중 (115)
-            </button>
-            <button data-cat="cat3"
-              class="chk-cat-tab px-3 py-1.5 font-semibold rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all cursor-pointer">
-              3. 완료 후 (11)
-            </button>
-          </div>
-
-          <!-- Batch Actions -->
-          <div class="flex items-center space-x-2 text-xs">
-            <button id="btnChkBatchCheck"
-              class="px-2.5 py-1 font-semibold rounded border border-gray-200 bg-white hover:bg-gray-50 text-emerald-700 transition-colors shadow-2xs cursor-pointer">
-              ✓ 현재 표시 항목 전체 완료
-            </button>
-            <button id="btnChkBatchUncheck"
-              class="px-2.5 py-1 font-semibold rounded border border-gray-200 bg-white hover:bg-gray-50 text-gray-500 transition-colors shadow-2xs cursor-pointer">
-              ✕ 현재 표시 항목 전체 해제
-            </button>
-          </div>
-        </div>
-
-        <!-- Secondary Filters: Status, Lead Team, Search -->
-        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-xs">
-          <!-- Status Filter -->
-          <div class="sm:col-span-3">
+      <!-- Filter, Search & Batch Bar (Compact Single Row, Hidden in Print) -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-3 sm:p-4 no-print">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 text-xs">
+          <!-- Filters & Search -->
+          <div class="flex flex-col sm:flex-row sm:items-center gap-2.5 flex-1">
+            <!-- Status Filter -->
             <select id="chkStatusFilter"
-              class="w-full border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 bg-white focus:outline-none focus:ring-1 focus:ring-brand-orange">
+              class="border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 bg-white focus:outline-none focus:ring-1 focus:ring-brand-orange cursor-pointer">
               <option value="all">모든 진행상태</option>
               <option value="pending">⏳ 미완료 항목만 (Pending)</option>
               <option value="completed">✅ 완료된 항목만 (Done)</option>
             </select>
-          </div>
 
-          <!-- Department Filter -->
-          <div class="sm:col-span-3">
+            <!-- Department Filter -->
             <select id="chkDeptFilter"
-              class="w-full border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 bg-white focus:outline-none focus:ring-1 focus:ring-brand-orange">
+              class="border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 bg-white focus:outline-none focus:ring-1 focus:ring-brand-orange cursor-pointer">
               <option value="all">모든 주관부서</option>
               <option value="생산계획팀">생산계획팀</option>
               <option value="정비팀">정비팀</option>
               <option value="정비기재팀">정비기재팀</option>
               <option value="정비품질팀">정비품질팀</option>
             </select>
+
+            <!-- Search Input -->
+            <div class="relative flex-1 min-w-[200px]">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-gray-400">🔍</span>
+              <input type="text" id="chkSearchInput" placeholder="업무명, 코드(1-1, 2-5), 비고/메모 실시간 검색..."
+                class="w-full border border-gray-200 rounded-lg pl-8 pr-8 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-orange">
+              <button id="chkSearchClear"
+                class="hidden absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-400 hover:text-gray-600">✕</button>
+            </div>
           </div>
 
-          <!-- Search Input -->
-          <div class="sm:col-span-6 relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-gray-400">🔍</span>
-            <input type="text" id="chkSearchInput" placeholder="업무명, 코드(1-1, 2-5), 비고/메모 실시간 검색..."
-              class="w-full border border-gray-200 rounded-lg pl-8 pr-8 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-orange">
-            <button id="chkSearchClear"
-              class="hidden absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-400 hover:text-gray-600">✕</button>
+          <!-- Quick Batch Actions -->
+          <div class="flex items-center space-x-2 shrink-0">
+            <button id="btnChkBatchCheck"
+              class="px-2.5 py-1.5 font-semibold rounded-lg border border-gray-200 bg-white hover:bg-emerald-50 text-emerald-700 transition-colors shadow-2xs cursor-pointer" title="현재 화면에 표시된 항목 일괄 완료">
+              ✓ 표시 항목 전체 완료
+            </button>
+            <button id="btnChkBatchUncheck"
+              class="px-2.5 py-1.5 font-semibold rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-500 transition-colors shadow-2xs cursor-pointer" title="현재 화면에 표시된 항목 일괄 해제">
+              ✕ 표시 항목 전체 해제
+            </button>
           </div>
         </div>
       </div>
@@ -2036,7 +2011,6 @@
     const cardCat2 = document.getElementById('cardCat2');
     const cardCat3 = document.getElementById('cardCat3');
 
-    const chkCatTabs = document.getElementById('chkCatTabs');
     const chkStatusFilter = document.getElementById('chkStatusFilter');
     const chkDeptFilter = document.getElementById('chkDeptFilter');
     const chkSearchInput = document.getElementById('chkSearchInput');
@@ -2432,37 +2406,37 @@
       saveChecklistStorage();
     });
 
-    // Category Tabs Click
-    chkCatTabs.addEventListener('click', (e) => {
-      const btn = e.target.closest('.chk-cat-tab');
-      if (!btn) return;
-      document.querySelectorAll('.chk-cat-tab').forEach(b => {
-        b.classList.remove('active', 'bg-orange-500', 'text-white', 'shadow-2xs');
-        b.classList.add('bg-gray-100', 'text-gray-700');
-      });
-      btn.classList.add('active', 'bg-orange-500', 'text-white', 'shadow-2xs');
-      btn.classList.remove('bg-gray-100', 'text-gray-700');
-      currentActiveCat = btn.dataset.cat;
-      renderChecklist();
-    });
+    // Category Selection Handler with Card Highlighting
+    function setActiveCat(catId) {
+      currentActiveCat = catId; // 'all', 'cat1', 'cat2', 'cat3'
 
-    // Category Cards Direct Click
-    cardCatAll.addEventListener('click', () => {
-      const btn = chkCatTabs.querySelector('[data-cat="all"]');
-      if (btn) btn.click();
-    });
-    cardCat1.addEventListener('click', () => {
-      const btn = chkCatTabs.querySelector('[data-cat="cat1"]');
-      if (btn) btn.click();
-    });
-    cardCat2.addEventListener('click', () => {
-      const btn = chkCatTabs.querySelector('[data-cat="cat2"]');
-      if (btn) btn.click();
-    });
-    cardCat3.addEventListener('click', () => {
-      const btn = chkCatTabs.querySelector('[data-cat="cat3"]');
-      if (btn) btn.click();
-    });
+      const cardConfigs = [
+        { id: 'cardCatAll', key: 'all', active: 'ring-2 ring-brand-orange border-brand-orange shadow-md' },
+        { id: 'cardCat1', key: 'cat1', active: 'ring-2 ring-blue-500 border-blue-500 shadow-md' },
+        { id: 'cardCat2', key: 'cat2', active: 'ring-2 ring-amber-500 border-amber-500 shadow-md' },
+        { id: 'cardCat3', key: 'cat3', active: 'ring-2 ring-emerald-500 border-emerald-500 shadow-md' }
+      ];
+
+      cardConfigs.forEach(c => {
+        const el = document.getElementById(c.id);
+        if (!el) return;
+        const activeClasses = c.active.split(' ');
+        if (c.key === catId) {
+          el.classList.add(...activeClasses);
+          el.classList.remove('border-gray-200');
+        } else {
+          el.classList.remove(...activeClasses);
+          el.classList.add('border-gray-200');
+        }
+      });
+
+      renderChecklist();
+    }
+
+    cardCatAll.addEventListener('click', () => setActiveCat('all'));
+    cardCat1.addEventListener('click', () => setActiveCat('cat1'));
+    cardCat2.addEventListener('click', () => setActiveCat('cat2'));
+    cardCat3.addEventListener('click', () => setActiveCat('cat3'));
 
     // Filters & Search
     chkStatusFilter.addEventListener('change', renderChecklist);
@@ -2588,7 +2562,7 @@
 
     // Initialize Checklist
     initAircraftSelect();
-    renderChecklist();
+    setActiveCat('all');
 
   </script>
 </body>
