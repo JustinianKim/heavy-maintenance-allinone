@@ -1380,7 +1380,8 @@
           if (mfgDate) sourceDesc = '업로드 상태 파일';
         }
         if (!mfgDate && DEFAULT_AIRCRAFT_STATUS[hl]) {
-          mfgDate = DEFAULT_AIRCRAFT_STATUS[hl];
+          const info = DEFAULT_AIRCRAFT_STATUS[hl];
+          mfgDate = typeof info === 'string' ? info : info.mfg;
           sourceDesc = '내장 기령 DB';
         }
 
@@ -2020,15 +2021,22 @@
 
       const tails = Object.keys(DEFAULT_AIRCRAFT_STATUS).sort();
       tails.forEach(tail => {
-        const mfgDate = DEFAULT_AIRCRAFT_STATUS[tail];
+        const info = DEFAULT_AIRCRAFT_STATUS[tail];
+        const mfgDate = typeof info === 'string' ? info : info.mfg;
+        const redelDate = typeof info === 'object' ? info.redel : null;
+
         const age = calculateYearsFrom(mfgDate);
         const ageStr = age !== null ? `${age.toFixed(1)}년` : '-';
+
+        const remStr = calculateRemainingYears(redelDate);
+        const extraLabel = remStr ? `, ${remStr}` : '';
+
         const numOnly = tail.replace(/\D/g, '');
         aircraftListData.push({
           value: tail,
-          label: `${tail} (기령 ${ageStr}, 제조 ${mfgDate})`,
+          label: `${tail} (기령 ${ageStr}${extraLabel})`,
           shortLabel: tail,
-          searchKey: `${tail} ${numOnly} ${mfgDate}`.toLowerCase()
+          searchKey: `${tail} ${numOnly} ${extraLabel}`.toLowerCase()
         });
       });
 
@@ -2337,10 +2345,14 @@
       chkCat3ProgressBar.style.width = `${cat3Percent}%`;
 
       // Update Print Header Details
-      const mfg = DEFAULT_AIRCRAFT_STATUS[currentTail];
+      const info = DEFAULT_AIRCRAFT_STATUS[currentTail];
+      const mfg = typeof info === 'string' ? info : (info ? info.mfg : null);
+      const redel = typeof info === 'object' && info ? info.redel : null;
       const age = calculateYearsFrom(mfg);
       const ageStr = age !== null ? `${age.toFixed(1)}년` : '-';
-      const tailLabel = `${currentTail} (B737-800, 기령 ${ageStr})`;
+      const remStr = calculateRemainingYears(redel);
+      const printExtra = remStr ? `, ${remStr}` : '';
+      const tailLabel = `${currentTail} (B737-800, 기령 ${ageStr}${printExtra})`;
       document.getElementById('printTailNumber').textContent = tailLabel;
       const mroText = (tailData.mro ? tailData.mro + ' / ' : '') + (tailData.inputDate || '미정');
       document.getElementById('printMroSchedule').textContent = mroText;
