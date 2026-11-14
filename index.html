@@ -2295,14 +2295,14 @@
           </div>`;
         }
 
-        // Departments formatted
+        // Departments formatted (Stacked vertically with aligned labels)
         const leadBadges = item.lead.split('\n').filter(Boolean).map(l =>
-          `<span class="inline-block px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold text-[10px]">${escapeHtml(l)}</span>`
-        ).join(' ');
+          `<span class="inline-block px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold text-[10px] whitespace-nowrap">${escapeHtml(l)}</span>`
+        ).join('');
 
         const relBadges = item.related ? item.related.split('\n').filter(Boolean).map(r =>
-          `<span class="inline-block px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px]">${escapeHtml(r)}</span>`
-        ).join(' ') : '';
+          `<span class="inline-block px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 text-[10px] whitespace-nowrap">${escapeHtml(r)}</span>`
+        ).join('') : '';
 
         const tr = document.createElement('tr');
         tr.className = `checklist-item transition-colors hover:bg-orange-50/20 ${isChecked ? 'bg-emerald-50/30' : ''}`;
@@ -2320,11 +2320,20 @@
             <div class="font-semibold text-gray-900 ${isChecked ? 'line-through text-gray-400' : ''}">${escapeHtml(item.title)}</div>
             ${sublinesHtml}
           </td>
-          <td class="py-2.5 px-3 align-top space-y-1">
-            <div>
-              <span class="text-[9px] text-gray-400 font-bold mr-1">주관:</span>${leadBadges}
+          <td class="py-2.5 px-3 align-top space-y-1.5 whitespace-nowrap">
+            <div class="flex items-start space-x-1.5">
+              <span class="text-[10px] text-gray-400 font-bold shrink-0 pt-0.5">주관:</span>
+              <div class="flex flex-col space-y-1">
+                ${leadBadges}
+              </div>
             </div>
-            ${relBadges ? `<div><span class="text-[9px] text-gray-400 font-bold mr-1">유관:</span>${relBadges}</div>` : ''}
+            ${relBadges ? `
+            <div class="flex items-start space-x-1.5">
+              <span class="text-[10px] text-gray-400 font-bold shrink-0 pt-0.5">유관:</span>
+              <div class="flex flex-col space-y-1">
+                ${relBadges}
+              </div>
+            </div>` : ''}
           </td>
           <td class="py-2.5 px-3 align-top">
             <textarea rows="1" data-id="${item.id}" class="chk-row-notes w-full text-xs p-1.5 rounded border border-gray-200 focus:border-brand-orange focus:ring-1 focus:ring-brand-orange resize-y placeholder-gray-300 transition-colors" placeholder="메모 입력">${escapeHtml(itemState.notes || '')}</textarea>
