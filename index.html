@@ -486,7 +486,7 @@
             <p class="text-xs text-gray-600 mt-0.5">Heavy Maintenance Check List (생산계획팀 Rev.7 기준)</p>
           </div>
           <div class="text-right text-xs text-gray-600 space-y-0.5">
-            <p><strong>관리 항공기:</strong> <span id="printTailNumber">공통 / 표준</span></p>
+            <p><strong>관리 항공기:</strong> <span id="printTailNumber">-</span></p>
             <p><strong>MRO / 일정:</strong> <span id="printMroSchedule">-</span></p>
             <p><strong>출력 일시:</strong> <span id="printTimestamp"></span></p>
           </div>
@@ -2053,11 +2053,9 @@
 
     let aircraftListData = [];
 
-    // Populate Aircraft Combobox with 45 Aircraft + Default
+    // Populate Aircraft Combobox with 45 Fleet Aircraft
     function initAircraftSelect() {
-      aircraftListData = [
-        { value: 'DEFAULT', label: '⭐ [공통 / 표준 체크리스트]', searchKey: '공통 표준 default' }
-      ];
+      aircraftListData = [];
 
       const tails = Object.keys(DEFAULT_AIRCRAFT_STATUS).sort();
       tails.forEach(tail => {
@@ -2073,8 +2071,8 @@
         });
       });
 
-      let initialTail = 'DEFAULT';
-      if (checklistStorage._lastSelectedTail && (checklistStorage._lastSelectedTail === 'DEFAULT' || DEFAULT_AIRCRAFT_STATUS[checklistStorage._lastSelectedTail])) {
+      let initialTail = tails[0] || 'HL7213';
+      if (checklistStorage._lastSelectedTail && DEFAULT_AIRCRAFT_STATUS[checklistStorage._lastSelectedTail]) {
         initialTail = checklistStorage._lastSelectedTail;
       }
       selectAircraft(initialTail, false);
@@ -2371,13 +2369,10 @@
       chkCat3ProgressBar.style.width = `${cat3Percent}%`;
 
       // Update Print Header Details
-      let tailLabel = '공통 / 표준 체크리스트';
-      if (currentTail !== 'DEFAULT') {
-        const mfg = DEFAULT_AIRCRAFT_STATUS[currentTail];
-        const age = calculateYearsFrom(mfg);
-        const ageStr = age !== null ? `${age.toFixed(1)}년` : '-';
-        tailLabel = `${currentTail} (B737-800, 기령 ${ageStr})`;
-      }
+      const mfg = DEFAULT_AIRCRAFT_STATUS[currentTail];
+      const age = calculateYearsFrom(mfg);
+      const ageStr = age !== null ? `${age.toFixed(1)}년` : '-';
+      const tailLabel = `${currentTail} (B737-800, 기령 ${ageStr})`;
       document.getElementById('printTailNumber').textContent = tailLabel;
       const mroText = (tailData.mro ? tailData.mro + ' / ' : '') + (tailData.inputDate || '미정');
       document.getElementById('printMroSchedule').textContent = mroText;
@@ -2532,8 +2527,7 @@
     // Reset Checklist
     btnChkReset.addEventListener('click', () => {
       const currentTail = chkAircraftSelect.value;
-      const tailLabel = currentTail === 'DEFAULT' ? '공통/표준' : currentTail;
-      if (!confirm(`[${tailLabel}] 체크리스트의 모든 체크 상태와 작성된 메모를 초기화하시겠습니까?`)) return;
+      if (!confirm(`[${currentTail}] 체크리스트의 모든 체크 상태와 작성된 메모를 초기화하시겠습니까?`)) return;
 
       delete checklistStorage[currentTail];
       saveChecklistStorage();
@@ -2552,10 +2546,9 @@
     btnChkExcel.addEventListener('click', () => {
       const currentTail = chkAircraftSelect.value;
       const tailData = getTailData(currentTail);
-      const tailLabel = currentTail === 'DEFAULT' ? '공통_표준' : currentTail;
       const now = new Date();
       const dateStr = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
-      const fileName = `중정비_체크리스트_${tailLabel}_${dateStr}.xlsx`;
+      const fileName = `중정비_체크리스트_${currentTail}_${dateStr}.xlsx`;
 
       const rows = [
         ['카테고리', '번호', '필수(OR)', '수행 업무 내용', '주관부서', '유관부서', '진행상태', '완료일시', '비고/진행메모']
