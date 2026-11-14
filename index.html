@@ -122,9 +122,14 @@
 
         <!-- Aircraft Status File Dropzone -->
         <div class="space-y-1.5">
-          <label class="block text-sm font-semibold text-gray-700">
-            2. 항공기 상태 파일 (Aircraft Status) <span class="text-brand-orange">*</span>
-          </label>
+          <div class="flex items-center justify-between">
+            <label class="block text-sm font-semibold text-gray-700">
+              2. 항공기 상태 파일 (Aircraft Status)
+            </label>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">
+              선택 사항 (미등록 시 제주항공 45대 기령 DB 자동 활용)
+            </span>
+          </div>
           <div id="stDropzone" class="relative border-2 border-dashed border-gray-300 hover:border-brand-orange rounded-xl p-5 text-center transition-colors cursor-pointer bg-gray-50/50 hover:bg-orange-50/30 group">
             <input type="file" id="stFileInput" accept=".xlsx, .xls" class="hidden">
             <div id="stEmptyState" class="flex flex-col items-center justify-center space-y-2 pointer-events-none">
@@ -132,8 +137,8 @@
                 🛩
               </div>
               <div>
-                <p class="text-sm font-medium text-gray-700">클릭하거나 파일을 여기로 드래그 앤 드롭</p>
-                <p class="text-xs text-gray-400">지원 형식: .xlsx, .xls</p>
+                <p class="text-sm font-medium text-gray-700">최신 파일이 있다면 클릭하거나 여기로 드래그 앤 드롭</p>
+                <p class="text-xs text-gray-400">비워둘 경우 내장된 기령 데이터(45대)로 자동 판정됩니다</p>
               </div>
             </div>
             <div id="stSelectedState" class="hidden flex items-center justify-between bg-white p-3 rounded-lg border border-blue-200">
@@ -365,6 +370,55 @@
       "57-180-01-01","57-826-01-01","57-180-02-01","57-896-02-01","57-190-01-01",
       "57-830-01-01","57-190-02-01","57-900-02-01"
     ]);
+
+    // Built-in Aircraft Status Database (Jeju Air Fleet: 45 aircraft based on OPSPEC D085)
+    const DEFAULT_AIRCRAFT_STATUS = {
+      "HL7213": "2009-09-02",
+      "HL8031": "2010-12-23",
+      "HL8032": "2010-03-10",
+      "HL8034": "2011-10-18",
+      "HL8051": "2008-04-17",
+      "HL8061": "2008-12-10",
+      "HL8062": "2008-12-19",
+      "HL8063": "2009-01-22",
+      "HL8064": "2009-05-07",
+      "HL8087": "2009-11-05",
+      "HL8089": "2009-09-11",
+      "HL8090": "2009-07-24",
+      "HL8295": "2006-02-08",
+      "HL8301": "2007-06-08",
+      "HL8302": "2005-05-04",
+      "HL8303": "2005-06-23",
+      "HL8304": "2010-03-03",
+      "HL8305": "2010-08-10",
+      "HL8321": "2007-01-23",
+      "HL8322": "2007-02-21",
+      "HL8331": "2011-09-29",
+      "HL8332": "2011-12-19",
+      "HL8333": "2012-05-21",
+      "HL8334": "2012-06-11",
+      "HL8335": "2012-07-02",
+      "HL8336": "2012-08-27",
+      "HL8337": "2011-04-19",
+      "HL8339": "2011-06-06",
+      "HL8050": "2008-04-10",
+      "HL8539": "2008-04-10",
+      "HL8527": "2001-11-06",
+      "HL8523": "2023-11-29",
+      "HL8524": "2023-11-03",
+      "HL8552": "2025-01-31",
+      "HL8553": "2025-05-21",
+      "HL8554": "2025-06-26",
+      "HL8555": "2025-07-17",
+      "HL8592": "2025-10-14",
+      "HL8593": "2025-10-29",
+      "HL8594": "2026-02-03",
+      "HL8719": "2026-03-18",
+      "HL8739": "2026-05-13",
+      "HL8740": "2026-05-21",
+      "HL8765": "2026-07-30",
+      "HL8766": "2026-10-26"
+    };
 
     // Global App State
     let wpFile = null;
@@ -650,8 +704,8 @@
 
     // Core Analysis Engine
     async function analyzeWP() {
-      if (!wpFile || !stFile) {
-        alert('Work Package 파일과 항공기 상태 파일을 모두 선택해 주세요.');
+      if (!wpFile) {
+        alert('Work Package 엑셀 파일을 먼저 선택해 주세요.');
         return;
       }
 
@@ -659,7 +713,11 @@
       btnRunText.textContent = '분석 진행 중...';
       logToTerminal('================= 분석 프로세스 시작 =================');
       logToTerminal(`Work Package: ${wpFile.name}`);
-      logToTerminal(`Aircraft Status: ${stFile.name}`);
+      if (stFile) {
+        logToTerminal(`Aircraft Status: ${stFile.name} (사용자 업로드 파일)`);
+      } else {
+        logToTerminal('Aircraft Status: 미등록 ➔ 제주항공 45대 내장 기령 DB 자동 활용');
+      }
 
       try {
         const reasons = [];
@@ -705,11 +763,24 @@
         }
 
         // 2. HL Age
-        setProgress(12, '항공기 상태 파일에서 기령(제작일) 확인 중...');
+        setProgress(12, '항공기 기령(제작일) 확인 중...');
         const hl = extractHL(filename);
         if (hl) {
-          logToTerminal(`파일명에서 기번 ${hl} 추출 완료. 제작일 검색 중...`);
-          const mfgDate = await getMfgDateFromStatus(stFile, hl);
+          let mfgDate = null;
+          let sourceDesc = '';
+
+          if (stFile) {
+            logToTerminal(`파일명에서 기번 ${hl} 추출 완료. 업로드된 상태 파일에서 제작일 검색 중...`);
+            mfgDate = await getMfgDateFromStatus(stFile, hl);
+            if (mfgDate) sourceDesc = '업로드 상태 파일';
+          }
+
+          if (!mfgDate && DEFAULT_AIRCRAFT_STATUS[hl]) {
+            mfgDate = DEFAULT_AIRCRAFT_STATUS[hl];
+            sourceDesc = '내장 기령 DB';
+            logToTerminal(`기번 [${hl}] 제작일 확인 (내장 기령 DB 활용): ${mfgDate}`);
+          }
+
           const years = calculateYearsFrom(mfgDate);
           if (years && years >= 15) {
             weights += 30;
@@ -717,29 +788,29 @@
               tag: '노후 항공기',
               title: `${hl} 기령 ${years.toFixed(1)}년 확인`,
               weight: '+30 M/H',
-              reason: '15년 이상의 기령은 균열과 부식에 취약함',
+              reason: `15년 이상의 기령은 균열과 부식에 취약함 (${sourceDesc} 기준)`,
               note: '',
               isNa: false,
               taskItems: []
             });
-            logToTerminal(`[노후 항공기] ${hl} 기령 ${years.toFixed(1)}년 확인 (+30 M/H)`);
+            logToTerminal(`[노후 항공기] ${hl} 기령 ${years.toFixed(1)}년 확인 (+30 M/H, ${sourceDesc})`);
           } else if (years) {
             reasons.push({
               tag: '노후 항공기',
               title: `해당 없음 (${hl}, 기령: ${years.toFixed(1)}년)`,
               weight: '미적용',
-              reason: '',
+              reason: `기령 15년 미만 (${sourceDesc} 기준)`,
               note: '',
               isNa: true,
               taskItems: []
             });
-            logToTerminal(`[노후 항공기] ${hl} 기령 ${years.toFixed(1)}년 (15년 미만으로 미적용)`);
+            logToTerminal(`[노후 항공기] ${hl} 기령 ${years.toFixed(1)}년 (15년 미만으로 미적용, ${sourceDesc})`);
           } else {
             reasons.push({
               tag: '노후 항공기',
               title: `${hl} 제작일 정보 없음`,
               weight: '미적용',
-              reason: '',
+              reason: '상태 파일 및 내장 DB에서 기번 일치 항목을 찾을 수 없음',
               note: '',
               isNa: true,
               taskItems: []
