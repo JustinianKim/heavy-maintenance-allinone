@@ -506,6 +506,101 @@
         </div>
       </div>
 
+      <!-- Ferry Flight Live Radar & Records Card (Collapsible) -->
+      <div id="ferryFlightCard" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all no-print mb-4">
+        <!-- Header Bar / Quick Summary -->
+        <div id="ferryToggleHeader" class="p-3 sm:px-4 bg-gray-50 hover:bg-orange-50/50 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer select-none transition-colors">
+          <div class="flex items-center space-x-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <div class="flex items-center space-x-2">
+              <span class="font-bold text-gray-900 text-xs sm:text-sm">공수비행 현황 (Ferry Flight)</span>
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-orange-100 text-brand-orange border border-orange-200 font-mono">편명: 7C*M</span>
+            </div>
+            <span id="ferryQuickSummary" class="text-xs text-gray-500 hidden md:inline truncate"></span>
+          </div>
+
+          <div class="flex items-center space-x-2 shrink-0">
+            <!-- Flight Number Quick Input -->
+            <div class="relative" onclick="event.stopPropagation()">
+              <input type="text" id="ferrySearchInput" placeholder="공수편명 입력 (예: 7C8032M)"
+                class="w-44 sm:w-52 text-xs font-mono font-semibold bg-white border border-gray-300 rounded-lg pl-2.5 pr-14 py-1 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-orange uppercase">
+              <button type="button" id="btnFerrySearch"
+                class="absolute right-1 top-1/2 -translate-y-1/2 px-2 py-0.5 text-[11px] font-bold rounded bg-brand-orange hover:bg-orange-600 text-white transition-colors cursor-pointer">
+                조회
+              </button>
+            </div>
+
+            <!-- Toggle Button -->
+            <button type="button" id="btnToggleFerry" class="px-2 py-1 text-gray-500 hover:text-gray-800 text-xs font-semibold rounded hover:bg-gray-200/60 transition-colors flex items-center space-x-1 cursor-pointer">
+              <span id="ferryToggleText">접기</span>
+              <span id="ferryToggleArrow" class="inline-block transition-transform duration-200">▲</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Collapsible Content Body -->
+        <div id="ferryContentBody" class="p-4 space-y-4 bg-white">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            
+            <!-- Left: Radar Screen (7 cols) -->
+            <div class="lg:col-span-7 flex flex-col space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-bold text-gray-800">실시간 항공 레이더</span>
+                  <span id="ferryActiveCallsignBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700">동아시아 MRO 공역</span>
+                </div>
+                <div class="flex items-center space-x-2 text-xs">
+                  <button type="button" id="btnRadarFr24" class="px-2.5 py-0.5 rounded font-semibold text-[11px] bg-brand-orange text-white cursor-pointer transition-colors">Flightradar24</button>
+                  <button type="button" id="btnRadarAdsb" class="px-2.5 py-0.5 rounded font-semibold text-[11px] bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer transition-colors">ADS-B Globe</button>
+                  <a id="linkExternalFr24" href="https://www.flightradar24.com" target="_blank" rel="noopener noreferrer"
+                    class="text-[11px] text-gray-500 hover:text-brand-orange font-semibold underline ml-1"
+                    title="Flightradar24 사이트에서 직접 조회">
+                    새 탭 열기 ↗
+                  </a>
+                </div>
+              </div>
+
+              <!-- Iframe Container -->
+              <div class="w-full h-80 sm:h-96 rounded-xl border border-gray-200 overflow-hidden relative bg-slate-900 shadow-inner">
+                <iframe id="ferryRadarIframe"
+                  src="https://www.flightradar24.com/simple?lat=33.5&lon=125.5&z=6&label1=reg"
+                  class="w-full h-full border-0"
+                  allowfullscreen
+                  loading="lazy"></iframe>
+              </div>
+
+              <div class="flex flex-wrap items-center justify-between text-[11px] text-gray-400 gap-2 pt-0.5">
+                <span>인천(ICN), 김포(GMP), 광저우(CAN), 샤먼(XMN), 싱가포르(SIN) C-Check 공수 이동 모니터링</span>
+                <span id="ferryCurrentAircraftTrack" class="text-gray-700 font-semibold"></span>
+              </div>
+            </div>
+
+            <!-- Right: Ferry Flight Records & Schedule Table (5 cols) -->
+            <div class="lg:col-span-5 flex flex-col space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-gray-800">최근 공수비행 이착륙 기록</span>
+                <button type="button" id="btnAddFerryRecord" class="text-[11px] font-semibold text-brand-orange hover:underline cursor-pointer">
+                  + 공수편 등록
+                </button>
+              </div>
+
+              <!-- Records List Container -->
+              <div class="h-80 sm:h-96 overflow-y-auto border border-gray-200 rounded-xl divide-y divide-gray-100 text-xs bg-gray-50/30">
+                <div id="ferryRecordsList" class="divide-y divide-gray-100">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between text-[11px] text-gray-400 pt-0.5">
+                <span>항목 클릭 시 해당 항공기 체크리스트가 자동 선택됩니다.</span>
+                <button type="button" id="btnExportFerry" class="text-gray-600 hover:text-gray-900 font-semibold underline cursor-pointer">Excel 저장</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
       <!-- Top Controller Card: Aircraft Selector & Action Buttons (Hidden in Print) -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-5 no-print">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -848,6 +943,80 @@
           닫기
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Ferry Flight Add/Edit Modal -->
+  <div id="ferryModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4" style="overscroll-behavior: contain;">
+    <div class="bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-md overflow-hidden animate-scale-in">
+      <div class="bg-gray-50 px-5 py-3.5 border-b border-gray-200 flex items-center justify-between">
+        <h3 class="text-sm font-bold text-gray-900">공수비행(Ferry Flight) 등록</h3>
+        <button id="btnCloseFerryModal" class="text-gray-400 hover:text-gray-600 text-base font-bold cursor-pointer">✕</button>
+      </div>
+      <form id="ferryAddForm" class="p-5 space-y-3.5 text-xs">
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">공수 편명 <span class="text-brand-orange">* (7C*M 형식)</span></label>
+          <input type="text" id="ferryFormFlightNo" placeholder="예: 7C8032M" required
+            class="w-full border border-gray-300 rounded-lg px-3 py-1.5 font-mono uppercase focus:outline-none focus:ring-1 focus:ring-brand-orange">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">대상 항공기 <span class="text-brand-orange">*</span></label>
+            <select id="ferryFormTail" required class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-orange">
+              <!-- Populated dynamically with 45 fleet aircraft -->
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">비행 상태 <span class="text-brand-orange">*</span></label>
+            <select id="ferryFormStatus" class="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-orange">
+              <option value="착륙완료">착륙완료</option>
+              <option value="비행중">비행중</option>
+              <option value="예정">예정</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">출발 공항 <span class="text-brand-orange">*</span></label>
+            <input type="text" id="ferryFormOrigin" placeholder="예: ICN (인천)" required
+              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-orange">
+          </div>
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">도착 공항 <span class="text-brand-orange">*</span></label>
+            <input type="text" id="ferryFormDest" placeholder="예: CAN (광저우)" required
+              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-orange">
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">비행 일자</label>
+            <input type="date" id="ferryFormDate" class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] focus:outline-none focus:ring-1 focus:ring-brand-orange">
+          </div>
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">출발 시각 (STD)</label>
+            <input type="time" id="ferryFormStd" class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] focus:outline-none focus:ring-1 focus:ring-brand-orange">
+          </div>
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">도착 시각 (STA)</label>
+            <input type="time" id="ferryFormSta" class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-[11px] focus:outline-none focus:ring-1 focus:ring-brand-orange">
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">공수 목적</label>
+          <input type="text" id="ferryFormPurpose" placeholder="예: C-Check 중정비 입고"
+            class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-orange">
+        </div>
+        <div class="pt-2 flex items-center justify-end space-x-2 border-t">
+          <button type="button" id="btnCancelFerryModal"
+            class="px-3.5 py-1.5 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 font-semibold cursor-pointer">
+            취소
+          </button>
+          <button type="submit"
+            class="px-4 py-1.5 rounded-lg bg-brand-orange hover:bg-orange-600 text-white font-bold cursor-pointer transition-colors shadow-sm">
+            등록 저장
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -2044,6 +2213,344 @@
 
     let aircraftListData = [];
 
+
+    // =========================================================================
+    // MODULE: FERRY FLIGHT CONTROLLER (7C*M Monitor & Radar Integration)
+    // =========================================================================
+    const FERRY_STORAGE_KEY = 'JEJU_HM_FERRY_RECORDS_V1';
+    const DEFAULT_FERRY_RECORDS = [
+      { id: 1, flightNo: "7C8032M", tail: "HL8032", origin: "ICN (인천)", dest: "CAN (광저우)", date: "2026-11-10", std: "09:15", sta: "12:30", status: "착륙완료", purpose: "C-CHK 입고" },
+      { id: 2, flightNo: "7C8061M", tail: "HL8061", origin: "CAN (광저우)", dest: "ICN (인천)", date: "2026-11-08", std: "14:20", sta: "18:40", status: "착륙완료", purpose: "C-CHK 출고" },
+      { id: 3, flightNo: "7C7213M", tail: "HL7213", origin: "GMP (김포)", dest: "XMN (샤먼)", date: "2026-11-14", std: "10:00", sta: "13:10", status: "착륙완료", purpose: "C-CHK 입고" },
+      { id: 4, flightNo: "7C8305M", tail: "HL8305", origin: "ICN (인천)", dest: "CAN (광저우)", date: "2026-11-16", std: "09:00", sta: "12:15", status: "예정", purpose: "C-CHK 입고" }
+    ];
+
+    let ferryRecords = [];
+
+    const ferryFlightCard = document.getElementById('ferryFlightCard');
+    const ferryToggleHeader = document.getElementById('ferryToggleHeader');
+    const ferryContentBody = document.getElementById('ferryContentBody');
+    const btnToggleFerry = document.getElementById('btnToggleFerry');
+    const ferryToggleText = document.getElementById('ferryToggleText');
+    const ferryToggleArrow = document.getElementById('ferryToggleArrow');
+    const ferryQuickSummary = document.getElementById('ferryQuickSummary');
+    const ferrySearchInput = document.getElementById('ferrySearchInput');
+    const btnFerrySearch = document.getElementById('btnFerrySearch');
+    const ferryRadarIframe = document.getElementById('ferryRadarIframe');
+    const btnRadarFr24 = document.getElementById('btnRadarFr24');
+    const btnRadarAdsb = document.getElementById('btnRadarAdsb');
+    const linkExternalFr24 = document.getElementById('linkExternalFr24');
+    const ferryActiveCallsignBadge = document.getElementById('ferryActiveCallsignBadge');
+    const ferryCurrentAircraftTrack = document.getElementById('ferryCurrentAircraftTrack');
+    const ferryRecordsList = document.getElementById('ferryRecordsList');
+    const btnAddFerryRecord = document.getElementById('btnAddFerryRecord');
+    const btnExportFerry = document.getElementById('btnExportFerry');
+
+    const ferryModal = document.getElementById('ferryModal');
+    const btnCloseFerryModal = document.getElementById('btnCloseFerryModal');
+    const btnCancelFerryModal = document.getElementById('btnCancelFerryModal');
+    const ferryAddForm = document.getElementById('ferryAddForm');
+    const ferryFormTail = document.getElementById('ferryFormTail');
+
+    function loadFerryRecords() {
+      try {
+        const stored = localStorage.getItem(FERRY_STORAGE_KEY);
+        if (stored) {
+          ferryRecords = JSON.parse(stored);
+        } else {
+          ferryRecords = [...DEFAULT_FERRY_RECORDS];
+          saveFerryRecords();
+        }
+      } catch (e) {
+        ferryRecords = [...DEFAULT_FERRY_RECORDS];
+      }
+    }
+
+    function saveFerryRecords() {
+      try {
+        localStorage.setItem(FERRY_STORAGE_KEY, JSON.stringify(ferryRecords));
+      } catch (e) {
+        console.error('Ferry save error:', e);
+      }
+    }
+
+    function renderFerryRecords() {
+      ferryRecordsList.innerHTML = '';
+      if (!ferryRecords || ferryRecords.length === 0) {
+        ferryRecordsList.innerHTML = '<div class="py-6 text-center text-gray-400">등록된 공수비행 기록이 없습니다.</div>';
+        ferryQuickSummary.textContent = '등록된 공수편 없음';
+        return;
+      }
+
+      // Sort by date/id descending
+      const sorted = [...ferryRecords].sort((a, b) => (b.date || '').localeCompare(a.date || '') || b.id - a.id);
+
+      // Update Quick Summary
+      const inFlight = sorted.find(r => r.status === '비행중');
+      if (inFlight) {
+        ferryQuickSummary.innerHTML = `<span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">비행중</span> <strong class="text-gray-900">${inFlight.flightNo}</strong> (${inFlight.tail}) ${inFlight.origin} → ${inFlight.dest}`;
+      } else {
+        const latest = sorted[0];
+        ferryQuickSummary.innerHTML = `<span class="text-gray-600">최근 공수:</span> <strong class="text-gray-800 font-mono">${latest.flightNo}</strong> (${latest.tail}) ${latest.origin} → ${latest.dest} <span class="text-gray-400">(${latest.status})</span>`;
+      }
+
+      sorted.forEach(record => {
+        const div = document.createElement('div');
+        div.className = 'p-2.5 hover:bg-orange-50/60 transition-colors cursor-pointer flex items-center justify-between gap-2 group';
+
+        let statusClass = 'bg-gray-100 text-gray-700 border-gray-200';
+        if (record.status === '비행중') statusClass = 'bg-emerald-100 text-emerald-800 border-emerald-300 font-bold';
+        else if (record.status === '예정') statusClass = 'bg-amber-100 text-amber-800 border-amber-300 font-semibold';
+
+        div.innerHTML = `
+          <div class="flex flex-col min-w-0 flex-1">
+            <div class="flex items-center space-x-1.5">
+              <span class="font-mono font-black text-gray-900 text-xs">${escapeHtml(record.flightNo)}</span>
+              <span class="font-bold text-brand-orange text-[11px]">${escapeHtml(record.tail)}</span>
+              <span class="text-[10px] px-1.5 py-0.2 rounded border ${statusClass}">${escapeHtml(record.status)}</span>
+            </div>
+            <div class="text-[11px] text-gray-600 mt-0.5 truncate">
+              <span>${escapeHtml(record.origin)} → ${escapeHtml(record.dest)}</span>
+              <span class="text-gray-400 text-[10px] ml-1">(${record.date || ''} ${record.std || ''})</span>
+            </div>
+            ${record.purpose ? `<div class="text-[10px] text-gray-400 truncate">${escapeHtml(record.purpose)}</div>` : ''}
+          </div>
+          <div class="flex items-center space-x-1 shrink-0">
+            <button type="button" class="btn-ferry-track px-2 py-0.5 text-[10px] font-bold rounded bg-white hover:bg-brand-orange hover:text-white border border-gray-200 transition-colors cursor-pointer shadow-2xs"
+              title="해당 편명 실시간 추적">
+              레이더
+            </button>
+            <button type="button" class="btn-ferry-del p-1 text-gray-300 hover:text-red-500 rounded text-xs cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+              title="기록 삭제">✕</button>
+          </div>
+        `;
+
+        // Row Click: Select Aircraft & Focus Radar
+        div.addEventListener('click', (e) => {
+          if (e.target.closest('.btn-ferry-del')) return;
+          trackFerryFlight(record);
+        });
+
+        const delBtn = div.querySelector('.btn-ferry-del');
+        delBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (!confirm(`[${record.flightNo}] 공수비행 기록을 삭제하시겠습니까?`)) return;
+          ferryRecords = ferryRecords.filter(r => r.id !== record.id);
+          saveFerryRecords();
+          renderFerryRecords();
+        });
+
+        ferryRecordsList.appendChild(div);
+      });
+    }
+
+    function trackFerryFlight(record) {
+      if (!record) return;
+      ferrySearchInput.value = record.flightNo;
+      ferryActiveCallsignBadge.textContent = `${record.flightNo} (${record.tail})`;
+      linkExternalFr24.href = `https://www.flightradar24.com/data/flights/${record.flightNo.toLowerCase()}`;
+      linkExternalFr24.textContent = `${record.flightNo} Flightradar24 ↗`;
+
+      ferryCurrentAircraftTrack.textContent = `추적: ${record.flightNo} (${record.tail}) [${record.origin} → ${record.dest}]`;
+
+      // Automatically select aircraft in Checklist combobox
+      if (record.tail && DEFAULT_AIRCRAFT_STATUS[record.tail]) {
+        selectAircraft(record.tail, true);
+      }
+
+      // If collapsed, open it
+      if (ferryContentBody.classList.contains('hidden')) {
+        toggleFerrySection(true);
+      }
+    }
+
+    function toggleFerrySection(expand) {
+      const shouldOpen = expand !== undefined ? expand : ferryContentBody.classList.contains('hidden');
+      if (shouldOpen) {
+        ferryContentBody.classList.remove('hidden');
+        ferryToggleText.textContent = '접기';
+        ferryToggleArrow.textContent = '▲';
+        localStorage.setItem('JEJU_HM_FERRY_EXPANDED', 'true');
+      } else {
+        ferryContentBody.classList.add('hidden');
+        ferryToggleText.textContent = '펼치기';
+        ferryToggleArrow.textContent = '▼';
+        localStorage.setItem('JEJU_HM_FERRY_EXPANDED', 'false');
+      }
+    }
+
+    function initFerryFlightModule() {
+      loadFerryRecords();
+      renderFerryRecords();
+
+      // Populate tail options in modal
+      ferryFormTail.innerHTML = '';
+      const tails = Object.keys(DEFAULT_AIRCRAFT_STATUS).sort();
+      tails.forEach(tail => {
+        const opt = document.createElement('option');
+        opt.value = tail;
+        opt.textContent = tail;
+        ferryFormTail.appendChild(opt);
+      });
+
+      // Toggle events
+      ferryToggleHeader.addEventListener('click', () => toggleFerrySection());
+      btnToggleFerry.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleFerrySection();
+      });
+
+      // Search Handler
+      const doSearch = () => {
+        const query = ferrySearchInput.value.trim().toUpperCase();
+        if (!query) {
+          ferryRadarIframe.src = 'https://www.flightradar24.com/simple?lat=33.5&lon=125.5&z=6&label1=reg';
+          ferryActiveCallsignBadge.textContent = '동아시아 MRO 공역';
+          linkExternalFr24.href = 'https://www.flightradar24.com';
+          linkExternalFr24.textContent = '새 탭 열기 ↗';
+          return;
+        }
+
+        // Check if query matches a record
+        const matched = ferryRecords.find(r => r.flightNo.toUpperCase() === query || r.tail.toUpperCase() === query);
+        if (matched) {
+          trackFerryFlight(matched);
+        } else {
+          ferryActiveCallsignBadge.textContent = query;
+          if (query.startsWith('HL')) {
+            linkExternalFr24.href = `https://www.flightradar24.com/data/aircraft/${query.toLowerCase()}`;
+            linkExternalFr24.textContent = `${query} Flightradar24 ↗`;
+            if (DEFAULT_AIRCRAFT_STATUS[query]) selectAircraft(query, true);
+          } else {
+            linkExternalFr24.href = `https://www.flightradar24.com/data/flights/${query.toLowerCase()}`;
+            linkExternalFr24.textContent = `${query} Flightradar24 ↗`;
+          }
+        }
+        if (ferryContentBody.classList.contains('hidden')) toggleFerrySection(true);
+      };
+
+      btnFerrySearch.addEventListener('click', doSearch);
+      ferrySearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          doSearch();
+        }
+      });
+
+      // Radar Source Switchers
+      btnRadarFr24.addEventListener('click', () => {
+        btnRadarFr24.className = 'px-2.5 py-0.5 rounded font-semibold text-[11px] bg-brand-orange text-white cursor-pointer transition-colors';
+        btnRadarAdsb.className = 'px-2.5 py-0.5 rounded font-semibold text-[11px] bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer transition-colors';
+        ferryRadarIframe.src = 'https://www.flightradar24.com/simple?lat=33.5&lon=125.5&z=6&label1=reg';
+      });
+
+      btnRadarAdsb.addEventListener('click', () => {
+        btnRadarAdsb.className = 'px-2.5 py-0.5 rounded font-semibold text-[11px] bg-brand-orange text-white cursor-pointer transition-colors';
+        btnRadarFr24.className = 'px-2.5 py-0.5 rounded font-semibold text-[11px] bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer transition-colors';
+        ferryRadarIframe.src = 'https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6';
+      });
+
+      // Modal Handlers
+      const openModal = () => {
+        ferryAddForm.reset();
+        const curTail = chkAircraftSelect.value;
+        if (curTail && DEFAULT_AIRCRAFT_STATUS[curTail]) {
+          ferryFormTail.value = curTail;
+          const numOnly = curTail.replace(/\D/g, '');
+          document.getElementById('ferryFormFlightNo').value = `7C${numOnly}M`;
+        }
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('ferryFormDate').value = today;
+        ferryModal.classList.remove('hidden');
+      };
+
+      const closeModal = () => {
+        ferryModal.classList.add('hidden');
+      };
+
+      btnAddFerryRecord.addEventListener('click', openModal);
+      btnCloseFerryModal.addEventListener('click', closeModal);
+      btnCancelFerryModal.addEventListener('click', closeModal);
+      ferryModal.addEventListener('click', (e) => {
+        if (e.target === ferryModal) closeModal();
+      });
+
+      ferryAddForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fNo = document.getElementById('ferryFormFlightNo').value.trim().toUpperCase();
+        const tail = ferryFormTail.value;
+        const origin = document.getElementById('ferryFormOrigin').value.trim();
+        const dest = document.getElementById('ferryFormDest').value.trim();
+        const status = document.getElementById('ferryFormStatus').value;
+        const date = document.getElementById('ferryFormDate').value;
+        const std = document.getElementById('ferryFormStd').value;
+        const sta = document.getElementById('ferryFormSta').value;
+        const purpose = document.getElementById('ferryFormPurpose').value.trim();
+
+        if (!fNo) {
+          alert('공수 편명을 입력해 주세요.');
+          return;
+        }
+
+        const newRec = {
+          id: Date.now(),
+          flightNo: fNo,
+          tail: tail,
+          origin: origin,
+          dest: dest,
+          status: status,
+          date: date,
+          std: std,
+          sta: sta,
+          purpose: purpose || 'C-Check 공수비행'
+        };
+
+        ferryRecords.unshift(newRec);
+        saveFerryRecords();
+        renderFerryRecords();
+        closeModal();
+        trackFerryFlight(newRec);
+      });
+
+      // Export Ferry Excel
+      btnExportFerry.addEventListener('click', () => {
+        if (!ferryRecords || ferryRecords.length === 0) {
+          alert('저장할 공수비행 기록이 없습니다.');
+          return;
+        }
+        const now = new Date();
+        const dateStr = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+        const rows = [
+          ['공수편명', '기번', '출발공항', '도착공항', '일자', '출발시각(STD)', '도착시각(STA)', '비행상태', '공수목적']
+        ];
+        ferryRecords.forEach(r => {
+          rows.push([
+            r.flightNo,
+            r.tail,
+            r.origin,
+            r.dest,
+            r.date || '',
+            r.std || '',
+            r.sta || '',
+            r.status || '',
+            r.purpose || ''
+          ]);
+        });
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, '공수비행현황');
+        XLSX.writeFile(wb, `제주항공_중정비_공수비행현황_${dateStr}.xlsx`);
+      });
+
+      // Initial expand state from localStorage (default expanded)
+      const storedExpanded = localStorage.getItem('JEJU_HM_FERRY_EXPANDED');
+      if (storedExpanded === 'false') {
+        toggleFerrySection(false);
+      } else {
+        toggleFerrySection(true);
+      }
+    }
+
     // Populate Aircraft Combobox with 45 Fleet Aircraft
     function initAircraftSelect() {
       aircraftListData = [];
@@ -2164,6 +2671,16 @@
       chkAircraftValue.value = found.value;
       chkAircraftInput.value = found.label;
       chkAircraftDropdownList.classList.add('hidden');
+
+      // Update Ferry Flight status banner for selected aircraft
+      if (typeof ferryRecords !== 'undefined' && typeof ferryCurrentAircraftTrack !== 'undefined' && ferryCurrentAircraftTrack) {
+        const relatedFerry = ferryRecords.find(r => r.tail === found.value);
+        if (relatedFerry) {
+          ferryCurrentAircraftTrack.textContent = `연계 공수: ${relatedFerry.flightNo} [${relatedFerry.origin} → ${relatedFerry.dest}] (${relatedFerry.status})`;
+        } else {
+          ferryCurrentAircraftTrack.textContent = `${found.value} 공수비행 이력 없음`;
+        }
+      }
 
       if (triggerRender) {
         saveChecklistStorage();
@@ -2708,6 +3225,7 @@
 
     // Initialize Checklist
     initAircraftSelect();
+    initFerryFlightModule();
     setActiveCat('all');
 
   </script>
