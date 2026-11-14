@@ -176,7 +176,7 @@
           <h1 class="text-xl font-black tracking-tight">
             중정비 All in One
           </h1>
-          <p class="text-xs text-orange-100 -mt-0.5">Heavy Maintenance Integrated Engineering &amp; Planning Hub</p>
+          
         </div>
       </div>
       <div class="flex items-center space-x-2.5">
@@ -507,7 +507,7 @@
                   <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-orange-100 text-brand-orange">Rev.7
                     생산계획파트</span>
                 </h2>
-                <p class="text-xs text-gray-400 mt-0.5">162개 표준 C-Check 점검항목 &bull; 실시간 진척도 &bull; 자동 로컬 저장</p>
+                
               </div>
             </div>
 
@@ -593,10 +593,7 @@
                 style="width: 0%"></div>
             </div>
           </div>
-          <div class="flex items-center justify-between text-[11px]">
-            <p id="chkRemainingText" class="text-gray-400 font-medium">미완료 162건 남음</p>
-            <span class="text-brand-orange font-semibold group-hover:underline">전체 보기 &rarr;</span>
-          </div>
+          <p id="chkRemainingText" class="text-[11px] text-gray-400 font-medium">미완료 162건 남음</p>
         </div>
 
         <!-- Category 1 Card -->
@@ -617,7 +614,7 @@
                 style="width: 0%"></div>
             </div>
           </div>
-          <span class="text-[11px] text-blue-500 group-hover:underline">이 단계만 필터링 &rarr;</span>
+          
         </div>
 
         <!-- Category 2 Card -->
@@ -638,7 +635,7 @@
                 style="width: 0%"></div>
             </div>
           </div>
-          <span class="text-[11px] text-amber-600 group-hover:underline">이 단계만 필터링 &rarr;</span>
+          
         </div>
 
         <!-- Category 3 Card -->
@@ -659,7 +656,7 @@
                 style="width: 0%"></div>
             </div>
           </div>
-          <span class="text-[11px] text-emerald-600 group-hover:underline">이 단계만 필터링 &rarr;</span>
+          
         </div>
       </div>
 
@@ -671,15 +668,15 @@
             <!-- Status Filter -->
             <select id="chkStatusFilter"
               class="border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 bg-white focus:outline-none focus:ring-1 focus:ring-brand-orange cursor-pointer">
-              <option value="all">모든 진행상태</option>
-              <option value="pending">미완료 항목만</option>
-              <option value="completed">완료된 항목만</option>
+              <option value="all">전체 상태</option>
+              <option value="pending">미완료</option>
+              <option value="completed">완료</option>
             </select>
 
             <!-- Department Filter -->
             <select id="chkDeptFilter"
               class="border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 bg-white focus:outline-none focus:ring-1 focus:ring-brand-orange cursor-pointer">
-              <option value="all">모든 주관부서</option>
+              <option value="all">전체 부서</option>
               <option value="생산계획파트">생산계획파트</option>
               <option value="정비팀">정비팀</option>
               <option value="정비기재팀">정비기재팀</option>
@@ -689,7 +686,7 @@
             <!-- Search Input -->
             <div class="relative flex-1 min-w-[200px]">
               <span class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-gray-400">🔍</span>
-              <input type="text" id="chkSearchInput" placeholder="업무명, 코드(1-1, 2-5), 비고/메모 실시간 검색..."
+              <input type="text" id="chkSearchInput" placeholder="업무명, 코드, 비고 검색..."
                 class="w-full border border-gray-200 rounded-lg pl-8 pr-8 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-orange">
               <button id="chkSearchClear"
                 class="hidden absolute inset-y-0 right-0 flex items-center pr-2.5 text-gray-400 hover:text-gray-600">✕</button>
@@ -718,9 +715,9 @@
               <tr class="bg-gray-50 border-b border-gray-200 text-gray-700 font-bold select-none">
                 <th class="py-3 px-3 w-14 text-center">완료</th>
                 <th class="py-3 px-3 w-20 text-center">코드</th>
-                <th class="py-3 px-3 min-w-[320px]">수행 업무 (Task Details)</th>
-                <th class="py-3 px-3 w-40">주관 / 유관부서</th>
-                <th class="py-3 px-3 w-52">진행 비고 / 메모</th>
+                <th class="py-3 px-3 min-w-[320px]">수행 업무</th>
+                <th class="py-3 px-3 w-40">담당 부서</th>
+                <th class="py-3 px-3 w-52">비고</th>
               </tr>
             </thead>
             <tbody id="chkItemsTableBody" class="divide-y divide-gray-100">
@@ -2281,7 +2278,7 @@
             ${relBadges ? `<div><span class="text-[9px] text-gray-400 font-bold mr-1">유관:</span>${relBadges}</div>` : ''}
           </td>
           <td class="py-2.5 px-3 align-top">
-            <textarea rows="1" data-id="${item.id}" class="chk-row-notes w-full text-xs p-1.5 rounded border border-gray-200 focus:border-brand-orange focus:ring-1 focus:ring-brand-orange resize-y placeholder-gray-300 transition-colors" placeholder="진행 상황/비고 메모...">${escapeHtml(itemState.notes || '')}</textarea>
+            <textarea rows="1" data-id="${item.id}" class="chk-row-notes w-full text-xs p-1.5 rounded border border-gray-200 focus:border-brand-orange focus:ring-1 focus:ring-brand-orange resize-y placeholder-gray-300 transition-colors" placeholder="메모 입력">${escapeHtml(itemState.notes || '')}</textarea>
           </td>
         `;
 
