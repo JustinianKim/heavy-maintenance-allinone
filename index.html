@@ -49,28 +49,49 @@
   <header class="bg-brand-orange text-white shadow-md sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center font-bold text-xl shadow-inner">
+        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center font-bold text-2xl shadow-inner">
           ✈
         </div>
         <div>
-          <h1 class="text-xl font-bold tracking-tight">Work Package 분석기</h1>
-          <p class="text-xs text-orange-100 -mt-0.5">Heavy Maintenance TAT & M/H Estimator &bull; 일괄 배치 지원</p>
+          <h1 class="text-xl font-black tracking-tight flex items-center space-x-2">
+            <span>중정비 All in One</span>
+            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white/25 text-white tracking-normal">Portal</span>
+          </h1>
+          <p class="text-xs text-orange-100 -mt-0.5">Heavy Maintenance Integrated Engineering &amp; Planning Hub</p>
         </div>
       </div>
       <div class="flex items-center space-x-3">
         <button id="btnOpenGuide" class="inline-flex items-center space-x-1 px-3 py-1.5 text-xs font-semibold rounded-md border border-white/60 hover:bg-white hover:text-brand-orange transition-all duration-150">
           <span>ⓘ</span>
-          <span>산출 기준 가이드</span>
+          <span>가중치 산출 기준</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Top-level Navigation Tabs -->
+    <div class="bg-brand-dark/35 backdrop-blur-xs border-t border-white/10 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto flex space-x-1 sm:space-x-3 text-xs sm:text-sm font-bold">
+        <button id="navTabWp" class="py-2.5 px-3.5 border-b-2 border-white text-white flex items-center space-x-1.5 transition-colors cursor-pointer">
+          <span>📊</span>
+          <span>Work Package 분석기</span>
+        </button>
+        <button id="navTabChecklist" class="py-2.5 px-3.5 border-b-2 border-transparent text-orange-100/70 hover:text-white hover:border-white/40 flex items-center space-x-1.5 transition-colors cursor-pointer">
+          <span>📋</span>
+          <span>중정비 업무 체크리스트</span>
+        </button>
+        <button id="navTabCabin" class="py-2.5 px-3.5 border-b-2 border-transparent text-orange-100/70 hover:text-white hover:border-white/40 flex items-center space-x-1.5 transition-colors cursor-pointer">
+          <span>🛋️</span>
+          <span>객실 오더 (Cabin Order)</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Grid Layout -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
 
-    <!-- Left Column: Input or Result Screen (7 cols) -->
-    <div class="lg:col-span-7 flex flex-col space-y-5">
+    <!-- ================= MODULE 1: WORK PACKAGE ANALYZER ================= -->
+    <div id="moduleWpAnalyzer" class="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
 
       <!-- ================= INPUT VIEW ================= -->
       <section id="inputView" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col space-y-5">
@@ -307,6 +328,53 @@
       </div>
     </div>
 
+    </div>
+    <!-- END MODULE 1 -->
+
+    <!-- ================= MODULE 2: HEAVY MAINTENANCE CHECKLIST ================= -->
+    <div id="moduleChecklist" class="hidden w-full space-y-6">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between pb-4 border-b">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 flex items-center space-x-2">
+              <span>📋 중정비 업무 체크리스트 (Heavy Maint Checklist)</span>
+            </h2>
+            <p class="text-xs text-gray-500 mt-0.5">C-Check 입고 전/중/출고 단계별 필수 점검 사항 및 부서별 업무 진행 현황 관리</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-orange-100 text-brand-orange text-xs font-bold">모듈 구축 대기 중</span>
+        </div>
+        <div class="py-16 text-center text-gray-500 space-y-3">
+          <div class="text-5xl">🛠️</div>
+          <h3 class="text-base font-bold text-gray-800">중정비 업무 체크리스트 화면</h3>
+          <p class="text-xs text-gray-500 max-w-md mx-auto leading-relaxed">
+            필요하신 체크리스트 항목(예: 입고 전 서류 확인, 자재 불출, 현장 검사관 확인, 출고 전 점검표 등)이나 양식을 말씀해주시면 즉시 이곳에 인터랙티브 기능으로 개발해 드립니다.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= MODULE 3: CABIN ORDER ================= -->
+    <div id="moduleCabinOrder" class="hidden w-full space-y-6">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between pb-4 border-b">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 flex items-center space-x-2">
+              <span>🛋️ 객실 오더 관리 (Cabin Work Order)</span>
+            </h2>
+            <p class="text-xs text-gray-500 mt-0.5">중정비 기간 중 객실(Cabin) 시트, 갤리, 라바토리, 카펫 등 정비 오더 및 결함(Defect) 관리</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-orange-100 text-brand-orange text-xs font-bold">모듈 구축 대기 중</span>
+        </div>
+        <div class="py-16 text-center text-gray-500 space-y-3">
+          <div class="text-5xl">💺</div>
+          <h3 class="text-base font-bold text-gray-800">객실 오더 관리 화면</h3>
+          <p class="text-xs text-gray-500 max-w-md mx-auto leading-relaxed">
+            객실 정비 오더 양식(Zone별 점검, 시트 커버/쿠션 교체, 갤리 장탈착 점검표 등)의 세부 요구사항을 말씀해주시면 바로 이곳에 완성해 드립니다.
+          </p>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- Guide Modal -->
@@ -468,6 +536,43 @@
     let wpFiles = []; // Array of File objects
     let stFile = null;
     let latestBatchResults = []; // Saved batch results for Excel export and switching details
+
+    // Navigation Tabs Elements
+    const navTabWp = document.getElementById('navTabWp');
+    const navTabChecklist = document.getElementById('navTabChecklist');
+    const navTabCabin = document.getElementById('navTabCabin');
+
+    const moduleWpAnalyzer = document.getElementById('moduleWpAnalyzer');
+    const moduleChecklist = document.getElementById('moduleChecklist');
+    const moduleCabinOrder = document.getElementById('moduleCabinOrder');
+
+    function switchModule(moduleName) {
+      [navTabWp, navTabChecklist, navTabCabin].forEach(tab => {
+        tab.classList.remove('border-white', 'text-white');
+        tab.classList.add('border-transparent', 'text-orange-100/70');
+      });
+      [moduleWpAnalyzer, moduleChecklist, moduleCabinOrder].forEach(mod => {
+        mod.classList.add('hidden');
+      });
+
+      if (moduleName === 'wp') {
+        navTabWp.classList.add('border-white', 'text-white');
+        navTabWp.classList.remove('border-transparent', 'text-orange-100/70');
+        moduleWpAnalyzer.classList.remove('hidden');
+      } else if (moduleName === 'checklist') {
+        navTabChecklist.classList.add('border-white', 'text-white');
+        navTabChecklist.classList.remove('border-transparent', 'text-orange-100/70');
+        moduleChecklist.classList.remove('hidden');
+      } else if (moduleName === 'cabin') {
+        navTabCabin.classList.add('border-white', 'text-white');
+        navTabCabin.classList.remove('border-transparent', 'text-orange-100/70');
+        moduleCabinOrder.classList.remove('hidden');
+      }
+    }
+
+    navTabWp.addEventListener('click', () => switchModule('wp'));
+    navTabChecklist.addEventListener('click', () => switchModule('checklist'));
+    navTabCabin.addEventListener('click', () => switchModule('cabin'));
 
     // DOM Elements
     const wpDropzone = document.getElementById('wpDropzone');
