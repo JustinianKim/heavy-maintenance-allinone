@@ -89,6 +89,11 @@
     }
 
     /* Print and Checklist Custom Styles */
+    @page {
+      margin: 8mm;
+      size: auto;
+    }
+
     @media print {
 
       body,
@@ -495,7 +500,7 @@
           <div class="text-right text-xs text-gray-600 space-y-0.5">
             <p><strong>관리 항공기:</strong> <span id="printTailNumber">-</span></p>
             <p><strong>MRO / 일정:</strong> <span id="printMroSchedule">-</span></p>
-            <p><strong>출력 일시:</strong> <span id="printTimestamp"></span></p>
+            
           </div>
         </div>
         <div class="mt-2.5 flex items-center justify-between text-xs bg-gray-100 p-2 rounded">
@@ -3106,9 +3111,6 @@
 
     // Print Capability
     btnChkPrint.addEventListener('click', () => {
-      const d = new Date();
-      const timeStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-      document.getElementById('printTimestamp').textContent = timeStr;
       window.print();
     });
 
