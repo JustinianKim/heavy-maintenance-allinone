@@ -581,12 +581,18 @@
               </div>
 
               <!-- Iframe Container -->
-              <div class="w-full h-96 sm:h-[440px] rounded-xl border border-gray-200 overflow-hidden relative bg-slate-900 shadow-inner">
+              <div class="w-full h-96 sm:h-[440px] rounded-xl border border-gray-200 overflow-hidden relative bg-slate-900 shadow-inner group">
                 <iframe id="ferryRadarIframe"
                   src="https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&hideButtons&filterCallSign=%287C.%2AM%7CJJA.%2AM%29"
-                  class="w-full h-full border-0"
+                  class="w-full h-full border-0 block"
                   allowfullscreen
                   loading="lazy"></iframe>
+
+                <!-- Clean Status Badge (Overlays & hides external ad 'Close' text) -->
+                <div class="absolute bottom-2 right-2 px-3 py-1 rounded-md bg-slate-900/90 text-[10px] font-mono text-slate-300 border border-slate-700/60 pointer-events-auto select-none shadow-sm flex items-center space-x-1.5 z-10" title="ADS-B 실시간 레이더 수신 중">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>ADS-B Live</span>
+                </div>
               </div>
             </div>
 
