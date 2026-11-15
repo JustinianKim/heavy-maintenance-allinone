@@ -113,8 +113,7 @@
       #moduleCabinOrder,
       .no-print,
       button,
-      #chkCatTabs,
-      #chkSearchClear {
+      #chkCatTabs {
         display: none !important;
       }
 
@@ -267,8 +266,7 @@
                 </div>
                 <div>
                   <p class="text-sm font-bold text-gray-800">클릭하거나 Work Package 파일(들)을 여기로 드래그 앤 드롭</p>
-                  <p class="text-xs text-gray-500 mt-0.5">여러 파일을 한 번에 선택 가능 &bull; 동일 기번 중복 시 <strong>최종 리비전 자동
-                      채택</strong></p>
+                  
                 </div>
               </div>
 
@@ -420,7 +418,7 @@
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-bold text-gray-800">항공기별 종합 분석 내역</h3>
-              <span class="text-[11px] text-gray-400">행을 클릭하면 세부 가중치 내역을 볼 수 있습니다</span>
+              
             </div>
             <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white">
               <table class="w-full text-left border-collapse text-xs">
@@ -479,11 +477,7 @@
             </div>
 
             <!-- Logic Formula Card -->
-            <div class="bg-orange-50/60 border border-orange-200 rounded-xl p-4 text-center">
-              <p class="text-xs font-bold text-brand-orange mb-1">최종 산출 근거 공식</p>
-              <p id="resCalculationLogic" class="text-xs text-gray-700 font-mono whitespace-pre-line leading-relaxed">
-              </p>
-            </div>
+            
           </div>
 
         </section>
@@ -681,7 +675,7 @@
                 style="width: 0%"></div>
             </div>
           </div>
-          <p id="chkRemainingText" class="text-[11px] text-gray-400 font-medium">미완료 162건 남음</p>
+          
         </div>
 
         <!-- Category 1 Card -->
@@ -2306,7 +2300,6 @@
     function renderSingleAircraftDetail(res) {
       document.getElementById('detailTargetHl').textContent = `${res.hl} (${res.cLevel}, ${res.revision})`;
       document.getElementById('detailTargetFilename').textContent = res.filename;
-      document.getElementById('resCalculationLogic').textContent = res.calcExplanation;
 
       const container = document.getElementById('resReasonsContainer');
       container.innerHTML = '';
@@ -2502,7 +2495,6 @@
     const chkStatusFilter = document.getElementById('chkStatusFilter');
     const chkDeptFilter = document.getElementById('chkDeptFilter');
     const chkSearchInput = document.getElementById('chkSearchInput');
-    const chkSearchClear = document.getElementById('chkSearchClear');
 
     const btnChkBatchCheck = document.getElementById('btnChkBatchCheck');
     const btnChkBatchUncheck = document.getElementById('btnChkBatchUncheck');
@@ -3025,7 +3017,6 @@
       chkOverallPercentBadge.textContent = `${overallPercent}%`;
       chkOverallCompletedText.textContent = totalCompleted;
       chkOverallProgressBar.style.width = `${overallPercent}%`;
-      chkRemainingText.textContent = `미완료 ${totalCount - totalCompleted}건 남음`;
 
       // Category 1: 36
       const cat1Percent = Math.round((cat1Completed / 36) * 100);
@@ -3173,12 +3164,6 @@
       } else {
         chkSearchClear.classList.add('hidden');
       }
-      renderChecklist();
-    });
-
-    chkSearchClear.addEventListener('click', () => {
-      chkSearchInput.value = '';
-      chkSearchClear.classList.add('hidden');
       renderChecklist();
     });
 
