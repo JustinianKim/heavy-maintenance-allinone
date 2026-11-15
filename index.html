@@ -309,19 +309,19 @@
             class="hidden space-y-1.5 p-4 bg-gray-50 rounded-xl border border-dashed border-gray-300">
             <div class="flex items-center justify-between">
               <label class="block text-xs font-bold text-gray-700">
-                최신 항공기 상태 파일 업로드 (선택 사항)
+                신규 기령 DB 파일 등록
               </label>
               <button type="button" id="btnCloseCustomStatus" class="text-xs text-gray-400 hover:text-gray-600">
                 접기 ✕
               </button>
             </div>
-            <p class="text-[11px] text-gray-500 mb-2">신규 도입기 등 최신 현황 파일이 있을 경우에만 업로드하세요. (미등록 시 내장 DB 적용)</p>
+            <p class="text-[11px] text-gray-500 mb-2">신규 도입기 등 기령 데이터 업데이트가 필요할 때 업로드하세요. (미등록 시 내장 DB 유지)</p>
             <div id="stDropzone"
-              class="relative border border-dashed border-gray-300 hover:border-blue-400 rounded-lg p-3 text-center transition-colors cursor-pointer bg-white hover:bg-blue-50/20 group">
+              class="relative border border-dashed border-gray-300 hover:border-emerald-400 rounded-lg p-3 text-center transition-colors cursor-pointer bg-white hover:bg-emerald-50/20 group">
               <input type="file" id="stFileInput" accept=".xlsx, .xls" class="hidden">
               <div id="stEmptyState" class="flex items-center justify-center space-x-2 pointer-events-none py-1">
                 <span class="text-base">🛩</span>
-                <p class="text-xs font-medium text-gray-600">클릭하거나 최신 상태 파일을 여기로 드래그 앤 드롭</p>
+                <p class="text-xs font-medium text-gray-600">새 기령 DB 파일을 여기에 드래그하거나 클릭하세요</p>
               </div>
               <div id="stSelectedState"
                 class="hidden flex items-center justify-between bg-blue-50/40 p-2 rounded border border-blue-200">
