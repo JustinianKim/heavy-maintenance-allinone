@@ -290,53 +290,26 @@
             </div>
           </div>
 
-          <!-- Built-in DB Active Banner & Optional Override Toggle -->
+          <!-- Built-in DB Active Banner & Direct File Change -->
           <div
             class="bg-emerald-50/80 border border-emerald-200 rounded-xl px-3.5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div class="flex items-center space-x-2">
-              <span
+            <input type="file" id="stFileInput" accept=".xlsx, .xls" class="hidden">
+            <div class="flex items-center space-x-2 truncate">
+              <span id="stStatusIcon"
                 class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
-              <p class="text-xs font-bold text-emerald-950">제주항공 45대 기령 DB 탑재 완료 (HL7213 ~ HL8766)</p>
+              <p id="stStatusText" class="text-xs font-bold text-emerald-950 truncate">제주항공 45대 기령 DB 탑재 완료 (HL7213 ~ HL8766)</p>
             </div>
-            <button type="button" id="btnToggleCustomStatus"
-              class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-white border border-emerald-300 hover:bg-emerald-100/70 text-emerald-800 transition-colors cursor-pointer shadow-2xs shrink-0 flex items-center space-x-1">
-              <span>🔄 DB 변경</span>
-            </button>
-          </div>
-
-          <!-- Aircraft Status File Dropzone (Collapsible Secondary Option) -->
-          <div id="stContainer"
-            class="hidden space-y-1.5 p-4 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-            <div class="flex items-center justify-between">
-              <label class="block text-xs font-bold text-gray-700">
-                신규 기령 DB 파일 등록
-              </label>
-              <button type="button" id="btnCloseCustomStatus" class="text-xs text-gray-400 hover:text-gray-600">
-                접기 ✕
+            <div class="flex items-center space-x-1.5 shrink-0">
+              <button type="button" id="btnToggleCustomStatus"
+                class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-white border border-emerald-300 hover:bg-emerald-100/70 text-emerald-800 transition-colors cursor-pointer shadow-2xs flex items-center space-x-1"
+                title="신규 기령 엑셀 파일 선택">
+                <span>🔄 DB 변경</span>
               </button>
-            </div>
-            <p class="text-[11px] text-gray-500 mb-2">신규 도입기 등 기령 데이터 업데이트가 필요할 때 업로드하세요. (미등록 시 내장 DB 유지)</p>
-            <div id="stDropzone"
-              class="relative border border-dashed border-gray-300 hover:border-emerald-400 rounded-lg p-3 text-center transition-colors cursor-pointer bg-white hover:bg-emerald-50/20 group">
-              <input type="file" id="stFileInput" accept=".xlsx, .xls" class="hidden">
-              <div id="stEmptyState" class="flex items-center justify-center space-x-2 pointer-events-none py-1">
-                <span class="text-base">🛩</span>
-                <p class="text-xs font-medium text-gray-600">새 기령 DB 파일을 여기에 드래그하거나 클릭하세요</p>
-              </div>
-              <div id="stSelectedState"
-                class="hidden flex items-center justify-between bg-blue-50/40 p-2 rounded border border-blue-200">
-                <div class="flex items-center space-x-2 overflow-hidden text-left">
-                  <span class="text-lg text-blue-600">📋</span>
-                  <div class="truncate">
-                    <p id="stFileName" class="text-xs font-bold text-gray-800 truncate"></p>
-                    <p id="stFileSize" class="text-[10px] text-gray-500"></p>
-                  </div>
-                </div>
-                <button type="button" id="stRemoveBtn" class="p-1 text-gray-400 hover:text-red-500 rounded"
-                  title="파일 삭제">
-                  ✕
-                </button>
-              </div>
+              <button type="button" id="btnResetCustomStatus"
+                class="hidden px-2 py-1 text-xs font-semibold rounded-lg bg-white border border-red-200 hover:bg-red-50 text-red-600 transition-colors cursor-pointer shadow-2xs"
+                title="내장 기령 DB로 복원">
+                <span>✕ 초기화</span>
+              </button>
             </div>
           </div>
 
@@ -1219,13 +1192,10 @@
     const wpClearAllBtn = document.getElementById('wpClearAllBtn');
     const wpAddMoreBtn = document.getElementById('wpAddMoreBtn');
 
-    const stDropzone = document.getElementById('stDropzone');
     const stFileInput = document.getElementById('stFileInput');
-    const stEmptyState = document.getElementById('stEmptyState');
-    const stSelectedState = document.getElementById('stSelectedState');
-    const stFileName = document.getElementById('stFileName');
-    const stFileSize = document.getElementById('stFileSize');
-    const stRemoveBtn = document.getElementById('stRemoveBtn');
+    const stStatusText = document.getElementById('stStatusText');
+    const btnToggleCustomStatus = document.getElementById('btnToggleCustomStatus');
+    const btnResetCustomStatus = document.getElementById('btnResetCustomStatus');
 
     const progressBarFill = document.getElementById('progressBarFill');
     const progressBarStatus = document.getElementById('progressBarStatus');
@@ -1371,74 +1341,46 @@
       if (e.target.files) addWpFiles(e.target.files);
     });
 
-    // Dropzone Events - ST
-    const stContainer = document.getElementById('stContainer');
-    const btnToggleCustomStatus = document.getElementById('btnToggleCustomStatus');
-    const btnCloseCustomStatus = document.getElementById('btnCloseCustomStatus');
-
-    btnToggleCustomStatus.addEventListener('click', () => {
-      stContainer.classList.toggle('hidden');
-    });
-
-    btnCloseCustomStatus.addEventListener('click', () => {
-      stContainer.classList.add('hidden');
-    });
-
+    // Custom Aircraft Status DB Handlers
     function setStFile(file) {
       stFile = file;
       if (file) {
-        stFileName.textContent = file.name;
-        stFileSize.textContent = formatBytes(file.size);
-        stEmptyState.classList.add('hidden');
-        stSelectedState.classList.remove('hidden');
-        logToTerminal(`항공기 상태 파일 등록됨: ${file.name} (${formatBytes(file.size)})`);
+        if (stStatusText) {
+          stStatusText.innerHTML = `사용자 기령 DB 적용됨: <span class="font-mono text-emerald-900">${escapeHtml(file.name)}</span> (${formatBytes(file.size)})`;
+        }
+        if (btnResetCustomStatus) btnResetCustomStatus.classList.remove('hidden');
+        logToTerminal(`기령 DB 변경됨: ${file.name} (${formatBytes(file.size)})`);
       } else {
-        stFileInput.value = '';
-        stEmptyState.classList.remove('hidden');
-        stSelectedState.classList.add('hidden');
+        if (stFileInput) stFileInput.value = '';
+        if (stStatusText) {
+          stStatusText.textContent = '제주항공 45대 기령 DB 탑재 완료 (HL7213 ~ HL8766)';
+        }
+        if (btnResetCustomStatus) btnResetCustomStatus.classList.add('hidden');
+        logToTerminal('기령 DB가 제주항공 내장 DB로 복원되었습니다.');
       }
     }
 
-    stDropzone.addEventListener('click', (e) => {
-      if (e.target.closest('#stRemoveBtn')) return;
-      stFileInput.click();
-    });
-    stFileInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) setStFile(e.target.files[0]);
-    });
-    stRemoveBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      setStFile(null);
-    });
+    if (btnToggleCustomStatus && stFileInput) {
+      btnToggleCustomStatus.addEventListener('click', () => {
+        stFileInput.click();
+      });
+    }
 
-    // Drag and Drop Effects
-    wpDropzone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      wpDropzone.classList.add('border-brand-orange', 'bg-orange-50/50');
-    });
-    wpDropzone.addEventListener('dragleave', (e) => {
-      e.preventDefault();
-      wpDropzone.classList.remove('border-brand-orange', 'bg-orange-50/50');
-    });
-    wpDropzone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      wpDropzone.classList.remove('border-brand-orange', 'bg-orange-50/50');
-      if (e.dataTransfer.files) addWpFiles(e.dataTransfer.files);
-    });
+    if (stFileInput) {
+      stFileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          setStFile(e.target.files[0]);
+        }
+      });
+    }
 
-    stDropzone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      stDropzone.classList.add('border-brand-orange', 'bg-orange-50/50');
-    });
-    stDropzone.addEventListener('dragleave', (e) => {
-      e.preventDefault();
-      stDropzone.classList.remove('border-brand-orange', 'bg-orange-50/50');
-    });
-    stDropzone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      stDropzone.classList.remove('border-brand-orange', 'bg-orange-50/50');
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) setStFile(e.dataTransfer.files[0]);
-    });
+    if (btnResetCustomStatus) {
+      btnResetCustomStatus.addEventListener('click', () => {
+        setStFile(null);
+      });
+    }
+
+    // Drag and Drop Effects (WP Dropzone)
 
     // Guide Modal (Body Scroll Lock & Containment)
     function openGuideModal() {
