@@ -890,7 +890,7 @@
       </div>
 
       <!-- Order Sub-Module 1: Cabin Disinfection & Cleaning Order -->
-      <div id="orderSubCabinClean" class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+      <div id="orderSubCabinClean" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         <!-- Left Column (7 cols): Input & Queue Table -->
         <div class="lg:col-span-7 space-y-4">
           <!-- 1. Input Card -->
@@ -1009,18 +1009,18 @@
         </div>
 
         <!-- Right Column (5 cols): Console Log -->
-        <div class="lg:col-span-5 flex flex-col">
-          <div class="terminal-window rounded-xl overflow-hidden flex flex-col h-[460px] border border-gray-800">
-            <div class="terminal-header px-4 py-2.5 flex items-center justify-between border-b border-gray-800">
-              <span class="text-xs font-mono text-gray-300 font-semibold">오더 실행 로그 (Console)</span>
+        <div class="lg:col-span-5 flex flex-col h-[500px] lg:h-auto">
+          <div class="bg-[#18181B] rounded-xl shadow-sm border border-gray-800 flex flex-col h-full overflow-hidden">
+            <div class="bg-[#27272A] px-4 py-2.5 flex items-center justify-between border-b border-gray-800">
+              <span class="text-xs font-mono font-medium text-gray-300">오더 실행 로그 (Console)</span>
               <button type="button" id="btnCabinClearLog"
-                class="text-[11px] text-gray-400 hover:text-gray-200 transition-colors cursor-pointer">
+                class="text-[11px] text-gray-400 hover:text-white transition-colors cursor-pointer">
                 로그 지우기
               </button>
             </div>
             <div id="cabinLogBody"
-              class="p-4 font-mono text-xs text-green-400 overflow-y-auto flex-1 space-y-1.5 leading-relaxed select-text">
-              <div class="text-gray-400">SAP 객실 소독/청소 오더 생성기 준비 완료.</div>
+              class="flex-1 p-4 font-mono text-xs text-green-400 bg-black overflow-y-auto terminal-scroll leading-relaxed whitespace-pre-wrap select-text">
+              <div class="text-gray-500">SAP 객실 소독/청소 오더 생성기 준비 완료.</div>
               <div class="text-gray-500">기번을 입력하여 대기열에 추가한 뒤 [SAP 오더 자동 생성 실행]을 누르세요.</div>
             </div>
           </div>
@@ -3781,20 +3781,16 @@
       function logCabin(level, msg) {
         if (!cabinLogBody) return;
         const now = new Date();
-        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+        const timeStr = `[${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}] `;
         const div = document.createElement('div');
-        let colorClass = 'text-sky-400';
-        if (level === 'SUCCESS') colorClass = 'text-emerald-400 font-semibold';
-        else if (level === 'ERROR') colorClass = 'text-red-400 font-semibold';
-        else if (level === 'WARN') colorClass = 'text-amber-300';
-        div.innerHTML = `<span class="${colorClass}">[${timeStr}] [${level}]</span> <span class="text-gray-100">${escapeHtml(msg)}</span>`;
+        div.textContent = timeStr + msg;
         cabinLogBody.appendChild(div);
         cabinLogBody.scrollTop = cabinLogBody.scrollHeight;
       }
 
       if (btnCabinClearLog) {
         btnCabinClearLog.addEventListener('click', () => {
-          cabinLogBody.innerHTML = '<div class="text-gray-400">로그가 초기화되었습니다.</div>';
+          cabinLogBody.innerHTML = '<div class="text-gray-500">로그가 초기화되었습니다.</div>';
         });
       }
 
