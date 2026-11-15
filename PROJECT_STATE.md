@@ -62,7 +62,7 @@
 
 ### ⑤ 공수비행 (Ferry Flight, 7C*M) 모니터링 규칙
 - **편명 표준**: `7C*M` (예: `7C8032M`, `7C8061M`, `7C7213M`).
-- **레이더 연동**: Flightradar24 및 ADS-B Globe 실시간 임베드 지원 + 새 탭 원클릭 바로가기 (`/data/flights/`, `/data/aircraft/`).
+- **레이더 연동**: 외부 도메인 iframe 차단이 없는 ADS-B Exchange Globe 실시간 임베드 기본 적용 + Flightradar24 원클릭 바로가기 (`Flightradar24 ↗`, `/data/flights/`, `/data/aircraft/`).
 - **체크리스트 상호 연동**: 공수비행 목록에서 편명을 클릭하거나 조회하면 대상 항공기(`HL****`) 체크리스트가 즉시 자동 선택되어 업무 연속성 보장.
 - **아코디언 UI**: 기본적으로 펼쳐져 있으며, 필요 시 언제든 한 줄 요약 바로 접기(`▲/▼`) 가능.
 
