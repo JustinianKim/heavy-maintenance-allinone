@@ -561,7 +561,7 @@
               <!-- Iframe Container -->
               <div class="w-full h-80 sm:h-96 rounded-xl border border-gray-200 overflow-hidden relative bg-slate-900 shadow-inner">
                 <iframe id="ferryRadarIframe"
-                  src="https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=%287C.%2AM%7CJJA.%2AM%29"
+                  src="https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=%287C.%2AM%7CJJA.%2AM%29"
                   class="w-full h-full border-0"
                   allowfullscreen
                   loading="lazy"></iframe>
@@ -2219,7 +2219,7 @@
     // MODULE: FERRY FLIGHT CONTROLLER (7C*M Monitor & Radar Integration)
     // =========================================================================
     const FERRY_STORAGE_KEY = 'JEJU_HM_FERRY_RECORDS_V2';
-    const FERRY_RADAR_FILTER_URL = 'https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=%287C.%2AM%7CJJA.%2AM%29';
+    const FERRY_RADAR_FILTER_URL = 'https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=%287C.%2AM%7CJJA.%2AM%29';
     const DEFAULT_FERRY_RECORDS = [
       { id: 1, flightNo: "7C8305M", tail: "HL8305", origin: "ICN (인천)", dest: "CAN (광저우)", date: "2026-11-16", std: "09:00", sta: "12:15", status: "예정", purpose: "C-CHK 입고" },
       { id: 2, flightNo: "7C7213M", tail: "HL7213", origin: "GMP (김포)", dest: "XMN (샤먼)", date: "2026-11-14", std: "10:00", sta: "13:10", status: "착륙완료", purpose: "C-CHK 입고" },
@@ -2392,9 +2392,9 @@
       const callsignRegex = numOnly ? `%287C${numOnly}M%7CJJA${numOnly}M%29` : `%287C.%2AM%7CJJA.%2AM%29`;
       
       if (record.tail) {
-        ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=${callsignRegex}&reg=${encodeURIComponent(record.tail.toUpperCase())}`;
+        ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=${callsignRegex}&reg=${encodeURIComponent(record.tail.toUpperCase())}`;
       } else {
-        ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=${callsignRegex}`;
+        ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=${callsignRegex}`;
       }
 
       // Update external Flightradar24 link
@@ -2475,7 +2475,7 @@
         } else {
           ferryActiveCallsignBadge.textContent = query;
           if (query.startsWith('HL')) {
-            ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=%287C.%2AM%7CJJA.%2AM%29&reg=${encodeURIComponent(query)}`;
+            ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=%287C.%2AM%7CJJA.%2AM%29&reg=${encodeURIComponent(query)}`;
             linkExternalFr24.href = `https://www.flightradar24.com/data/aircraft/${encodeURIComponent(query.toLowerCase())}`;
             linkExternalFr24.innerHTML = `<span>${escapeHtml(query)} (FR24) ↗</span>`;
             ferryCurrentAircraftTrack.textContent = `추적: ${query} (7C*M 필터)`;
@@ -2483,7 +2483,7 @@
           } else {
             const numOnly = query.replace(/\D/g, '');
             const callsignRegex = numOnly ? `%287C${numOnly}M%7CJJA${numOnly}M%29` : `%287C.%2AM%7CJJA.%2AM%29`;
-            ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=${callsignRegex}`;
+            ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=${callsignRegex}`;
             linkExternalFr24.href = `https://www.flightradar24.com/data/flights/${encodeURIComponent(query.toLowerCase())}`;
             linkExternalFr24.innerHTML = `<span>${escapeHtml(query)} (FR24) ↗</span>`;
             ferryCurrentAircraftTrack.textContent = `추적: ${query} (7C*M 필터)`;
