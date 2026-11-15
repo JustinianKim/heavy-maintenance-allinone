@@ -577,8 +577,8 @@
             <div class="lg:col-span-5 flex flex-col space-y-2">
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-1.5">
-                  <span class="text-xs font-bold text-gray-800">최근 공수비행 (7C*M) 스케줄</span>
-                  <span class="text-[10px] text-gray-500 font-normal">(최근 5건)</span>
+                  <span class="text-xs font-bold text-gray-800">실시간 공수비행 (7C*M) 추적 목록</span>
+                  <span class="text-[10px] text-gray-500 font-normal">(ADS-B 연동)</span>
                 </div>
                 <button type="button" id="btnAddFerryRecord" class="text-[11px] font-semibold text-brand-orange hover:underline cursor-pointer">
                   + 공수편 등록
@@ -2218,15 +2218,9 @@
     // =========================================================================
     // MODULE: FERRY FLIGHT CONTROLLER (7C*M Monitor & Radar Integration)
     // =========================================================================
-    const FERRY_STORAGE_KEY = 'JEJU_HM_FERRY_RECORDS_V2';
+    const FERRY_STORAGE_KEY = 'JEJU_HM_FERRY_RECORDS_V3_REAL';
     const FERRY_RADAR_FILTER_URL = 'https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=%287C.%2AM%7CJJA.%2AM%29';
-    const DEFAULT_FERRY_RECORDS = [
-      { id: 1, flightNo: "7C8305M", tail: "HL8305", origin: "ICN (인천)", dest: "CAN (광저우)", date: "2026-11-16", std: "09:00", sta: "12:15", status: "예정", purpose: "C-CHK 입고" },
-      { id: 2, flightNo: "7C7213M", tail: "HL7213", origin: "GMP (김포)", dest: "XMN (샤먼)", date: "2026-11-14", std: "10:00", sta: "13:10", status: "착륙완료", purpose: "C-CHK 입고" },
-      { id: 3, flightNo: "7C8032M", tail: "HL8032", origin: "ICN (인천)", dest: "CAN (광저우)", date: "2026-11-10", std: "09:15", sta: "12:30", status: "착륙완료", purpose: "C-CHK 입고" },
-      { id: 4, flightNo: "7C8061M", tail: "HL8061", origin: "CAN (광저우)", dest: "ICN (인천)", date: "2026-11-08", std: "14:20", sta: "18:40", status: "착륙완료", purpose: "C-CHK 출고" },
-      { id: 5, flightNo: "7C8034M", tail: "HL8034", origin: "XMN (샤먼)", dest: "ICN (인천)", date: "2026-11-05", std: "15:30", sta: "19:40", status: "착륙완료", purpose: "C-CHK 출고" }
-    ];
+    const DEFAULT_FERRY_RECORDS = [];
 
     let ferryRecords = [];
 
@@ -2279,8 +2273,16 @@
     function renderFerryRecords(filterQuery = '') {
       ferryRecordsList.innerHTML = '';
       if (!ferryRecords || ferryRecords.length === 0) {
-        ferryRecordsList.innerHTML = '<div class="py-6 text-center text-gray-400">등록된 공수비행 기록이 없습니다.</div>';
-        ferryQuickSummary.textContent = '등록된 공수편 없음';
+        ferryRecordsList.innerHTML = `
+          <div class="py-12 px-4 text-center flex flex-col items-center justify-center space-y-2">
+            <span class="w-8 h-8 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-brand-orange text-sm font-bold">✈</span>
+            <div class="text-xs font-bold text-gray-700">현재 비행 중인 7C*M 공수편이 없습니다.</div>
+            <div class="text-[11px] text-gray-400 max-w-xs leading-relaxed">
+              좌측 레이더는 무료 ADS-B망과 실시간 직결되어 비행기가 이륙하면 지도에 즉시 나타납니다. 상단에 공수편명을 입력하여 즉시 추적할 수 있습니다.
+            </div>
+          </div>
+        `;
+        ferryQuickSummary.textContent = '현재 비행 중인 7C*M 공수편 없음 (실시간 감시중)';
         return;
       }
 
@@ -2474,7 +2476,11 @@
           trackFerryFlight(matched);
         } else {
           ferryActiveCallsignBadge.textContent = query;
-          if (query.startsWith('HL')) {
+          const isTail = query.startsWith('HL');
+          const tailVal = isTail ? query : (DEFAULT_AIRCRAFT_STATUS[`HL${query.replace(/\D/g, '')}`] ? `HL${query.replace(/\D/g, '')}` : '-');
+          const fNoVal = isTail ? `7C${query.replace(/\D/g, '')}M` : query;
+
+          if (isTail) {
             ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=%287C.%2AM%7CJJA.%2AM%29&reg=${encodeURIComponent(query)}`;
             linkExternalFr24.href = `https://www.flightradar24.com/data/aircraft/${encodeURIComponent(query.toLowerCase())}`;
             linkExternalFr24.innerHTML = `<span>${escapeHtml(query)} (FR24) ↗</span>`;
@@ -2488,6 +2494,25 @@
             linkExternalFr24.innerHTML = `<span>${escapeHtml(query)} (FR24) ↗</span>`;
             ferryCurrentAircraftTrack.textContent = `추적: ${query} (7C*M 필터)`;
           }
+
+          // 실시간 추적 항목 등록
+          const today = new Date().toISOString().split('T')[0];
+          const timeNow = new Date().toTimeString().slice(0, 5);
+          const newTrackRec = {
+            id: Date.now(),
+            flightNo: fNoVal,
+            tail: tailVal,
+            origin: 'MRO 공역',
+            dest: '실시간 추적',
+            status: '비행중',
+            date: today,
+            std: timeNow,
+            sta: '-',
+            purpose: '실시간 ADS-B 레이더 추적'
+          };
+          ferryRecords.unshift(newTrackRec);
+          saveFerryRecords();
+          renderFerryRecords();
         }
         if (ferryContentBody.classList.contains('hidden')) toggleFerrySection(true);
       };
