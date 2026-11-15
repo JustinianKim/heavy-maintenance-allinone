@@ -216,7 +216,7 @@
         </button>
         <button id="navTabCabin"
           class="py-2.5 px-3.5 border-b-2 border-transparent text-orange-100/70 hover:text-white hover:border-white/40 flex items-center space-x-1.5 transition-colors cursor-pointer">
-          <span>객실 오더</span>
+          <span>각종 오더</span>
         </button>
       </div>
     </div>
@@ -871,24 +871,159 @@
       </div>
     </div>
 
-    <!-- ================= MODULE 3: CABIN ORDER ================= -->
-    <div id="moduleCabinOrder" class="hidden w-full space-y-6">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div class="flex items-center justify-between pb-4 border-b">
-          <div>
-            <h2 class="text-lg font-bold text-gray-900 flex items-center space-x-2">
-              <span>객실 오더 관리</span>
-            </h2>
-            <p class="text-xs text-gray-500 mt-0.5">중정비 기간 중 객실(Cabin) 시트, 갤리, 라바토리, 카펫 등 정비 오더 및 결함(Defect) 관리</p>
-          </div>
-          <span class="px-2.5 py-1 rounded-full bg-orange-100 text-brand-orange text-xs font-bold">모듈 구축 대기 중</span>
+    <!-- ================= MODULE 3: VARIOUS ORDERS (각종 오더) ================= -->
+    <div id="moduleCabinOrder" class="hidden w-full space-y-4">
+      <!-- Sub-Navigation Bar for Order Types -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 px-4 py-2.5 flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center space-x-2">
+          <button type="button" data-order-tab="cabinClean"
+            class="order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-orange text-white transition-colors cursor-pointer">
+            객실 소독/청소 오더
+          </button>
         </div>
-        <div class="py-16 text-center text-gray-500 space-y-3">
-          <div class="text-5xl">💺</div>
-          <h3 class="text-base font-bold text-gray-800">객실 오더 관리 화면</h3>
-          <p class="text-xs text-gray-500 max-w-md mx-auto leading-relaxed">
-            객실 정비 오더 양식(Zone별 점검, 시트 커버/쿠션 교체, 갤리 장탈착 점검표 등)의 세부 요구사항을 말씀해주시면 바로 이곳에 완성해 드립니다.
-          </p>
+        <div class="flex items-center space-x-2">
+          <button type="button" id="btnCabinZiw29"
+            class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-900 text-white transition-colors cursor-pointer">
+            AR 오더 조회 (ZIW29)
+          </button>
+        </div>
+      </div>
+
+      <!-- Order Sub-Module 1: Cabin Disinfection & Cleaning Order -->
+      <div id="orderSubCabinClean" class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        <!-- Left Column (7 cols): Input & Queue Table -->
+        <div class="lg:col-span-7 space-y-4">
+          <!-- 1. Input Card -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+              <h2 class="text-base font-bold text-gray-900">SAP 객실 소독/청소 오더 생성</h2>
+            </div>
+
+            <!-- Row 1: 발행인 사번, Due Date, STATION -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">발행인 사번</label>
+                <input type="text" id="cabinUserNo" placeholder="사번 7자리"
+                  class="w-full px-3 py-2 text-xs font-mono font-semibold bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange focus:bg-white">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Due Date (완료요청일)</label>
+                <input type="text" id="cabinDueDate" placeholder="YYYY.MM.DD"
+                  class="w-full px-3 py-2 text-xs font-mono font-semibold bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange focus:bg-white">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">STATION</label>
+                <select id="cabinWorkCenter"
+                  class="w-full px-3 py-2 text-xs font-bold bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange focus:bg-white cursor-pointer">
+                  <option value="GMP-ACM">GMP-ACM</option>
+                  <option value="ICN-ACM">ICN-ACM</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 2: 항공기 기번, 생성 오더 옵션, 목록 추가 버튼 -->
+            <div class="pt-3 border-t border-gray-100 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+              <div class="flex flex-wrap items-end gap-3">
+                <div class="w-32">
+                  <label class="block text-xs font-bold text-brand-orange mb-1">항공기 기번</label>
+                  <input type="text" id="cabinAcNo" list="cabinFleetList" placeholder="예: HL8031"
+                    class="w-full px-3 py-2 text-xs font-mono font-bold uppercase bg-white border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange text-gray-900">
+                  <datalist id="cabinFleetList"></datalist>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-gray-700 mb-1">생성 오더 및 소독 Task List</label>
+                  <div class="flex items-center space-x-3 h-[34px]">
+                    <select id="cabinClnTask"
+                      class="px-2.5 py-1.5 text-xs font-mono font-bold bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange cursor-pointer">
+                      <option value="10630 (NG)">10630 (NG)</option>
+                      <option value="13870 (MAX)">13870 (MAX)</option>
+                    </select>
+                    <label class="inline-flex items-center space-x-1.5 text-xs font-semibold text-gray-800 cursor-pointer select-none">
+                      <input type="checkbox" id="cabinChkCln" checked class="w-4 h-4 accent-brand-orange rounded cursor-pointer">
+                      <span>소독</span>
+                    </label>
+                    <label class="inline-flex items-center space-x-1.5 text-xs font-semibold text-gray-800 cursor-pointer select-none">
+                      <input type="checkbox" id="cabinChkClean" checked class="w-4 h-4 accent-brand-orange rounded cursor-pointer">
+                      <span>CLEANING</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" id="btnCabinAddQueue"
+                class="px-4 py-2 rounded-lg text-xs font-bold bg-brand-orange hover:bg-orange-600 text-white transition-colors cursor-pointer shrink-0">
+                + 목록에 추가 (Enter)
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. Queue Table Card -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <span id="cabinQueueCount" class="text-xs font-bold text-gray-900">총 대기 작업: 0 대</span>
+              <div class="flex items-center space-x-2">
+                <button type="button" id="btnCabinRemoveSel"
+                  class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer">
+                  선택 삭제
+                </button>
+                <button type="button" id="btnCabinClearAll"
+                  class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer">
+                  전체 비우기
+                </button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto border border-gray-200 rounded-lg">
+              <table class="w-full text-xs text-left">
+                <thead class="bg-gray-50 text-gray-600 font-bold border-b border-gray-200">
+                  <tr>
+                    <th class="py-2.5 px-3 text-center w-9">
+                      <input type="checkbox" id="cabinSelectAll" class="w-3.5 h-3.5 accent-brand-orange rounded cursor-pointer">
+                    </th>
+                    <th class="py-2.5 px-2 text-center w-12">순번</th>
+                    <th class="py-2.5 px-3 text-center">항공기 기번</th>
+                    <th class="py-2.5 px-3 text-center">STATION</th>
+                    <th class="py-2.5 px-3 text-center">Due Date</th>
+                    <th class="py-2.5 px-3 text-center">발행인</th>
+                    <th class="py-2.5 px-3 text-center">소독 TaskList</th>
+                    <th class="py-2.5 px-3 text-center">CLEANING</th>
+                    <th class="py-2.5 px-2 text-center w-12">삭제</th>
+                  </tr>
+                </thead>
+                <tbody id="cabinQueueTbody" class="divide-y divide-gray-100">
+                  <tr>
+                    <td colspan="9" class="py-8 text-center text-gray-400">대기열에 등록된 작업이 없습니다.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pt-2">
+              <button type="button" id="btnCabinRunSap"
+                class="w-full py-3.5 px-6 rounded-xl font-bold text-white bg-brand-orange hover:bg-orange-600 active:bg-orange-700 shadow-md hover:shadow-lg transition-all text-sm cursor-pointer">
+                SAP 오더 자동 생성 실행
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column (5 cols): Console Log -->
+        <div class="lg:col-span-5 flex flex-col">
+          <div class="terminal-window rounded-xl overflow-hidden flex flex-col h-[460px] border border-gray-800">
+            <div class="terminal-header px-4 py-2.5 flex items-center justify-between border-b border-gray-800">
+              <span class="text-xs font-mono text-gray-300 font-semibold">오더 실행 로그 (Console)</span>
+              <button type="button" id="btnCabinClearLog"
+                class="text-[11px] text-gray-400 hover:text-gray-200 transition-colors cursor-pointer">
+                로그 지우기
+              </button>
+            </div>
+            <div id="cabinLogBody"
+              class="p-4 font-mono text-xs text-green-400 overflow-y-auto flex-1 space-y-1.5 leading-relaxed select-text">
+              <div class="text-gray-400">SAP 객실 소독/청소 오더 생성기 준비 완료.</div>
+              <div class="text-gray-500">기번을 입력하여 대기열에 추가한 뒤 [SAP 오더 자동 생성 실행]을 누르세요.</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -3560,10 +3695,536 @@
       XLSX.writeFile(wb, fileName);
     });
 
+    // ================= VARIOUS ORDERS MODULE (각종 오더) =================
+    function initVariousOrdersModule() {
+      const SETTINGS_KEY = 'JJA_CABIN_ORDER_SETTINGS_V1';
+      const cabinUserNo = document.getElementById('cabinUserNo');
+      const cabinDueDate = document.getElementById('cabinDueDate');
+      const cabinWorkCenter = document.getElementById('cabinWorkCenter');
+      const cabinAcNo = document.getElementById('cabinAcNo');
+      const cabinFleetList = document.getElementById('cabinFleetList');
+      const cabinClnTask = document.getElementById('cabinClnTask');
+      const cabinChkCln = document.getElementById('cabinChkCln');
+      const cabinChkClean = document.getElementById('cabinChkClean');
+      const btnCabinAddQueue = document.getElementById('btnCabinAddQueue');
+      const cabinQueueCount = document.getElementById('cabinQueueCount');
+      const cabinSelectAll = document.getElementById('cabinSelectAll');
+      const cabinQueueTbody = document.getElementById('cabinQueueTbody');
+      const btnCabinRemoveSel = document.getElementById('btnCabinRemoveSel');
+      const btnCabinClearAll = document.getElementById('btnCabinClearAll');
+      const btnCabinRunSap = document.getElementById('btnCabinRunSap');
+      const btnCabinZiw29 = document.getElementById('btnCabinZiw29');
+      const cabinLogBody = document.getElementById('cabinLogBody');
+      const btnCabinClearLog = document.getElementById('btnCabinClearLog');
+
+      if (!cabinUserNo) return;
+
+      let cabinQueue = [];
+
+      // Populate Fleet Datalist
+      if (cabinFleetList && typeof DEFAULT_AIRCRAFT_STATUS === 'object') {
+        cabinFleetList.innerHTML = Object.keys(DEFAULT_AIRCRAFT_STATUS)
+          .sort()
+          .map(hl => `<option value="${hl}">`)
+          .join('');
+      }
+
+      // 1 year later default date (YYYY.MM.DD)
+      function getOneYearLaterStr() {
+        const now = new Date();
+        let target = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
+        if (now.getMonth() === 1 && now.getDate() === 29 && target.getMonth() !== 1) {
+          target = new Date(now.getFullYear() + 1, 1, 28);
+        }
+        const y = target.getFullYear();
+        const m = String(target.getMonth() + 1).padStart(2, '0');
+        const d = String(target.getDate()).padStart(2, '0');
+        return `${y}.${m}.${d}`;
+      }
+
+      cabinDueDate.value = getOneYearLaterStr();
+
+      // Load saved settings
+      function loadCabinSettings() {
+        try {
+          const raw = localStorage.getItem(SETTINGS_KEY);
+          if (!raw) return;
+          const saved = JSON.parse(raw);
+          if (saved.userNo) cabinUserNo.value = saved.userNo;
+          if (saved.workCenter && (saved.workCenter === 'GMP-ACM' || saved.workCenter === 'ICN-ACM')) {
+            cabinWorkCenter.value = saved.workCenter;
+          }
+          if (typeof saved.createCln === 'boolean') cabinChkCln.checked = saved.createCln;
+          if (saved.clnTaskList) {
+            cabinClnTask.value = String(saved.clnTaskList).includes('13870') ? '13870 (MAX)' : '10630 (NG)';
+          }
+          if (typeof saved.createChk === 'boolean') cabinChkClean.checked = saved.createChk;
+          cabinClnTask.disabled = !cabinChkCln.checked;
+        } catch (e) {}
+      }
+
+      function saveCabinSettings() {
+        try {
+          const data = {
+            userNo: cabinUserNo.value.trim(),
+            workCenter: cabinWorkCenter.value,
+            createCln: cabinChkCln.checked,
+            clnTaskList: cabinClnTask.value.includes('13870') ? '13870' : '10630',
+            createChk: cabinChkClean.checked
+          };
+          localStorage.setItem(SETTINGS_KEY, JSON.stringify(data));
+        } catch (e) {}
+      }
+
+      loadCabinSettings();
+
+      function logCabin(level, msg) {
+        if (!cabinLogBody) return;
+        const now = new Date();
+        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+        const div = document.createElement('div');
+        let colorClass = 'text-sky-400';
+        if (level === 'SUCCESS') colorClass = 'text-emerald-400 font-semibold';
+        else if (level === 'ERROR') colorClass = 'text-red-400 font-semibold';
+        else if (level === 'WARN') colorClass = 'text-amber-300';
+        div.innerHTML = `<span class="${colorClass}">[${timeStr}] [${level}]</span> <span class="text-gray-100">${escapeHtml(msg)}</span>`;
+        cabinLogBody.appendChild(div);
+        cabinLogBody.scrollTop = cabinLogBody.scrollHeight;
+      }
+
+      if (btnCabinClearLog) {
+        btnCabinClearLog.addEventListener('click', () => {
+          cabinLogBody.innerHTML = '<div class="text-gray-400">로그가 초기화되었습니다.</div>';
+        });
+      }
+
+      // Normalize AC No & Auto-select 10630 (NG) / 13870 (MAX)
+      function normalizeAcNo(raw) {
+        const val = (raw || '').trim().toUpperCase();
+        if (!val) return '';
+        if (/^\d+$/.test(val)) return 'HL' + val;
+        if (!val.startsWith('HL')) {
+          const digits = val.replace(/\D/g, '');
+          if (digits) return 'HL' + digits;
+        }
+        return val;
+      }
+
+      function getRecommendedTaskList(acNo) {
+        const ac = normalizeAcNo(acNo);
+        if (ac.startsWith('HL87')) return '13870 (MAX)';
+        if (ac.startsWith('HL85')) {
+          if (ac === 'HL8539' || ac === 'HL8527') return '10630 (NG)';
+          return '13870 (MAX)';
+        }
+        return '10630 (NG)';
+      }
+
+      cabinAcNo.addEventListener('input', () => {
+        const raw = cabinAcNo.value.trim();
+        if (/^\d{4,}$/.test(raw)) {
+          cabinAcNo.value = 'HL' + raw;
+        } else if (raw.toUpperCase().startsWith('HL') && raw !== raw.toUpperCase()) {
+          cabinAcNo.value = raw.toUpperCase();
+        }
+        if (cabinAcNo.value.trim()) {
+          cabinClnTask.value = getRecommendedTaskList(cabinAcNo.value);
+        }
+      });
+
+      cabinAcNo.addEventListener('blur', () => {
+        const norm = normalizeAcNo(cabinAcNo.value);
+        if (norm) {
+          cabinAcNo.value = norm;
+          cabinClnTask.value = getRecommendedTaskList(norm);
+        }
+      });
+
+      cabinUserNo.addEventListener('blur', saveCabinSettings);
+      cabinWorkCenter.addEventListener('change', saveCabinSettings);
+      cabinChkCln.addEventListener('change', () => {
+        cabinClnTask.disabled = !cabinChkCln.checked;
+        saveCabinSettings();
+      });
+      cabinChkClean.addEventListener('change', saveCabinSettings);
+      cabinClnTask.addEventListener('change', saveCabinSettings);
+
+      function validateDueDate(str) {
+        const m = /^(\d{4})\.(\d{2})\.(\d{2})$/.exec((str || '').trim());
+        if (!m) return false;
+        const y = Number(m[1]), mo = Number(m[2]), d = Number(m[3]);
+        const dt = new Date(y, mo - 1, d);
+        return dt.getFullYear() === y && dt.getMonth() === mo - 1 && dt.getDate() === d;
+      }
+
+      function renderCabinQueue() {
+        cabinQueueCount.textContent = `총 대기 작업: ${cabinQueue.length} 대`;
+        if (cabinSelectAll) cabinSelectAll.checked = false;
+
+        if (cabinQueue.length === 0) {
+          cabinQueueTbody.innerHTML = '<tr><td colspan="9" class="py-8 text-center text-gray-400">대기열에 등록된 작업이 없습니다.</td></tr>';
+          return;
+        }
+
+        cabinQueueTbody.innerHTML = '';
+        cabinQueue.forEach((item, idx) => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-orange-50/40 transition-colors';
+          tr.innerHTML = `
+            <td class="py-2 px-3 text-center">
+              <input type="checkbox" data-idx="${idx}" class="cabin-row-chk w-3.5 h-3.5 accent-brand-orange rounded cursor-pointer">
+            </td>
+            <td class="py-2 px-2 text-center font-mono text-gray-500">${idx + 1}</td>
+            <td class="py-2 px-3 text-center font-mono font-bold text-gray-900">${escapeHtml(item.acNo)}</td>
+            <td class="py-2 px-3 text-center font-mono text-gray-700">${escapeHtml(item.workCenter)}</td>
+            <td class="py-2 px-3 text-center font-mono text-gray-700">${escapeHtml(item.dueDate)}</td>
+            <td class="py-2 px-3 text-center font-mono text-gray-700">${escapeHtml(item.userNo)}</td>
+            <td class="py-2 px-3 text-center font-mono ${item.clnOpt !== '-' ? 'text-brand-orange font-bold' : 'text-gray-400'}">${escapeHtml(item.clnOpt)}</td>
+            <td class="py-2 px-3 text-center ${item.chkOpt === '포함' ? 'text-emerald-700 font-bold' : 'text-gray-400'}">${escapeHtml(item.chkOpt)}</td>
+            <td class="py-2 px-2 text-center">
+              <button type="button" data-del-idx="${idx}" class="btn-cabin-del text-gray-400 hover:text-red-500 font-bold px-1.5 py-0.5 rounded cursor-pointer">✕</button>
+            </td>
+          `;
+          tr.addEventListener('dblclick', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON') return;
+            cabinQueue.splice(idx, 1);
+            renderCabinQueue();
+          });
+          cabinQueueTbody.appendChild(tr);
+        });
+
+        cabinQueueTbody.querySelectorAll('.btn-cabin-del').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const i = Number(btn.getAttribute('data-del-idx'));
+            cabinQueue.splice(i, 1);
+            renderCabinQueue();
+          });
+        });
+      }
+
+      function addCabinToQueue() {
+        const userNo = cabinUserNo.value.trim();
+        if (!userNo) {
+          alert('발행인 사번을 입력해 주세요.');
+          cabinUserNo.focus();
+          return false;
+        }
+        saveCabinSettings();
+
+        const acNo = normalizeAcNo(cabinAcNo.value);
+        if (!acNo) {
+          alert('항공기 기번을 입력해 주세요. (예: HL8031)');
+          cabinAcNo.focus();
+          return false;
+        }
+
+        const dueDate = cabinDueDate.value.trim();
+        if (!validateDueDate(dueDate)) {
+          alert('날짜 형식이 올바르지 않습니다. (예: YYYY.MM.DD)');
+          cabinDueDate.focus();
+          return false;
+        }
+
+        const workCenter = cabinWorkCenter.value || 'GMP-ACM';
+        const clnOpt = cabinChkCln.checked ? cabinClnTask.value : '-';
+        const chkOpt = cabinChkClean.checked ? '포함' : '-';
+
+        if (clnOpt === '-' && chkOpt === '-') {
+          alert('소독 또는 CLEANING 오더 중 최소 하나를 선택해야 합니다.');
+          return false;
+        }
+
+        const isDup = cabinQueue.some(r => r.acNo === acNo && r.dueDate === dueDate && r.workCenter === workCenter);
+        if (isDup) {
+          if (!confirm(`이미 동일한 기번(${acNo})과 날짜(${dueDate})의 작업이 대기열에 있습니다.\n추가하시겠습니까?`)) {
+            return false;
+          }
+        }
+
+        cabinQueue.push({ acNo, workCenter, dueDate, userNo, clnOpt, chkOpt });
+        renderCabinQueue();
+        logCabin('INFO', `대기열 추가 완료: ${acNo} (${workCenter}, ${dueDate}, 소독:${clnOpt}, CLEANING:${chkOpt})`);
+        cabinAcNo.value = '';
+        cabinAcNo.focus();
+        return true;
+      }
+
+      btnCabinAddQueue.addEventListener('click', addCabinToQueue);
+      cabinAcNo.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addCabinToQueue();
+        }
+      });
+
+      if (cabinSelectAll) {
+        cabinSelectAll.addEventListener('change', () => {
+          cabinQueueTbody.querySelectorAll('.cabin-row-chk').forEach(chk => {
+            chk.checked = cabinSelectAll.checked;
+          });
+        });
+      }
+
+      btnCabinRemoveSel.addEventListener('click', () => {
+        const checked = Array.from(cabinQueueTbody.querySelectorAll('.cabin-row-chk:checked'))
+          .map(c => Number(c.getAttribute('data-idx')))
+          .sort((a, b) => b - a);
+        if (checked.length === 0) {
+          alert('삭제할 항목을 목록에서 선택해 주세요.');
+          return;
+        }
+        checked.forEach(i => cabinQueue.splice(i, 1));
+        renderCabinQueue();
+      });
+
+      btnCabinClearAll.addEventListener('click', () => {
+        if (cabinQueue.length === 0) return;
+        if (!confirm('대기열의 모든 작업을 삭제하시겠습니까?')) return;
+        cabinQueue = [];
+        renderCabinQueue();
+        logCabin('INFO', '대기열이 초기화되었습니다.');
+      });
+
+      // Download UTF-16LE BOM VBScript file for 100% native Windows Script Host execution
+      function downloadUtf16Vbs(filename, vbsContent) {
+        const normalized = vbsContent.replace(/\r?\n/g, '\r\n');
+        const buf = new Uint8Array(2 + normalized.length * 2);
+        buf[0] = 0xFF;
+        buf[1] = 0xFE;
+        for (let i = 0; i < normalized.length; i++) {
+          const code = normalized.charCodeAt(i);
+          buf[2 + i * 2] = code & 0xFF;
+          buf[2 + i * 2 + 1] = (code >> 8) & 0xFF;
+        }
+        const blob = new Blob([buf], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 3000);
+      }
+
+      function vbsEscape(str) {
+        return String(str || '').replace(/"/g, '""');
+      }
+
+      // ZIW29 Lookup Button
+      btnCabinZiw29.addEventListener('click', () => {
+        const userNo = cabinUserNo.value.trim();
+        if (!userNo) {
+          alert('AR 오더 조회를 위해 발행인 사번을 입력해 주세요.');
+          cabinUserNo.focus();
+          return;
+        }
+        saveCabinSettings();
+        const vbs = [
+          "' 제주항공 SAP GUI Script: 발행자별 AR 오더 목록 조회 (ZIW29)",
+          "Option Explicit",
+          "Dim SapGuiAuto, application, connection, session",
+          "On Error Resume Next",
+          "Set SapGuiAuto = GetObject(\"SAPGUI\")",
+          "If Err.Number <> 0 Or SapGuiAuto Is Nothing Then",
+          "    MsgBox \"SAP GUI가 실행되어 로그인되어 있는지 확인해 주세요.\", vbExclamation, \"SAP 연결 오류\"",
+          "    WScript.Quit 1",
+          "End If",
+          "Set application = SapGuiAuto.GetScriptingEngine",
+          "Set connection = application.Children(0)",
+          "Set session = connection.Children(0)",
+          "If Err.Number <> 0 Or session Is Nothing Then",
+          "    MsgBox \"활성화된 SAP 세션을 찾을 수 없습니다. SAP에 로그인해 주세요.\", vbExclamation, \"SAP 연결 오류\"",
+          "    WScript.Quit 1",
+          "End If",
+          "session.findById(\"wnd[0]\").maximize",
+          "session.findById(\"wnd[0]/tbar[0]/okcd\").text = \"/nZIW29\"",
+          "session.findById(\"wnd[0]\").sendVKey 0",
+          `session.findById("wnd[0]/usr/ctxtS_QNAME-LOW").text = "${vbsEscape(userNo)}"`,
+          "session.findById(\"wnd[0]/usr/ctxtS_QMART-LOW\").text = \"AR\"",
+          "session.findById(\"wnd[0]/usr/ctxtS_QNAME-LOW\").setFocus",
+          `session.findById("wnd[0]/usr/ctxtS_QNAME-LOW").caretPosition = ${userNo.length}`,
+          "session.findById(\"wnd[0]\").sendVKey 8"
+        ].join('\r\n');
+
+        downloadUtf16Vbs(`SAP_ZIW29_조회_${userNo}.vbs`, vbs);
+        logCabin('SUCCESS', `발행자(${userNo}) ZIW29 조회 스크립트가 생성되었습니다. 다운로드된 파일을 열면 SAP에서 즉시 조회됩니다.`);
+      });
+
+      // Batch SAP Order Creation Button
+      btnCabinRunSap.addEventListener('click', () => {
+        if (cabinQueue.length === 0) {
+          if (cabinAcNo.value.trim()) {
+            if (!addCabinToQueue()) return;
+          } else {
+            alert('실행할 작업 대상이 없습니다.\n기번을 입력하고 [목록에 추가]를 눌러주세요.');
+            cabinAcNo.focus();
+            return;
+          }
+        }
+
+        const subTasks = [];
+        cabinQueue.forEach(item => {
+          if (item.clnOpt !== '-') {
+            const tl = item.clnOpt.includes('13870') ? '13870' : '10630';
+            subTasks.push({
+              acNo: item.acNo,
+              workCenter: item.workCenter,
+              reqDate: item.dueDate,
+              userNo: item.userNo,
+              qmtxt: 'Aircraft Disinfection and Disinsection',
+              ilart: 'CLN',
+              taskList: tl
+            });
+          }
+          if (item.chkOpt === '포함') {
+            subTasks.push({
+              acNo: item.acNo,
+              workCenter: item.workCenter,
+              reqDate: item.dueDate,
+              userNo: item.userNo,
+              qmtxt: 'CABIN CLEANING CHK DUE',
+              ilart: 'CHK',
+              taskList: ''
+            });
+          }
+        });
+
+        const lastUserNo = cabinQueue[cabinQueue.length - 1].userNo;
+        const callLines = subTasks.map(t =>
+          `If ProcessCleaningOrder("${vbsEscape(t.acNo)}", "${vbsEscape(t.workCenter)}", "${vbsEscape(t.reqDate)}", "${vbsEscape(t.userNo)}", "${vbsEscape(t.qmtxt)}", "${vbsEscape(t.ilart)}", "${vbsEscape(t.taskList)}") Then okCnt = okCnt + 1 Else failCnt = failCnt + 1`
+        );
+
+        const vbs = [
+          "' 제주항공 SAP GUI Script: 객실 청소 및 소독 오더 일괄 자동 등록/릴리즈",
+          "Option Explicit",
+          "Dim SapGuiAuto, application, connection, session",
+          "Dim okCnt, failCnt",
+          "okCnt = 0 : failCnt = 0",
+          "",
+          "If Not InitSapSession() Then WScript.Quit 1",
+          "",
+          ...callLines,
+          "",
+          "If okCnt > 0 Then",
+          "    On Error Resume Next",
+          "    session.findById(\"wnd[0]/tbar[0]/okcd\").text = \"/nZIW29\"",
+          "    session.findById(\"wnd[0]\").sendVKey 0",
+          `    session.findById("wnd[0]/usr/ctxtS_QNAME-LOW").text = "${vbsEscape(lastUserNo)}"`,
+          "    session.findById(\"wnd[0]/usr/ctxtS_QMART-LOW\").text = \"AR\"",
+          "    session.findById(\"wnd[0]\").sendVKey 8",
+          "    On Error GoTo 0",
+          "End If",
+          "",
+          "MsgBox \"객실 오더 자동 생성 완료!\" & vbCrLf & vbCrLf & \"- 성공: \" & okCnt & \"건\" & vbCrLf & \"- 실패: \" & failCnt & \"건\", vbInformation, \"SAP 오더 생성 완료\"",
+          "",
+          "Function InitSapSession()",
+          "    On Error Resume Next",
+          "    InitSapSession = False",
+          "    Set SapGuiAuto = GetObject(\"SAPGUI\")",
+          "    If Err.Number <> 0 Or SapGuiAuto Is Nothing Then",
+          "        MsgBox \"SAP GUI가 실행 중이지 않습니다. SAP 로그인 후 다시 실행해 주세요.\", vbExclamation, \"SAP 연결 오류\"",
+          "        Exit Function",
+          "    End If",
+          "    Set application = SapGuiAuto.GetScriptingEngine",
+          "    If Err.Number <> 0 Or application Is Nothing Or application.Children.Count = 0 Then",
+          "        MsgBox \"활성화된 SAP 연결이 없습니다. SAP에 로그인해 주세요.\", vbExclamation, \"SAP 연결 오류\"",
+          "        Exit Function",
+          "    End If",
+          "    Set connection = application.Children(0)",
+          "    If connection.Children.Count = 0 Then",
+          "        MsgBox \"활성화된 SAP 세션이 없습니다.\", vbExclamation, \"SAP 연결 오류\"",
+          "        Exit Function",
+          "    End If",
+          "    Set session = connection.Children(0)",
+          "    session.findById(\"wnd[0]\").maximize",
+          "    InitSapSession = True",
+          "    On Error GoTo 0",
+          "End Function",
+          "",
+          "Function ProcessCleaningOrder(acNo, workCenter, reqDate, userNo, qmtxt, ilart, taskList)",
+          "    On Error Resume Next",
+          "    ProcessCleaningOrder = False",
+          "    session.findById(\"wnd[0]\").maximize",
+          "    Dim autoBtn",
+          "    Set autoBtn = session.findById(\"wnd[0]/usr/btn%#AUTOTEXT008\", False)",
+          "    If Not autoBtn Is Nothing Then",
+          "        autoBtn.press",
+          "    Else",
+          "        session.findById(\"wnd[0]/tbar[0]/okcd\").text = \"/nIW21\"",
+          "        session.findById(\"wnd[0]\").sendVKey 0",
+          "    End If",
+          "    session.findById(\"wnd[0]/usr/ctxtRIWO00-QMART\").text = \"AR\"",
+          "    session.findById(\"wnd[0]\").sendVKey 0",
+          "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+          "",
+          "    session.findById(\"wnd[0]/usr/subSCREEN_1:SAPLIQS0:1050/subNOTIF_TYPE:SAPLIQS0:1051/txtVIQMEL-QMTXT\").text = qmtxt",
+          "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_1:SAPLIQS0:7322/subOBJEKT:SAPLIWO1:0100/ctxtRIWO1-TPLNR\").text = acNo",
+          "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_3:SAPLIQS0:7326/ctxtRIWO00-GEWRK\").text = workCenter",
+          "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_4:SAPLIQS0:7330/ctxtVIQMEL-LTRMN\").text = reqDate",
+          "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_5:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0101/ctxtVIQMEL-ZRUSRNO\").text = userNo",
+          "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+          "",
+          "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB02\").select",
+          "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB02/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_1:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0100/ctxtVIQMEL-ZDDATE_AC\").text = reqDate",
+          "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+          "",
+          "    session.findById(\"wnd[0]/usr/subSCREEN_1:SAPLIQS0:1050/btnXICON_ORDER\").press",
+          "    If Not session.findById(\"wnd[1]\", False) Is Nothing Then",
+          "        session.findById(\"wnd[1]\").sendVKey 0",
+          "    End If",
+          "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+          "",
+          "    session.findById(\"wnd[0]/usr/subSUB_ALL:SAPLCOIH:3001/ssubSUB_LEVEL:SAPLCOIH:1100/tabsTS_1100/tabpIHKZ/ssubSUB_AUFTRAG:SAPLCOIH:1120/subHEADER:SAPLCOIH:0154/ctxtCAUFVD-ILART\").text = ilart",
+          "    session.findById(\"wnd[0]\").sendVKey 0",
+          "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+          "",
+          "    If Trim(taskList) <> \"\" Then",
+          "        session.findById(\"wnd[0]/mbar/menu[3]/menu[0]/menu[4]\").select",
+          "        session.findById(\"wnd[0]/usr/ctxtPN_PLNNR-LOW\").text = taskList",
+          "        session.findById(\"wnd[0]\").sendVKey 8",
+          "        Dim arbplElem",
+          "        Set arbplElem = session.findById(\"wnd[0]/usr/subSUB_ALL:SAPLCOIH:3001/ssubSUB_LEVEL:SAPLCOIH:1100/tabsTS_1100/tabpIHKZ/ssubSUB_AUFTRAG:SAPLCOIH:1120/subAVO:SAPLCOI0:0310/ctxtAFVGD-ARBPL\", False)",
+          "        If Not arbplElem Is Nothing Then",
+          "            arbplElem.text = workCenter",
+          "            session.findById(\"wnd[0]\").sendVKey 0",
+          "            session.findById(\"wnd[0]\").sendVKey 0",
+          "        End If",
+          "        If Err.Number <> 0 Then Err.Clear : Exit Function",
+          "    End If",
+          "",
+          "    session.findById(\"wnd[0]/tbar[1]/btn[25]\").press",
+          "    session.findById(\"wnd[0]\").sendVKey 11",
+          "    If Not session.findById(\"wnd[1]\", False) Is Nothing Then",
+          "        session.findById(\"wnd[1]\").sendVKey 0",
+          "    End If",
+          "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+          "",
+          "    Dim cleanBtn",
+          "    Set cleanBtn = session.findById(\"wnd[0]/usr/btn%#AUTOTEXT010\", False)",
+          "    If Not cleanBtn Is Nothing Then cleanBtn.press",
+          "    Dim qmnumElem",
+          "    Set qmnumElem = session.findById(\"wnd[0]/usr/ctxtRIWO00-QMNUM\", False)",
+          "    If Not qmnumElem Is Nothing Then",
+          "        qmnumElem.text = \"\"",
+          "        session.findById(\"wnd[0]/tbar[0]/btn[3]\").press",
+          "    End If",
+          "    ProcessCleaningOrder = True",
+          "    On Error GoTo 0",
+          "End Function"
+        ].join('\r\n');
+
+        downloadUtf16Vbs(`SAP_객실오더_자동생성_${cabinQueue.length}대.vbs`, vbs);
+        logCabin('SUCCESS', `총 ${cabinQueue.length}대 항공기(${subTasks.length}건 오더) 자동 생성 스크립트가 준비되었습니다.`);
+        logCabin('INFO', '브라우저 다운로드 목록에서 [SAP_객실오더_자동생성.vbs] 파일을 클릭(열기)하면 SAP 자동 생성이 즉시 실행됩니다.');
+      });
+    }
+
     // Initialize Checklist
     initAircraftSelect();
     initBatchTableSort();
     initFerryFlightModule();
+    initVariousOrdersModule();
     setActiveCat('all');
 
   </script>
