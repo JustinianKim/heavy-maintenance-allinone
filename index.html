@@ -134,13 +134,24 @@
         page-break-inside: avoid !important;
       }
 
-      textarea.chk-row-notes {
-        border: none !important;
-        background: transparent !important;
-        resize: none !important;
-        padding: 0 !important;
+      textarea.chk-row-notes,
+      textarea {
+        display: none !important;
+      }
+
+      .print-notes-text {
+        display: block !important;
         font-size: 8pt !important;
-        box-shadow: none !important;
+        line-height: 1.3 !important;
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        color: #111827 !important;
+      }
+
+      textarea::placeholder,
+      .chk-row-notes::placeholder {
+        color: transparent !important;
+        opacity: 0 !important;
       }
 
       input[type="checkbox"] {
@@ -2872,7 +2883,8 @@
             </div>` : ''}
           </td>
           <td class="py-2.5 px-3 align-top">
-            <textarea rows="1" data-id="${item.id}" class="chk-row-notes w-full text-xs p-1.5 rounded border border-gray-200 focus:border-brand-orange focus:ring-1 focus:ring-brand-orange resize-y placeholder-gray-300 transition-colors" placeholder="메모 입력">${escapeHtml(itemState.notes || '')}</textarea>
+            <textarea rows="1" data-id="${item.id}" class="chk-row-notes no-print w-full text-xs p-1.5 rounded border border-gray-200 focus:border-brand-orange focus:ring-1 focus:ring-brand-orange resize-y placeholder-gray-300 transition-colors" placeholder="메모 입력">${escapeHtml(itemState.notes || '')}</textarea>
+            <div class="print-only print-notes-text">${escapeHtml(itemState.notes || '')}</div>
           </td>
         `;
 
@@ -2971,6 +2983,8 @@
         const id = target.dataset.id;
         if (!tailData.items[id]) tailData.items[id] = { checked: false, checkedAt: '', notes: '' };
         tailData.items[id].notes = target.value;
+        const printTextEl = target.parentElement ? target.parentElement.querySelector('.print-notes-text') : null;
+        if (printTextEl) printTextEl.textContent = target.value;
         saveChecklistStorage();
       }
     });
