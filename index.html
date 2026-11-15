@@ -924,11 +924,17 @@
             <!-- Row 2: 항공기 기번, 생성 오더 옵션, 목록 추가 버튼 -->
             <div class="pt-3 border-t border-gray-100 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
               <div class="flex flex-wrap items-end gap-3">
-                <div class="w-32">
+                <div class="w-36 relative" id="cabinAcComboContainer">
                   <label class="block text-xs font-bold text-brand-orange mb-1">항공기 기번</label>
-                  <input type="text" id="cabinAcNo" list="cabinFleetList" placeholder="예: HL8031"
-                    class="w-full px-3 py-2 text-xs font-mono font-bold uppercase bg-white border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange text-gray-900">
-                  <datalist id="cabinFleetList"></datalist>
+                  <div class="relative flex items-center">
+                    <input type="text" id="cabinAcNo" autocomplete="off" placeholder="예: HL8031"
+                      class="w-full pl-3 pr-7 py-2 text-xs font-mono font-bold uppercase bg-white border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange text-gray-900 cursor-pointer">
+                    <button type="button" id="cabinAcToggleBtn" class="absolute right-2 text-gray-400 hover:text-brand-orange text-[10px] cursor-pointer" title="전체 기번 목록 열기">
+                      ▼
+                    </button>
+                  </div>
+                  <div id="cabinAcDropdownList" class="hidden absolute left-0 top-full mt-1 w-44 max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-xl shadow-xl z-50 divide-y divide-gray-100 text-xs">
+                  </div>
                 </div>
 
                 <div>
@@ -3702,7 +3708,8 @@
       const cabinDueDate = document.getElementById('cabinDueDate');
       const cabinWorkCenter = document.getElementById('cabinWorkCenter');
       const cabinAcNo = document.getElementById('cabinAcNo');
-      const cabinFleetList = document.getElementById('cabinFleetList');
+      const cabinAcToggleBtn = document.getElementById('cabinAcToggleBtn');
+      const cabinAcDropdownList = document.getElementById('cabinAcDropdownList');
       const cabinClnTask = document.getElementById('cabinClnTask');
       const cabinChkCln = document.getElementById('cabinChkCln');
       const cabinChkClean = document.getElementById('cabinChkClean');
@@ -3720,14 +3727,9 @@
       if (!cabinUserNo) return;
 
       let cabinQueue = [];
-
-      // Populate Fleet Datalist
-      if (cabinFleetList && typeof DEFAULT_AIRCRAFT_STATUS === 'object') {
-        cabinFleetList.innerHTML = Object.keys(DEFAULT_AIRCRAFT_STATUS)
-          .sort()
-          .map(hl => `<option value="${hl}">`)
-          .join('');
-      }
+      const fleetTails = (typeof DEFAULT_AIRCRAFT_STATUS === 'object')
+        ? Object.keys(DEFAULT_AIRCRAFT_STATUS).sort()
+        : [];
 
       // 1 year later default date (YYYY.MM.DD)
       function getOneYearLaterStr() {
@@ -3816,6 +3818,75 @@
         return '10630 (NG)';
       }
 
+      function renderCabinAcDropdown(filterQuery) {
+        if (!cabinAcDropdownList) return;
+        const q = (filterQuery || '').trim().toUpperCase();
+        const curVal = normalizeAcNo(cabinAcNo.value);
+        // 이미 완성된 기번(예: HL8031) 상태이거나 검색어가 비어있으면 전체 45대 표시
+        const showAll = !q || fleetTails.includes(q);
+        const list = showAll ? fleetTails : fleetTails.filter(hl => hl.includes(q));
+
+        cabinAcDropdownList.innerHTML = '';
+        if (list.length === 0) {
+          cabinAcDropdownList.innerHTML = '<div class="px-3 py-2 text-gray-400 text-center">일치하는 기번 없음</div>';
+          cabinAcDropdownList.classList.remove('hidden');
+          return;
+        }
+
+        let activeEl = null;
+        list.forEach(hl => {
+          const item = document.createElement('div');
+          const isSelected = (hl === curVal);
+          const taskBadge = getRecommendedTaskList(hl).includes('13870') ? 'MAX' : 'NG';
+          item.className = `px-3 py-2 cursor-pointer flex items-center justify-between transition-colors ${isSelected ? 'bg-orange-100 text-brand-orange font-bold' : 'text-gray-800 hover:bg-orange-50'}`;
+          item.innerHTML = `<span class="font-mono font-bold">${hl}</span><span class="text-[10px] font-mono ${taskBadge === 'MAX' ? 'text-brand-orange font-bold' : 'text-gray-400'}">${taskBadge}</span>`;
+          item.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            cabinAcNo.value = hl;
+            cabinClnTask.value = getRecommendedTaskList(hl);
+            cabinAcDropdownList.classList.add('hidden');
+            cabinAcNo.focus();
+          });
+          cabinAcDropdownList.appendChild(item);
+          if (isSelected) activeEl = item;
+        });
+
+        cabinAcDropdownList.classList.remove('hidden');
+        if (activeEl) {
+          setTimeout(() => {
+            activeEl.scrollIntoView({ block: 'nearest' });
+          }, 0);
+        }
+      }
+
+      cabinAcNo.addEventListener('focus', () => {
+        renderCabinAcDropdown('');
+      });
+
+      cabinAcNo.addEventListener('click', () => {
+        if (cabinAcDropdownList.classList.contains('hidden')) {
+          renderCabinAcDropdown('');
+        }
+      });
+
+      if (cabinAcToggleBtn) {
+        cabinAcToggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (cabinAcDropdownList.classList.contains('hidden')) {
+            cabinAcNo.focus();
+            renderCabinAcDropdown('');
+          } else {
+            cabinAcDropdownList.classList.add('hidden');
+          }
+        });
+      }
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#cabinAcComboContainer') && cabinAcDropdownList) {
+          cabinAcDropdownList.classList.add('hidden');
+        }
+      });
+
       cabinAcNo.addEventListener('input', () => {
         const raw = cabinAcNo.value.trim();
         if (/^\d{4,}$/.test(raw)) {
@@ -3826,6 +3897,7 @@
         if (cabinAcNo.value.trim()) {
           cabinClnTask.value = getRecommendedTaskList(cabinAcNo.value);
         }
+        renderCabinAcDropdown(cabinAcNo.value);
       });
 
       cabinAcNo.addEventListener('blur', () => {
@@ -3941,6 +4013,7 @@
         renderCabinQueue();
         logCabin('INFO', `대기열 추가 완료: ${acNo} (${workCenter}, ${dueDate}, 소독:${clnOpt}, CLEANING:${chkOpt})`);
         cabinAcNo.value = '';
+        if (cabinAcDropdownList) cabinAcDropdownList.classList.add('hidden');
         cabinAcNo.focus();
         return true;
       }
@@ -3950,6 +4023,8 @@
         if (e.key === 'Enter') {
           e.preventDefault();
           addCabinToQueue();
+        } else if (e.key === 'Escape') {
+          if (cabinAcDropdownList) cabinAcDropdownList.classList.add('hidden');
         }
       });
 
