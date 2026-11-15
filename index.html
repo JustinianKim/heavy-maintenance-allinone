@@ -428,16 +428,34 @@
             <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white">
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr class="bg-gray-50 text-gray-600 border-b border-gray-200 font-semibold text-[11px]">
-                    <th class="py-2.5 px-3">기번</th>
-                    <th class="py-2.5 px-3">단계</th>
-                    <th class="py-2.5 px-2">리비전</th>
-                    <th class="py-2.5 px-2">기령</th>
-                    <th class="py-2.5 px-3 text-right">MPD</th>
-                    <th class="py-2.5 px-3 text-right">AD/SB/EO</th>
-                    <th class="py-2.5 px-3 text-right">가중치</th>
-                    <th class="py-2.5 px-3 text-right font-bold text-gray-800">Total M/H</th>
-                    <th class="py-2.5 px-3 text-center font-bold text-brand-orange">예측 TAT</th>
+                  <tr id="batchTableHeader" class="bg-gray-50 text-gray-600 border-b border-gray-200 font-semibold text-[11px] select-none">
+                    <th data-sort="hl" class="py-2.5 px-3 cursor-pointer hover:bg-gray-100 transition-colors" title="기번 정렬">
+                      <div class="flex items-center space-x-1"><span>기번</span><span class="sort-icon text-[10px] text-gray-400">↕</span></div>
+                    </th>
+                    <th data-sort="cLevel" class="py-2.5 px-3 cursor-pointer hover:bg-gray-100 transition-colors" title="중정비 단계 정렬">
+                      <div class="flex items-center space-x-1"><span>단계</span><span class="sort-icon text-[10px] text-gray-400">↕</span></div>
+                    </th>
+                    <th data-sort="revision" class="py-2.5 px-2 cursor-pointer hover:bg-gray-100 transition-colors" title="리비전 정렬">
+                      <div class="flex items-center space-x-1"><span>리비전</span><span class="sort-icon text-[10px] text-gray-400">↕</span></div>
+                    </th>
+                    <th data-sort="ageYears" class="py-2.5 px-2 cursor-pointer hover:bg-gray-100 transition-colors" title="기령 정렬">
+                      <div class="flex items-center space-x-1"><span>기령</span><span class="sort-icon text-[10px] text-gray-400">↕</span></div>
+                    </th>
+                    <th data-sort="mpdSum" class="py-2.5 px-3 text-right cursor-pointer hover:bg-gray-100 transition-colors" title="MPD 공수 정렬">
+                      <div class="flex items-center justify-end space-x-1"><span>MPD</span><span class="sort-icon text-[10px] text-gray-400">↕</span></div>
+                    </th>
+                    <th data-sort="adSum" class="py-2.5 px-3 text-right cursor-pointer hover:bg-gray-100 transition-colors" title="AD/SB/EO 공수 정렬">
+                      <div class="flex items-center justify-end space-x-1"><span>AD/SB/EO</span><span class="sort-icon text-[10px] text-gray-400">↕</span></div>
+                    </th>
+                    <th data-sort="weights" class="py-2.5 px-3 text-right cursor-pointer hover:bg-gray-100 transition-colors" title="가중치 정렬">
+                      <div class="flex items-center justify-end space-x-1"><span>가중치</span><span class="sort-icon text-[10px] text-gray-400">↕</span></div>
+                    </th>
+                    <th data-sort="total" class="py-2.5 px-3 text-right font-bold text-gray-800 cursor-pointer hover:bg-gray-100 transition-colors" title="Total M/H 정렬">
+                      <div class="flex items-center justify-end space-x-1"><span>Total M/H</span><span class="sort-icon text-[10px] text-gray-400">↕</span></div>
+                    </th>
+                    <th data-sort="tatDays" class="py-2.5 px-3 text-center font-bold text-brand-orange cursor-pointer hover:bg-gray-100 transition-colors" title="예측 TAT 정렬">
+                      <div class="flex items-center justify-center space-x-1"><span>예측 TAT</span><span class="sort-icon text-[10px] text-brand-orange">↕</span></div>
+                    </th>
                     <th class="py-2.5 px-3 text-center">상세</th>
                   </tr>
                 </thead>
@@ -2110,25 +2128,116 @@
     }
 
     // ================= DISPLAY RESULTS =================
-    function displayBatchResults(results) {
-      if (!results || results.length === 0) return;
+    let currentSortCol = null;
+    let currentSortDir = 'asc';
 
-      document.getElementById('resBatchSummaryText').textContent = `총 ${results.length}대 항공기 일괄 분석 완료`;
-      document.getElementById('kpiTargetCount').textContent = `${results.length}대`;
+    function initBatchTableSort() {
+      const headers = document.querySelectorAll('#batchTableHeader th[data-sort]');
+      headers.forEach(th => {
+        th.addEventListener('click', () => {
+          const col = th.dataset.sort;
+          if (!col) return;
+          sortBatchResults(col);
+        });
+      });
+    }
 
-      const sumTotalMh = results.reduce((acc, r) => acc + r.total, 0);
-      document.getElementById('kpiTotalMh').textContent = sumTotalMh.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    function sortBatchResults(col) {
+      if (currentSortCol === col) {
+        currentSortDir = currentSortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        currentSortCol = col;
+        currentSortDir = (col === 'hl' || col === 'revision') ? 'asc' : 'desc';
+      }
+      renderBatchTable();
+      updateSortHeaders();
+    }
 
-      const avgTat = (results.reduce((acc, r) => acc + r.tatDays, 0) / results.length).toFixed(1);
-      const maxTat = Math.max(...results.map(r => r.tatDays));
-      document.getElementById('kpiAvgTat').textContent = `${avgTat}일`;
-      document.getElementById('kpiMaxTatSub').textContent = `최대: ${maxTat}일`;
+    function updateSortHeaders() {
+      const headers = document.querySelectorAll('#batchTableHeader th[data-sort]');
+      headers.forEach(th => {
+        const col = th.dataset.sort;
+        const icon = th.querySelector('.sort-icon');
+        if (col === currentSortCol) {
+          th.classList.add('text-brand-orange');
+          if (icon) {
+            icon.textContent = currentSortDir === 'asc' ? '▲' : '▼';
+            icon.className = 'sort-icon text-[10px] text-brand-orange font-bold';
+          }
+        } else {
+          th.classList.remove('text-brand-orange');
+          if (icon) {
+            icon.textContent = '↕';
+            icon.className = 'sort-icon text-[10px] text-gray-400';
+          }
+        }
+      });
+    }
 
-      // Render Batch Table
+    function renderBatchTable() {
+      if (!latestBatchResults || latestBatchResults.length === 0) return;
       const tbody = document.getElementById('batchTableBody');
       tbody.innerHTML = '';
 
-      results.forEach((r, idx) => {
+      const sortedList = [...latestBatchResults];
+
+      if (currentSortCol) {
+        sortedList.sort((a, b) => {
+          let valA, valB;
+          switch (currentSortCol) {
+            case 'hl':
+              valA = (a.hl || '').toString();
+              valB = (b.hl || '').toString();
+              return currentSortDir === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+
+            case 'cLevel':
+              valA = parseInt((a.cLevel || '').replace(/\D/g, '') || 0, 10);
+              valB = parseInt((b.cLevel || '').replace(/\D/g, '') || 0, 10);
+              break;
+
+            case 'revision':
+              valA = parseInt((a.revision || '').replace(/\D/g, '') || 0, 10);
+              valB = parseInt((b.revision || '').replace(/\D/g, '') || 0, 10);
+              break;
+
+            case 'ageYears':
+              valA = parseFloat(a.ageYears) || 0;
+              valB = parseFloat(b.ageYears) || 0;
+              break;
+
+            case 'mpdSum':
+              valA = a.mpdSum || 0;
+              valB = b.mpdSum || 0;
+              break;
+
+            case 'adSum':
+              valA = a.adSum || 0;
+              valB = b.adSum || 0;
+              break;
+
+            case 'weights':
+              valA = a.weights || 0;
+              valB = b.weights || 0;
+              break;
+
+            case 'total':
+              valA = a.total || 0;
+              valB = b.total || 0;
+              break;
+
+            case 'tatDays':
+              valA = a.tatDays || 0;
+              valB = b.tatDays || 0;
+              break;
+
+            default:
+              return 0;
+          }
+          return currentSortDir === 'asc' ? valA - valB : valB - valA;
+        });
+      }
+
+      sortedList.forEach((r, idx) => {
         const tr = document.createElement('tr');
         tr.className = `cursor-pointer transition-colors hover:bg-orange-50/60 ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`;
         tr.id = `row-aircraft-${idx}`;
@@ -2161,9 +2270,28 @@
         tbody.appendChild(tr);
       });
 
-      // Default highlight & show first aircraft details
+      // Highlight first item
       highlightTableRow(0);
-      renderSingleAircraftDetail(results[0]);
+      renderSingleAircraftDetail(sortedList[0]);
+    }
+
+    function displayBatchResults(results) {
+      if (!results || results.length === 0) return;
+
+      document.getElementById('resBatchSummaryText').textContent = `총 ${results.length}대 항공기 일괄 분석 완료`;
+      document.getElementById('kpiTargetCount').textContent = `${results.length}대`;
+
+      const sumTotalMh = results.reduce((acc, r) => acc + r.total, 0);
+      document.getElementById('kpiTotalMh').textContent = sumTotalMh.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+      const avgTat = (results.reduce((acc, r) => acc + r.tatDays, 0) / results.length).toFixed(1);
+      const maxTat = Math.max(...results.map(r => r.tatDays));
+      document.getElementById('kpiAvgTat').textContent = `${avgTat}일`;
+      document.getElementById('kpiMaxTatSub').textContent = `최대: ${maxTat}일`;
+
+      // Render Batch Table
+      renderBatchTable();
+      updateSortHeaders();
 
       // Switch View
       inputView.classList.add('hidden');
@@ -3179,6 +3307,7 @@
 
     // Initialize Checklist
     initAircraftSelect();
+    initBatchTableSort();
     initFerryFlightModule();
     setActiveCat('all');
 
