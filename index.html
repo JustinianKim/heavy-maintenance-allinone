@@ -521,8 +521,8 @@
           <div class="flex items-center space-x-2 shrink-0">
             <!-- Flight Number Quick Input -->
             <div class="relative" onclick="event.stopPropagation()">
-              <input type="text" id="ferrySearchInput" placeholder="7C*M 편명 검색 (예: 7C8032M)"
-                class="w-44 sm:w-52 text-xs font-mono font-semibold bg-white border border-gray-300 rounded-lg pl-2.5 pr-14 py-1 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-orange uppercase">
+              <input type="text" id="ferrySearchInput" placeholder="편명 / 기번 검색"
+                class="w-40 sm:w-48 text-xs font-mono font-semibold bg-white border border-gray-300 rounded-lg pl-2.5 pr-14 py-1 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-orange uppercase">
               <button type="button" id="btnFerrySearch"
                 class="absolute right-1 top-1/2 -translate-y-1/2 px-2 py-0.5 text-[11px] font-bold rounded bg-brand-orange hover:bg-orange-600 text-white transition-colors cursor-pointer">
                 조회
@@ -538,16 +538,13 @@
         </div>
 
         <!-- Collapsible Content Body -->
-        <div id="ferryContentBody" class="p-4 space-y-4 bg-white">
+        <div id="ferryContentBody" class="p-4 bg-white">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
             
             <!-- Left: Radar Screen (7 cols) -->
             <div class="lg:col-span-7 flex flex-col space-y-2">
               <div class="flex items-center justify-between flex-wrap gap-2">
-                <div class="flex items-center space-x-2">
-                  <span class="text-xs font-bold text-gray-800">실시간 항공 레이더</span>
-                  <span id="ferryActiveCallsignBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-orange-50 text-brand-orange border border-orange-200">7C*M 전용 레이더</span>
-                </div>
+                <span class="text-xs font-bold text-gray-800">실시간 항공 레이더</span>
                 <div class="flex items-center space-x-2 text-xs">
                   <button type="button" id="btnRadarReset" class="px-2.5 py-0.5 rounded font-medium text-[11px] bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer transition-colors" title="동아시아 7C*M 공역 기본 화면으로 리셋">기본 공역</button>
                   <a id="linkExternalFr24" href="https://www.flightradar24.com/33.5,125.5/6" target="_blank" rel="noopener noreferrer"
@@ -561,25 +558,17 @@
               <!-- Iframe Container -->
               <div class="w-full h-80 sm:h-96 rounded-xl border border-gray-200 overflow-hidden relative bg-slate-900 shadow-inner">
                 <iframe id="ferryRadarIframe"
-                  src="https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=%287C.%2AM%7CJJA.%2AM%29"
+                  src="https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&hideButtons&filterCallSign=%287C.%2AM%7CJJA.%2AM%29"
                   class="w-full h-full border-0"
                   allowfullscreen
                   loading="lazy"></iframe>
-              </div>
-
-              <div class="flex flex-wrap items-center justify-between text-[11px] text-gray-400 gap-2 pt-0.5">
-                <span>동아시아 MRO 공역 (ICN, GMP, CAN, XMN, SIN) • 7C*M 공수편만 필터링 표시</span>
-                <span id="ferryCurrentAircraftTrack" class="text-gray-700 font-semibold">7C*M 전용 모니터링</span>
               </div>
             </div>
 
             <!-- Right: Ferry Flight Records & Schedule Table (5 cols) -->
             <div class="lg:col-span-5 flex flex-col space-y-2">
               <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-1.5">
-                  <span class="text-xs font-bold text-gray-800">실시간 공수비행 (7C*M) 추적 목록</span>
-                  <span class="text-[10px] text-gray-500 font-normal">(ADS-B 연동)</span>
-                </div>
+                <span class="text-xs font-bold text-gray-800">공수비행 추적 목록</span>
                 <button type="button" id="btnAddFerryRecord" class="text-[11px] font-semibold text-brand-orange hover:underline cursor-pointer">
                   + 공수편 등록
                 </button>
@@ -590,11 +579,6 @@
                 <div id="ferryRecordsList" class="divide-y divide-gray-100">
                   <!-- Rendered dynamically -->
                 </div>
-              </div>
-
-              <div class="flex items-center justify-between text-[11px] text-gray-400 pt-0.5">
-                <span>항목 클릭 시 해당 항공기 체크리스트가 자동 선택됩니다.</span>
-                <button type="button" id="btnExportFerry" class="text-gray-600 hover:text-gray-900 font-semibold underline cursor-pointer">Excel 저장</button>
               </div>
             </div>
 
@@ -2219,7 +2203,7 @@
     // MODULE: FERRY FLIGHT CONTROLLER (7C*M Monitor & Radar Integration)
     // =========================================================================
     const FERRY_STORAGE_KEY = 'JEJU_HM_FERRY_RECORDS_V3_REAL';
-    const FERRY_RADAR_FILTER_URL = 'https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=%287C.%2AM%7CJJA.%2AM%29';
+    const FERRY_RADAR_FILTER_URL = 'https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&hideButtons&filterCallSign=%287C.%2AM%7CJJA.%2AM%29';
     const DEFAULT_FERRY_RECORDS = [];
 
     let ferryRecords = [];
@@ -2236,11 +2220,8 @@
     const ferryRadarIframe = document.getElementById('ferryRadarIframe');
     const btnRadarReset = document.getElementById('btnRadarReset');
     const linkExternalFr24 = document.getElementById('linkExternalFr24');
-    const ferryActiveCallsignBadge = document.getElementById('ferryActiveCallsignBadge');
-    const ferryCurrentAircraftTrack = document.getElementById('ferryCurrentAircraftTrack');
     const ferryRecordsList = document.getElementById('ferryRecordsList');
     const btnAddFerryRecord = document.getElementById('btnAddFerryRecord');
-    const btnExportFerry = document.getElementById('btnExportFerry');
 
     const ferryModal = document.getElementById('ferryModal');
     const btnCloseFerryModal = document.getElementById('btnCloseFerryModal');
@@ -2273,16 +2254,8 @@
     function renderFerryRecords(filterQuery = '') {
       ferryRecordsList.innerHTML = '';
       if (!ferryRecords || ferryRecords.length === 0) {
-        ferryRecordsList.innerHTML = `
-          <div class="py-12 px-4 text-center flex flex-col items-center justify-center space-y-2">
-            <span class="w-8 h-8 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-brand-orange text-sm font-bold">✈</span>
-            <div class="text-xs font-bold text-gray-700">현재 비행 중인 7C*M 공수편이 없습니다.</div>
-            <div class="text-[11px] text-gray-400 max-w-xs leading-relaxed">
-              좌측 레이더는 무료 ADS-B망과 실시간 직결되어 비행기가 이륙하면 지도에 즉시 나타납니다. 상단에 공수편명을 입력하여 즉시 추적할 수 있습니다.
-            </div>
-          </div>
-        `;
-        ferryQuickSummary.textContent = '현재 비행 중인 7C*M 공수편 없음 (실시간 감시중)';
+        ferryRecordsList.innerHTML = '<div class="py-24 text-center text-gray-400 text-xs">비행 중인 공수편 없음</div>';
+        ferryQuickSummary.textContent = '비행 중인 공수편 없음';
         return;
       }
 
@@ -2387,23 +2360,20 @@
     function trackFerryFlight(record) {
       if (!record) return;
       ferrySearchInput.value = record.flightNo;
-      ferryActiveCallsignBadge.textContent = `${record.flightNo} (${record.tail})`;
 
       // 7C*M 전용 필터 적용 상태에서 해당 항공기/편명 포커스
       const numOnly = (record.flightNo || '').replace(/\D/g, '');
       const callsignRegex = numOnly ? `%287C${numOnly}M%7CJJA${numOnly}M%29` : `%287C.%2AM%7CJJA.%2AM%29`;
       
       if (record.tail) {
-        ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=${callsignRegex}&reg=${encodeURIComponent(record.tail.toUpperCase())}`;
+        ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&hideButtons&filterCallSign=${callsignRegex}&reg=${encodeURIComponent(record.tail.toUpperCase())}`;
       } else {
-        ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=${callsignRegex}`;
+        ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&hideButtons&filterCallSign=${callsignRegex}`;
       }
 
       // Update external Flightradar24 link
       linkExternalFr24.href = `https://www.flightradar24.com/data/flights/${encodeURIComponent(record.flightNo.toLowerCase())}`;
       linkExternalFr24.innerHTML = `<span>${escapeHtml(record.flightNo)} (FR24) ↗</span>`;
-
-      ferryCurrentAircraftTrack.textContent = `추적: ${record.flightNo} (${record.tail}) [${record.origin} → ${record.dest}]`;
 
       // Automatically select aircraft in Checklist combobox
       if (record.tail && DEFAULT_AIRCRAFT_STATUS[record.tail]) {
@@ -2459,10 +2429,8 @@
 
         if (!query) {
           ferryRadarIframe.src = FERRY_RADAR_FILTER_URL;
-          ferryActiveCallsignBadge.textContent = '7C*M 전용 레이더';
           linkExternalFr24.href = 'https://www.flightradar24.com/33.5,125.5/6';
           linkExternalFr24.innerHTML = '<span>Flightradar24 ↗</span>';
-          ferryCurrentAircraftTrack.textContent = '7C*M 전용 모니터링';
           return;
         }
 
@@ -2475,24 +2443,21 @@
         if (matched) {
           trackFerryFlight(matched);
         } else {
-          ferryActiveCallsignBadge.textContent = query;
           const isTail = query.startsWith('HL');
           const tailVal = isTail ? query : (DEFAULT_AIRCRAFT_STATUS[`HL${query.replace(/\D/g, '')}`] ? `HL${query.replace(/\D/g, '')}` : '-');
           const fNoVal = isTail ? `7C${query.replace(/\D/g, '')}M` : query;
 
           if (isTail) {
-            ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=%287C.%2AM%7CJJA.%2AM%29&reg=${encodeURIComponent(query)}`;
+            ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&hideButtons&filterCallSign=%287C.%2AM%7CJJA.%2AM%29&reg=${encodeURIComponent(query)}`;
             linkExternalFr24.href = `https://www.flightradar24.com/data/aircraft/${encodeURIComponent(query.toLowerCase())}`;
             linkExternalFr24.innerHTML = `<span>${escapeHtml(query)} (FR24) ↗</span>`;
-            ferryCurrentAircraftTrack.textContent = `추적: ${query} (7C*M 필터)`;
             if (DEFAULT_AIRCRAFT_STATUS[query]) selectAircraft(query, true);
           } else {
             const numOnly = query.replace(/\D/g, '');
             const callsignRegex = numOnly ? `%287C${numOnly}M%7CJJA${numOnly}M%29` : `%287C.%2AM%7CJJA.%2AM%29`;
-            ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&filterCallSign=${callsignRegex}`;
+            ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&hideSideBar&hideButtons&filterCallSign=${callsignRegex}`;
             linkExternalFr24.href = `https://www.flightradar24.com/data/flights/${encodeURIComponent(query.toLowerCase())}`;
             linkExternalFr24.innerHTML = `<span>${escapeHtml(query)} (FR24) ↗</span>`;
-            ferryCurrentAircraftTrack.textContent = `추적: ${query} (7C*M 필터)`;
           }
 
           // 실시간 추적 항목 등록
@@ -2528,12 +2493,10 @@
       // Radar Reset Button
       btnRadarReset.addEventListener('click', () => {
         ferryRadarIframe.src = FERRY_RADAR_FILTER_URL;
-        ferryActiveCallsignBadge.textContent = '7C*M 전용 레이더';
         ferrySearchInput.value = '';
         renderFerryRecords('');
         linkExternalFr24.href = 'https://www.flightradar24.com/33.5,125.5/6';
         linkExternalFr24.innerHTML = '<span>Flightradar24 ↗</span>';
-        ferryCurrentAircraftTrack.textContent = '7C*M 전용 모니터링';
       });
 
       // Modal Handlers
@@ -2596,36 +2559,6 @@
         renderFerryRecords();
         closeModal();
         trackFerryFlight(newRec);
-      });
-
-      // Export Ferry Excel
-      btnExportFerry.addEventListener('click', () => {
-        if (!ferryRecords || ferryRecords.length === 0) {
-          alert('저장할 공수비행 기록이 없습니다.');
-          return;
-        }
-        const now = new Date();
-        const dateStr = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
-        const rows = [
-          ['공수편명', '기번', '출발공항', '도착공항', '일자', '출발시각(STD)', '도착시각(STA)', '비행상태', '공수목적']
-        ];
-        ferryRecords.forEach(r => {
-          rows.push([
-            r.flightNo,
-            r.tail,
-            r.origin,
-            r.dest,
-            r.date || '',
-            r.std || '',
-            r.sta || '',
-            r.status || '',
-            r.purpose || ''
-          ]);
-        });
-        const ws = XLSX.utils.aoa_to_sheet(rows);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, '공수비행현황');
-        XLSX.writeFile(wb, `제주항공_중정비_공수비행현황_${dateStr}.xlsx`);
       });
 
       // Initial expand state from localStorage (default expanded)
@@ -2757,16 +2690,6 @@
       chkAircraftValue.value = found.value;
       chkAircraftInput.value = found.label;
       chkAircraftDropdownList.classList.add('hidden');
-
-      // Update Ferry Flight status banner for selected aircraft
-      if (typeof ferryRecords !== 'undefined' && typeof ferryCurrentAircraftTrack !== 'undefined' && ferryCurrentAircraftTrack) {
-        const relatedFerry = ferryRecords.find(r => r.tail === found.value);
-        if (relatedFerry) {
-          ferryCurrentAircraftTrack.textContent = `연계 공수: ${relatedFerry.flightNo} [${relatedFerry.origin} → ${relatedFerry.dest}] (${relatedFerry.status})`;
-        } else {
-          ferryCurrentAircraftTrack.textContent = `${found.value} 공수비행 이력 없음`;
-        }
-      }
 
       if (triggerRender) {
         saveChecklistStorage();
