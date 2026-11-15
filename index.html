@@ -856,73 +856,142 @@
   <div id="guideModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4"
     style="overscroll-behavior: contain;">
     <div
-      class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+      class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150"
       style="overscroll-behavior: contain;">
       <div class="bg-brand-orange text-white px-6 py-4 flex items-center justify-between">
         <h3 class="text-base font-bold flex items-center space-x-2">
           <span>ⓘ</span>
-          <span>가중치 및 TAT 산출 기준 가이드</span>
+          <span>워크패키지 가중치 및 TAT 산출 기준 (주1 ~ 주10)</span>
         </h3>
         <button id="btnCloseGuide" class="text-white/80 hover:text-white text-lg font-bold">✕</button>
       </div>
       <div class="p-6 overflow-y-auto text-sm text-gray-700 space-y-4 leading-relaxed font-sans"
         style="overscroll-behavior: contain;">
         <div class="border-b pb-3">
-          <h4 class="font-bold text-gray-900 text-base mb-1">목적 및 기본 원칙</h4>
-          <p class="text-gray-600 text-xs">WP(Work Package) 분석 결과에 "추가 Man-hour(M/H)"를 더해 최종 소요 일수(TAT)를 보정합니다.</p>
+          <h4 class="font-bold text-gray-900 text-base mb-1">목적 및 기본 산출 공식</h4>
+          <p class="text-gray-600 text-xs">Work Package(MPD, AD/SB/EO) 공수에 현장 실적 기반의 10대 보정 가중치를 합산하여 예측 공수 및 중정비 소요 일수(TAT)를 자동 산출합니다.</p>
         </div>
 
-        <div class="bg-orange-50 border border-orange-200 rounded-lg p-3 text-xs">
-          <p class="font-bold text-brand-orange mb-1">최종 산출 로직</p>
+        <div class="bg-orange-50 border border-orange-200 rounded-lg p-3 text-xs space-y-1">
+          <p class="font-bold text-brand-orange">■ 핵심 산출 로직</p>
           <ul class="list-disc list-inside space-y-0.5 text-gray-800">
-            <li><strong>Total M/H</strong> = MPD 합계 + AD/SB/EO 합계 + 가중치 합계</li>
-            <li><strong>TAT(일)</strong> = ceil(Total M/H / 100) (소수점 올림 처리)</li>
+            <li><strong>Total M/H</strong> = MPD 기본공수 + AD/SB/EO 공수 + <strong>가중치 합계(주1 ~ 주10)</strong></li>
+            <li><strong>예측 TAT(일)</strong> = ceil(Total M/H ÷ 100) (소수점 올림 계산)</li>
+            <li><strong>주3 특례</strong>: GLY & LAV 장탈 점검(Wet Area) 포함 시 <strong>최소 TAT 12일</strong> 강제 보정 적용</li>
           </ul>
         </div>
 
-        <div class="space-y-3 text-xs">
-          <h4 class="font-bold text-gray-900 text-sm">가중치 적용 항목 및 기준</h4>
+        <div class="space-y-2.5 text-xs">
+          <h4 class="font-bold text-gray-900 text-sm">10대 세부 산출 기준 (주1 ~ 주10)</h4>
 
-          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
-            <p class="font-bold text-gray-800">1) 중정비(C-Check 단계) – 파일명 기준</p>
-            <p class="text-gray-600 mt-0.5">• 조건: 파일명에 "4C" 이상 포함 (예: 4C, 6C, 8C 등)</p>
-            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +30 M/H (4C 이상이면 최고 C값 기준 1회 적용)</p>
+          <!-- 주1 -->
+          <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-orange-300 transition-colors">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-gray-900"><span class="text-brand-orange">주1)</span> 제작 후 14년 이상 노후 항공기</span>
+              <span class="px-2 py-0.5 bg-orange-100 text-brand-orange font-bold rounded">+50 M/H</span>
+            </div>
+            <p class="text-gray-600">• 조건: 기령 14년 이상 (제작일자 기준, 내장 플릿 45대 DB 자동 판별)</p>
+            <p class="text-gray-500 mt-0.5">• 사유: 부식, Crack 등 중요 구조 결함 다수 발생 보정</p>
           </div>
 
-          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
-            <p class="font-bold text-gray-800">2) 노후 항공기 – 기령 기준</p>
-            <p class="text-gray-600 mt-0.5">• 조건: 파일명에서 HL기번(HL####) 추출 후 기령 15년 이상</p>
-            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +30 M/H (제주항공 45대 내장 기령 DB 자동 활용)</p>
+          <!-- 주2 -->
+          <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-orange-300 transition-colors">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-gray-900"><span class="text-brand-orange">주2)</span> 4C 이상 CHK 또는 제주항공 도입 후 7년 경과</span>
+              <span class="px-2 py-0.5 bg-orange-100 text-brand-orange font-bold rounded">+50 M/H</span>
+            </div>
+            <p class="text-gray-600">• 조건: 중정비 4C 이상 단계 확인 또는 제주항공 도입 후 7년 경과</p>
+            <p class="text-gray-500 mt-0.5">• 사유: 제주항공 도입 후 7년 경과 시 구조 및 계통 결함 다수 발생</p>
           </div>
 
-          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
-            <p class="font-bold text-gray-800">3) Wet Area Access Task</p>
-            <p class="text-gray-600 mt-0.5">• 조건: MPD 시트 C열에 "53-380-00-01" 포함 (빨간색/취소선 제외)</p>
-            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +300 M/H (단, Wet Area 포함 시 최소 TAT는 12일 보정)</p>
+          <!-- 주3 -->
+          <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-orange-300 transition-colors">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-gray-900"><span class="text-brand-orange">주3)</span> GLY & LAV 장탈 후 점검 (WET AREA)</span>
+              <span class="px-2 py-0.5 bg-orange-100 text-brand-orange font-bold rounded">+200 M/H · TAT 최소 12일</span>
+            </div>
+            <p class="text-gray-600">• 대상: 53-380-00-01, 53-350, 53-400, 53-410 계열 카드 포함 시</p>
+            <p class="text-gray-500 mt-0.5">• 사유: MPD 공수(26 M/H)는 비현실적이며, 매뉴얼 준수 및 Cleaning, CIC & Primer 작업 시 실제 300 M/H 및 작업기간 10일 소요되어 TAT 최소 12일 보정</p>
           </div>
 
-          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
-            <p class="font-bold text-gray-800">4) 보정 작업 항목 (990 계열)</p>
-            <p class="text-gray-600 mt-0.5">• 조건: MPD 시트 C열에 53-990-00-30J 또는 53-990-00-50J 포함</p>
-            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +10 M/H (FWD GALLEY 장탈 반영, 복수 포함되어도 1회만 적용)</p>
+          <!-- 주4 -->
+          <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-orange-300 transition-colors">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-gray-900"><span class="text-brand-orange">주4)</span> Bear Strap & Frame NDI (53-990 계열)</span>
+              <span class="px-2 py-0.5 bg-orange-100 text-brand-orange font-bold rounded">+40 M/H (주3 중복 시 0 M/H)</span>
+            </div>
+            <p class="text-gray-600">• 대상: 53-990-00-30J, 53-990-00-49J, 53-990-00-50J 카드</p>
+            <p class="text-gray-500 mt-0.5">• 사유: R/H FWD GLY 장탈 필요 (+40 M/H). <strong>단, 주3(GLY & LAV 장탈)과 중복 시 가중치는 0 M/H 적용</strong></p>
           </div>
 
-          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
-            <p class="font-bold text-gray-800">5) Wing Task (지정 Wing 카드 목록)</p>
-            <p class="text-gray-600 mt-0.5">• 대상: 57-020-00-01, 57-170, 57-822, 57-892, 57-180, 57-826, 57-896, 57-190,
-              57-830, 57-900 계열</p>
-            <p class="text-brand-orange font-semibold mt-0.5">• 적용: +40 M/H (보잉 Standard 공수(0.7 ~ 8.5 M/H) 외 Seal/Gasket
-              및 Torque 공수 보완, 최대 1회 적용)</p>
+          <!-- 주5 -->
+          <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-orange-300 transition-colors">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-gray-900"><span class="text-brand-orange">주5)</span> Wing 전체 Fuel Tank Access Panel Remove</span>
+              <span class="px-2 py-0.5 bg-orange-100 text-brand-orange font-bold rounded">+40 M/H</span>
+            </div>
+            <p class="text-gray-600">• 대상: 57-020, 57-170, 57-180, 57-190, 57-822, 57-826, 57-830, 57-892, 57-896, 57-900 계열</p>
+            <p class="text-gray-500 mt-0.5">• 사유: Bolt Torque Manual 준수 시 MPD 비현실적, 부식 및 Seal 관련 결함 다수 발생 (복수 건이라도 1회 적용)</p>
           </div>
 
-          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
-            <p class="font-bold text-gray-800">6) 보정 작업 항목 (개별 코드)</p>
-            <p class="text-gray-600 mt-0.5">• 27-108-00-01 (Stabilizer trim actuator 장탈): +50 M/H</p>
-            <p class="text-gray-600 mt-0.5">• 47-310-00-01 (NGS Heat Exchanger Cleaning): +10 M/H</p>
+          <!-- 주6 -->
+          <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-orange-300 transition-colors">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-gray-900"><span class="text-brand-orange">주6)</span> 행가 외부 작업 (ENG Cleaning & H/E Water Cleaning)</span>
+              <span class="px-2 py-0.5 bg-orange-100 text-brand-orange font-bold rounded">+50 M/H</span>
+            </div>
+            <p class="text-gray-600">• 대상: ENG Cleaning(737-AWS-72-096 등) 및 H/E Water Cleaning 카드</p>
+            <p class="text-gray-500 mt-0.5">• 사유: 추가 Towing 및 행가 밖 작업 수행으로 타 작업 일시 중단(Stop)에 따른 M/H 공수 손실 보정</p>
+          </div>
+
+          <!-- 주7 -->
+          <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-orange-300 transition-colors">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-gray-900"><span class="text-brand-orange">주7)</span> STAB' Trim ACT' 교환 (27-108-00-01)</span>
+              <span class="px-2 py-0.5 bg-orange-100 text-brand-orange font-bold rounded">+50 M/H</span>
+            </div>
+            <p class="text-gray-600">• 대상: 27-108-00-01 카드 포함 시</p>
+            <p class="text-gray-500 mt-0.5">• 사유: 보잉 매뉴얼 6 M/H는 비현실적이며, 제주항공 실적 기준 90 M/H 소요로 +50 M/H 추가 반영</p>
+          </div>
+
+          <!-- 주8 -->
+          <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-orange-300 transition-colors">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-gray-900"><span class="text-brand-orange">주8)</span> NGS HEAT EXCHANGER 장탈 (47-310-00-01)</span>
+              <span class="px-2 py-0.5 bg-orange-100 text-brand-orange font-bold rounded">+10 M/H</span>
+            </div>
+            <p class="text-gray-600">• 대상: 47-310-00-01 카드 포함 시</p>
+            <p class="text-gray-500 mt-0.5">• 사유: NGS 작업 관련 HEAT EXCHANGER 장탈 시 MPD 0.5 M/H는 비현실적으로 10 M/H 반영 필요</p>
+          </div>
+
+          <!-- 주9 -->
+          <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-orange-300 transition-colors">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-gray-900"><span class="text-brand-orange">주9)</span> LIVERY PAINT 후 10년 경과 (도입일자 기준)</span>
+              <span class="px-2 py-0.5 bg-orange-100 text-brand-orange font-bold rounded">+50 M/H</span>
+            </div>
+            <p class="text-gray-600">• 조건: 제주항공 도입 후 10년 경과 (도입 시 신규 도장 수행 기준)</p>
+            <p class="text-gray-500 mt-0.5">• 사유: Paint Condition 노후화 및 Composite Erosion(복합재 침식) 발생에 따른 추가 표면 처리 보정</p>
+          </div>
+
+          <!-- 주10 -->
+          <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-orange-300 transition-colors">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-gray-900"><span class="text-brand-orange">주10)</span> Landing Gear 교환 (ALL L/G 또는 ONLY NLG)</span>
+              <span class="px-2 py-0.5 bg-orange-100 text-brand-orange font-bold rounded">ALL +400 / NLG +200 M/H</span>
+            </div>
+            <p class="text-gray-600">• 대상: ALL L/G 교환 시 +400 M/H, ONLY NLG 교환 시 +200 M/H</p>
+            <p class="text-gray-500 mt-0.5">• 사유: 랜딩기어 장탈착, Rigging 및 계통 기능 점검 작업 공수 보정</p>
           </div>
         </div>
+
+        <div class="bg-gray-100 rounded-lg p-3 text-xs text-gray-600 space-y-1">
+          <p class="font-semibold text-gray-700">※ 참고 및 유의사항</p>
+          <p>• MPD/AD/SB 시트 내 취소선이나 빨간색 텍스트로 표시된 삭제된 카드는 자동 제외됩니다.</p>
+          <p>• 기령 및 도입일자는 제주항공 45대 내장 플릿 데이터베이스를 기반으로 자동 일치 판별됩니다.</p>
+        </div>
       </div>
-      <div class="bg-gray-100 px-6 py-3 border-t text-right">
+      <div class="bg-gray-50 px-6 py-3 border-t flex justify-end">
         <button id="btnCloseGuideBottom"
           class="px-4 py-1.5 text-xs font-semibold rounded-lg bg-gray-700 hover:bg-gray-800 text-white transition-colors">
           닫기
@@ -1013,11 +1082,16 @@
   <script>
     // Constants & Dictionaries
     const TASK_DESCRIPTIONS = {
-      "53-380-00-01": "WET AREA ACCESS",
-      "53-990-00-30J": "FWD GALLEY REMOVAL (Potential)",
-      "53-990-00-50J": "FWD GALLEY REMOVAL (Potential)",
-      "27-108-00-01": "Remove the stabilizer trim actuator for restoration",
-      "47-310-00-01": "NGS Heat Exchanger Cleaning",
+      "53-380-00-01": "GLY & LAV 장탈 점검 (WET AREA ACCESS)",
+      "53-350": "LAV WET AREA 점검",
+      "53-400": "GALLEY/LAV WET AREA 점검",
+      "53-410": "WET AREA STRUCTURE 점검",
+      "53-990-00-30J": "Bear Strap & Frame NDI (FWD GLY 장탈)",
+      "53-990-00-49J": "Bear Strap & Frame NDI (FWD GLY 장탈)",
+      "53-990-00-50J": "Bear Strap & Frame NDI (FWD GLY 장탈)",
+      "737-AWS-72-096": "ENG Cleaning (행가 외부 작업)",
+      "27-108-00-01": "STAB' Trim ACT' 교환",
+      "47-310-00-01": "NGS HEAT EXCHANGER 장탈 점검",
       "57-020-00-01": "Wing Leading Edge",
       "57-170-01-01": "Wing Fuel System - Left",
       "57-822-01-01": "Wing Fuel System - Left Check",
@@ -1041,51 +1115,58 @@
 
     // Built-in Aircraft Status Database (Jeju Air Fleet: 45 aircraft based on OPSPEC D085)
     const DEFAULT_AIRCRAFT_STATUS = {
-      "HL7213": { mfg: "2009-09-02", redel: "2029-09-18" },
-      "HL8031": { mfg: "2010-12-23", redel: "2028-02-09" },
-      "HL8032": { mfg: "2010-03-10", redel: "2028-03-29" },
-      "HL8034": { mfg: "2011-10-18", redel: "2029-10-10" },
-      "HL8050": { mfg: "2008-04-10", redel: "2028-11-24" },
-      "HL8051": { mfg: "2008-04-17", redel: "2027-04-20" },
-      "HL8061": { mfg: "2008-12-10", redel: "2029-05-10" },
-      "HL8062": { mfg: "2008-12-19", redel: "2029-05-03" },
-      "HL8063": { mfg: "2009-01-22", redel: "2027-11-20" },
-      "HL8064": { mfg: "2009-05-07", redel: "2028-03-04" },
-      "HL8087": { mfg: "2009-11-05", redel: "2028-02-08" },
-      "HL8089": { mfg: "2009-09-11", redel: "2028-01-20" },
-      "HL8090": { mfg: "2009-07-24", redel: "2028-09-03" },
-      "HL8295": { mfg: "2006-02-08", redel: "2027-05-05" },
-      "HL8301": { mfg: "2007-06-08", redel: "2027-12-18" },
-      "HL8302": { mfg: "2005-05-04", redel: "2027-05-03" },
-      "HL8303": { mfg: "2005-06-23", redel: "2027-05-31" },
-      "HL8304": { mfg: "2010-03-03", redel: "2030-02-25" },
-      "HL8305": { mfg: "2010-08-10", redel: "2030-07-29" },
-      "HL8321": { mfg: "2007-01-23", redel: "2026-12-21" },
-      "HL8322": { mfg: "2007-02-21", redel: "2027-01-15" },
-      "HL8331": { mfg: "2011-09-29", redel: "구매" },
-      "HL8332": { mfg: "2011-12-19", redel: "2029-01-28" },
-      "HL8333": { mfg: "2012-05-21", redel: "2029-04-15" },
-      "HL8334": { mfg: "2012-06-11", redel: "2029-05-02" },
-      "HL8335": { mfg: "2012-07-02", redel: "2029-05-30" },
-      "HL8336": { mfg: "2012-08-27", redel: "2029-09-09" },
-      "HL8337": { mfg: "2011-04-19", redel: "2027-06-07" },
-      "HL8339": { mfg: "2011-06-06", redel: "2027-07-24" },
-      "HL8523": { mfg: "2023-11-29", redel: "N/A" },
-      "HL8524": { mfg: "2023-11-03", redel: "N/A" },
-      "HL8527": { mfg: "2001-11-06", redel: "2029-12-01" },
-      "HL8539": { mfg: "2008-04-10", redel: "2029-01-26" },
-      "HL8552": { mfg: "2025-01-31", redel: "N/A" },
-      "HL8553": { mfg: "2025-05-21", redel: "N/A" },
-      "HL8554": { mfg: "2025-06-26", redel: "N/A" },
-      "HL8555": { mfg: "2025-07-17", redel: "N/A" },
-      "HL8592": { mfg: "2025-10-14", redel: "N/A" },
-      "HL8593": { mfg: "2025-10-29", redel: "N/A" },
-      "HL8594": { mfg: "2026-02-03", redel: "N/A" },
-      "HL8719": { mfg: "2026-03-18", redel: "N/A" },
-      "HL8739": { mfg: "2026-05-13", redel: "N/A" },
-      "HL8740": { mfg: "2026-05-21", redel: "N/A" },
-      "HL8765": { mfg: "2026-07-30", redel: "N/A" },
-      "HL8766": { mfg: "2026-10-26", redel: "N/A" }
+      "HL7213": { mfg: "2009-09-02", deliv: "2017-09-18", redel: "2029-09-18" },
+      "HL8031": { mfg: "2010-12-23", deliv: "2015-02-12", redel: "2028-02-09" },
+      "HL8032": { mfg: "2010-03-10", deliv: "2015-03-30", redel: "2028-03-29" },
+      "HL8034": { mfg: "2011-10-18", deliv: "2015-04-09", redel: "2029-10-10" },
+      "HL8050": { mfg: "2008-04-10", deliv: "2023-04-25", redel: "2028-11-24" },
+      "HL8051": { mfg: "2008-04-17", deliv: "2015-12-14", redel: "2027-04-20" },
+      "HL8061": { mfg: "2008-12-10", deliv: "2016-02-11", redel: "2029-05-10" },
+      "HL8062": { mfg: "2008-12-19", deliv: "2016-04-04", redel: "2029-05-03" },
+      "HL8063": { mfg: "2009-01-22", deliv: "2016-04-18", redel: "2027-11-20" },
+      "HL8064": { mfg: "2009-05-07", deliv: "2016-07-04", redel: "2028-03-04" },
+      "HL8087": { mfg: "2009-11-05", deliv: "2016-12-09", redel: "2028-02-08" },
+      "HL8089": { mfg: "2009-09-11", deliv: "2017-04-21", redel: "2028-01-20" },
+      "HL8090": { mfg: "2009-07-24", deliv: "2017-03-24", redel: "2028-09-03" },
+      "HL8234": { mfg: "2002-11-14", deliv: "2010-11-18", redel: "2025-11-18" },
+      "HL8260": { mfg: "2002-04-15", deliv: "2012-03-15", redel: "소유(구매)" },
+      "HL8261": { mfg: "2002-08-13", deliv: "2012-09-17", redel: "2025-12-25" },
+      "HL8295": { mfg: "2006-02-08", deliv: "2014-02-06", redel: "2027-05-05" },
+      "HL8296": { mfg: "2006-03-15", deliv: "2014-04-04", redel: "2026-02-03" },
+      "HL8301": { mfg: "2007-06-08", deliv: "2017-12-18", redel: "2027-12-18" },
+      "HL8302": { mfg: "2005-05-04", deliv: "2018-05-04", redel: "2027-05-03" },
+      "HL8303": { mfg: "2005-06-23", deliv: "2018-04-11", redel: "2027-03-10" },
+      "HL8304": { mfg: "2010-03-03", deliv: "2018-02-26", redel: "2030-02-25" },
+      "HL8305": { mfg: "2010-08-10", deliv: "2018-07-30", redel: "2030-07-29" },
+      "HL8316": { mfg: "2018-07-17", deliv: "2018-07-17", redel: "N/A" },
+      "HL8317": { mfg: "2018-08-21", deliv: "2018-08-21", redel: "N/A" },
+      "HL8318": { mfg: "2018-10-16", deliv: "2018-10-16", redel: "N/A" },
+      "HL8321": { mfg: "2007-01-23", deliv: "2018-12-21", redel: "2026-12-21" },
+      "HL8322": { mfg: "2007-02-21", deliv: "2019-02-15", redel: "2027-01-15" },
+      "HL8331": { mfg: "2011-09-29", deliv: "2018-11-06", redel: "소유(구매)" },
+      "HL8332": { mfg: "2011-12-19", deliv: "2019-01-28", redel: "2029-01-28" },
+      "HL8333": { mfg: "2012-05-21", deliv: "2019-04-16", redel: "2029-04-15" },
+      "HL8334": { mfg: "2012-06-11", deliv: "2019-05-02", redel: "2029-05-02" },
+      "HL8335": { mfg: "2012-07-02", deliv: "2019-05-30", redel: "2029-05-30" },
+      "HL8336": { mfg: "2012-08-27", deliv: "2019-09-10", redel: "2029-09-09" },
+      "HL8337": { mfg: "2011-04-19", deliv: "2019-06-06", redel: "2027-06-07" },
+      "HL8339": { mfg: "2011-06-06", deliv: "2019-07-25", redel: "2027-07-24" },
+      "HL8523": { mfg: "2023-11-29", deliv: "2023-11-29", redel: "N/A" },
+      "HL8524": { mfg: "2023-11-03", deliv: "2023-11-03", redel: "N/A" },
+      "HL8527": { mfg: "2001-11-06", deliv: "2023-12-01", redel: "2029-12-01" },
+      "HL8539": { mfg: "2008-04-10", deliv: "2023-06-27", redel: "2029-01-26" },
+      "HL8552": { mfg: "2025-01-31", deliv: "2025-01-31", redel: "N/A" },
+      "HL8553": { mfg: "2025-05-21", deliv: "2025-05-22", redel: "N/A" },
+      "HL8554": { mfg: "2025-06-26", deliv: "2025-06-27", redel: "N/A" },
+      "HL8555": { mfg: "2025-07-17", deliv: "2025-07-17", redel: "N/A" },
+      "HL8592": { mfg: "2025-10-14", deliv: "2025-10-14", redel: "N/A" },
+      "HL8593": { mfg: "2025-10-29", deliv: "2025-10-29", redel: "N/A" },
+      "HL8594": { mfg: "2026-02-03", deliv: "2026-02-03", redel: "N/A" },
+      "HL8719": { mfg: "2026-03-18", deliv: "2026-03-18", redel: "N/A" },
+      "HL8739": { mfg: "2026-05-13", deliv: "2026-05-13", redel: "N/A" },
+      "HL8740": { mfg: "2026-05-21", deliv: "2026-05-21", redel: "N/A" },
+      "HL8765": { mfg: "2026-07-30", deliv: "2026-07-30", redel: "N/A" },
+      "HL8766": { mfg: "2026-10-26", deliv: "2026-10-26", redel: "N/A" },
     };
 
     // Global App State
@@ -1512,49 +1593,18 @@
     }
 
     // ================= SINGLE WORK PACKAGE ANALYZER =================
-    async function analyzeSingleWP(file) {
+        async function analyzeSingleWP(file) {
       const filename = file.name;
       const reasons = [];
       let weights = 0;
 
-      // 1. C-Level
+      // Extract metadata from filename
       const cLevel = extractCLevel(filename);
-      if (cLevel && cLevel >= 4) {
-        weights += 30;
-        reasons.push({
-          tag: '중정비',
-          title: `${cLevel}C 단계 확인`,
-          weight: '+30 M/H',
-          reason: '4C 이상의 고단계 중정비는 Structure 결함 발생 빈도가 높음',
-          note: '',
-          isNa: false,
-          taskItems: []
-        });
-      } else if (cLevel) {
-        reasons.push({
-          tag: '중정비',
-          title: `${cLevel}C 단계 (4C 미만 가중치 미적용)`,
-          weight: '미적용',
-          reason: '',
-          note: '',
-          isNa: true,
-          taskItems: []
-        });
-      } else {
-        reasons.push({
-          tag: '중정비',
-          title: '단계 확인 불가 (가중치 미적용)',
-          weight: '미적용',
-          reason: '',
-          note: '',
-          isNa: true,
-          taskItems: []
-        });
-      }
-
-      // 2. HL Age
       const hl = extractHL(filename);
+
+      // Get Aircraft status (mfg date & delivery date)
       let mfgDate = null;
+      let delivDate = null;
       let sourceDesc = '';
 
       if (hl) {
@@ -1562,56 +1612,16 @@
           mfgDate = await getMfgDateFromStatus(stFile, hl);
           if (mfgDate) sourceDesc = '업로드 상태 파일';
         }
-        if (!mfgDate && DEFAULT_AIRCRAFT_STATUS[hl]) {
+        if (DEFAULT_AIRCRAFT_STATUS[hl]) {
           const info = DEFAULT_AIRCRAFT_STATUS[hl];
-          mfgDate = typeof info === 'string' ? info : info.mfg;
-          sourceDesc = '내장 기령 DB';
+          if (!mfgDate) mfgDate = info.mfg;
+          delivDate = info.deliv;
+          if (!sourceDesc) sourceDesc = '내장 플릿 DB';
         }
-
-        const years = calculateYearsFrom(mfgDate);
-        if (years && years >= 15) {
-          weights += 30;
-          reasons.push({
-            tag: '노후 항공기',
-            title: `${hl} 기령 ${years.toFixed(1)}년 확인`,
-            weight: '+30 M/H',
-            reason: `15년 이상의 기령은 균열과 부식에 취약함 (${sourceDesc} 기준)`,
-            note: '',
-            isNa: false,
-            taskItems: []
-          });
-        } else if (years) {
-          reasons.push({
-            tag: '노후 항공기',
-            title: `해당 없음 (${hl}, 기령: ${years.toFixed(1)}년)`,
-            weight: '미적용',
-            reason: `기령 15년 미만 (${sourceDesc} 기준)`,
-            note: '',
-            isNa: true,
-            taskItems: []
-          });
-        } else {
-          reasons.push({
-            tag: '노후 항공기',
-            title: `${hl} 제작일 정보 없음`,
-            weight: '미적용',
-            reason: '상태 파일 및 내장 DB에서 기번 일치 항목을 찾을 수 없음',
-            note: '',
-            isNa: true,
-            taskItems: []
-          });
-        }
-      } else {
-        reasons.push({
-          tag: '노후 항공기',
-          title: '파일명에서 HL기번을 찾을 수 없음',
-          weight: '미적용',
-          reason: '',
-          note: '',
-          isNa: true,
-          taskItems: []
-        });
       }
+
+      const mfgYears = calculateYearsFrom(mfgDate);
+      const delivYears = calculateYearsFrom(delivDate);
 
       // 3. Parse Excel Sheets
       const wpData = await readFileAsArrayBuffer(file);
@@ -1624,13 +1634,15 @@
       }) || workbook.SheetNames.find(n => n.toUpperCase().includes('MPD'));
 
       let mpdSum = 0.0;
-      let found53_380 = false;
-      let found53_990_30j = false;
-      let found53_990_50j = false;
-      let foundWing = false;
+      const foundWetAreaCards = [];
+      const found990Codes = [];
       const foundWingCodes = [];
+      let foundHangarExt = false;
       let found27_108 = false;
       let found47_310 = false;
+      let foundLgAll = false;
+      let foundLgNlg = false;
+      let foundLgMlg = false;
       const taskDesc = {};
 
       if (mpdSheetName) {
@@ -1642,7 +1654,7 @@
           const aVal = cellA ? cellA.v : null;
 
           const cellC = ws[XLSX.utils.encode_cell({ r: R, c: 2 })];
-          const cVal = cellC ? String(cellC.v || '') : '';
+          const cVal = cellC ? String(cellC.v || '').trim() : '';
 
           function getRowDesc() {
             for (let C = 3; C <= 9; ++C) {
@@ -1654,36 +1666,66 @@
             return '';
           }
 
-          if (cVal.includes('53-380-00-01')) {
-            if (!isCellRedOrStrike(cellC)) {
-              found53_380 = true;
-              const d = getRowDesc();
-              if (d && !taskDesc['53-380-00-01']) taskDesc['53-380-00-01'] = d;
+          const desc = getRowDesc();
+          const descUpper = desc.toUpperCase();
+          const cValUpper = cVal.toUpperCase();
+
+          if (cVal) {
+            const isRedOrStrike = isCellRedOrStrike(cellC);
+
+            if (!isRedOrStrike) {
+              // 주3) GLY & LAV 장탈 점검 (53-380, 53-350, 53-400, 53-410)
+              if (cValUpper.includes('53-380') || cValUpper.includes('53-350') || cValUpper.includes('53-400') || cValUpper.includes('53-410')) {
+                if (!foundWetAreaCards.includes(cVal)) foundWetAreaCards.push(cVal);
+                if (desc && !taskDesc[cVal]) taskDesc[cVal] = desc;
+              }
+
+              // 주4) Bear Strap & Frame NDI (53-990-00-30J, 49J, 50J)
+              if (cValUpper.includes('53-990-00-30J') || cValUpper.includes('53-990-00-49J') || cValUpper.includes('53-990-00-50J')) {
+                if (!found990Codes.includes(cVal)) found990Codes.push(cVal);
+                if (desc && !taskDesc[cVal]) taskDesc[cVal] = desc;
+              }
+
+              // 주5) Wing Panel Remove
+              WING_CODES.forEach(w => {
+                if (cVal.includes(w)) {
+                  if (!foundWingCodes.includes(w)) foundWingCodes.push(w);
+                }
+              });
+
+              // 주6) 행가 외부 작업 (ENG cleaning 737-AWS-72-096 & H/E water cleaning)
+              if (cValUpper.includes('737-AWS-72-096') || cValUpper.includes('AWS-72') ||
+                  descUpper.includes('ENG CLEANING') || descUpper.includes('ENGINE CLEANING') ||
+                  descUpper.includes('H/E WATER CLEANING') || descUpper.includes('HEAT EXCHANGER WATER CLEANING')) {
+                foundHangarExt = true;
+                if (desc && !taskDesc['HANGAR_EXT']) taskDesc['HANGAR_EXT'] = desc;
+              }
+
+              // 주7) STAB' Trim ACT' 교환 (27-108-00-01)
+              if (cVal.includes('27-108-00-01')) {
+                found27_108 = true;
+                if (desc && !taskDesc['27-108-00-01']) taskDesc['27-108-00-01'] = desc;
+              }
+
+              // 주8) NGS 관련 HEAT EXCHANGER 장탈 (47-310-00-01)
+              if (cVal.includes('47-310-00-01')) {
+                found47_310 = true;
+                if (desc && !taskDesc['47-310-00-01']) taskDesc['47-310-00-01'] = desc;
+              }
+
+              // 주10) Landing Gear 교환
+              if (descUpper.includes('ALL L/G') || descUpper.includes('ALL LANDING GEAR') ||
+                  (descUpper.includes('LANDING GEAR') && descUpper.includes('OVERHAUL'))) {
+                foundLgAll = true;
+              } else if (descUpper.includes('NLG REPLACEMENT') || descUpper.includes('NOSE GEAR REPLACEMENT') || cValUpper.includes('32-21-00')) {
+                foundLgNlg = true;
+              } else if (descUpper.includes('MLG REPLACEMENT') || descUpper.includes('MAIN GEAR REPLACEMENT') || cValUpper.includes('32-11-00')) {
+                foundLgMlg = true;
+              }
             }
           }
 
-          if (cVal.includes('53-990-00-30J')) found53_990_30j = true;
-          if (cVal.includes('53-990-00-50J')) found53_990_50j = true;
-
-          WING_CODES.forEach(w => {
-            if (cVal.includes(w)) {
-              if (!isCellRedOrStrike(cellC)) {
-                foundWing = true;
-                if (!foundWingCodes.includes(w)) foundWingCodes.push(w);
-              }
-            }
-          });
-
-          if (cVal.includes('27-108-00-01')) found27_108 = true;
-          if (cVal.includes('47-310-00-01')) found47_310 = true;
-
-          ['53-990-00-30J', '53-990-00-50J', '27-108-00-01', '47-310-00-01'].forEach(code => {
-            if (cVal.includes(code) && !taskDesc[code]) {
-              const d = getRowDesc();
-              if (d) taskDesc[code] = d;
-            }
-          });
-
+          // MPD M/H Sum (O column)
           if (aVal !== null && aVal !== undefined && String(aVal).trim()) {
             const cellO = ws[XLSX.utils.encode_cell({ r: R, c: 14 })];
             if (cellO && !isCellRedOrStrike(cellO)) {
@@ -1708,6 +1750,21 @@
           const cellA = ws[XLSX.utils.encode_cell({ r: R, c: 0 })];
           const aVal = cellA ? cellA.v : null;
 
+          // Check for LG replacement in AD/SB description as well
+          const cellB = ws[XLSX.utils.encode_cell({ r: R, c: 1 })];
+          const bVal = cellB ? String(cellB.v || '').toUpperCase() : '';
+          const cellC = ws[XLSX.utils.encode_cell({ r: R, c: 2 })];
+          const cVal = cellC ? String(cellC.v || '').toUpperCase() : '';
+          const combined = bVal + ' ' + cVal;
+
+          if (combined.includes('ALL L/G') || (combined.includes('NLG') && combined.includes('MLG') && combined.includes('REPLACE'))) {
+            foundLgAll = true;
+          } else if (combined.includes('NLG REPLACE') || combined.includes('NOSE GEAR REPLACE')) {
+            foundLgNlg = true;
+          } else if (combined.includes('MLG REPLACE') || combined.includes('MAIN GEAR REPLACE')) {
+            foundLgMlg = true;
+          }
+
           if (aVal !== null && aVal !== undefined && String(aVal).trim()) {
             const cellD = ws[XLSX.utils.encode_cell({ r: R, c: 3 })];
             if (cellD && !isCellRedOrStrike(cellD)) {
@@ -1718,107 +1775,335 @@
         }
       }
 
-      // Format Task helper
+      if (foundLgNlg && foundLgMlg) {
+        foundLgAll = true;
+      }
+
+      // Format helper
       function formatTask(code) {
         const desc = taskDesc[code] || TASK_DESCRIPTIONS[code];
-        return desc ? `${code} (${desc})` : `${code} (Description 미등록)`;
+        return desc ? `${code} (${desc})` : `${code}`;
       }
 
-      // 3. Wet Area
-      if (found53_380) {
-        weights += 300;
+      // ================= APPLY THE 10 RULES (주1 ~ 주10) =================
+
+      // 주1) 제작 후 14년 이상 노후 항공기 = +50 M/H
+      if (mfgYears && mfgYears >= 14) {
+        weights += 50;
         reasons.push({
-          tag: 'Wet Area',
-          title: `${formatTask('53-380-00-01')} 포함 확인`,
-          weight: '+300 M/H',
-          reason: 'Wet Area Access 작업 포함',
-          note: '계산 결과가 12일 미만일 경우 최소 12일로 보정됨',
+          tag: '노후 항공기 (주1)',
+          title: `${hl} 기령 ${mfgYears.toFixed(1)}년 확인 (제작 후 14년 이상)`,
+          weight: '+50 M/H',
+          reason: '제작 후 14년 이상 노후 항공기로 부식, Crack 등 중요 결함 다수 발생',
+          note: `${sourceDesc} (제작일: ${mfgDate})`,
           isNa: false,
+          taskItems: []
+        });
+      } else if (mfgYears) {
+        reasons.push({
+          tag: '노후 항공기 (주1)',
+          title: `${hl} 기령 ${mfgYears.toFixed(1)}년 (14년 미만)`,
+          weight: '미적용',
+          reason: '제작 후 14년 미만 항공기로 노후 가중치 미적용',
+          note: `${sourceDesc} (제작일: ${mfgDate})`,
+          isNa: true,
+          taskItems: []
+        });
+      } else {
+        reasons.push({
+          tag: '노후 항공기 (주1)',
+          title: `${hl || '항공기'} 제작일 정보 확인 불가`,
+          weight: '미적용',
+          reason: '제작일자 정보가 없어 노후 가중치 미적용',
+          note: '',
+          isNa: true,
           taskItems: []
         });
       }
 
-      // 4. 990 Series
-      const codes990 = [];
-      if (found53_990_30j) codes990.push('53-990-00-30J');
-      if (found53_990_50j) codes990.push('53-990-00-50J');
-      if (codes990.length > 0) {
-        weights += 10;
+      // 주2) 4C 이상 CHK 또는 제주항공 도입 후 7년 경과 = +50 M/H
+      const is4C = cLevel && cLevel >= 4;
+      const isDeliv7 = delivYears && delivYears >= 7;
+      if (is4C || isDeliv7) {
+        weights += 50;
+        const triggerDesc = is4C && isDeliv7
+          ? `${cLevel}C 단계 및 도입 후 ${delivYears.toFixed(1)}년 경과`
+          : is4C
+            ? `${cLevel}C 단계 확인 (4C 이상)`
+            : `제주항공 도입 후 ${delivYears.toFixed(1)}년 경과 (7년 이상, 도입일: ${delivDate})`;
+
         reasons.push({
-          tag: '보정 작업 항목',
-          title: `${codes990.map(formatTask).join(', ')} 포함 확인`,
-          weight: '+10 M/H',
-          reason: 'FWD GALLEY 장탈이 필요한 작업이 포함될 수 있어 보정치로 보완함',
-          note: '여러 개가 있어도 가중치는 1회만 적용됨',
+          tag: '중정비/도입경과 (주2)',
+          title: triggerDesc,
+          weight: '+50 M/H',
+          reason: '4C 이상 고단계 중정비 또는 제주항공 도입 후 7년 경과로 결함 다수 발생',
+          note: '',
           isNa: false,
+          taskItems: []
+        });
+      } else {
+        reasons.push({
+          tag: '중정비/도입경과 (주2)',
+          title: `${cLevel ? cLevel + 'C 단계' : '단계 미확인'} (4C 미만 및 도입 7년 미만)`,
+          weight: '미적용',
+          reason: '4C 미만 단계 및 제주항공 도입 7년 미만으로 가중치 미적용',
+          note: delivDate ? `도입일: ${delivDate} (${delivYears ? delivYears.toFixed(1) + '년 경과' : ''})` : '',
+          isNa: true,
           taskItems: []
         });
       }
 
-      // 5. Wing Task
-      if (foundWing) {
+      // 주3) GLY & LAV 장탈 점검 시 최소 +200 M/H 가중치, 중정비 TAT 최소 12일 필요
+      const hasWetArea = foundWetAreaCards.length > 0;
+      if (hasWetArea) {
+        weights += 200;
+        reasons.push({
+          tag: 'Wet Area (주3)',
+          title: `GLY & LAV 장탈 점검 카드 포함 (${foundWetAreaCards.slice(0, 3).join(', ')}${foundWetAreaCards.length > 3 ? ' 외' : ''})`,
+          weight: '+200 M/H',
+          reason: 'GLY & LAV 장탈 점검 시 작업기간 10일 필요 및 최소 +200 M/H (실제 300 M/H 소요, Cleaning & CIC & Primer 작업)',
+          note: '중정비 TAT 계산 시 최소 12일 자동 보정 적용 (53-350, 53-400, 53-410 포함 시 동일 조건)',
+          isNa: false,
+          taskItems: foundWetAreaCards.map(c => formatTask(c))
+        });
+      } else {
+        reasons.push({
+          tag: 'Wet Area (주3)',
+          title: 'GLY & LAV 장탈 점검 카드 미포함',
+          weight: '미적용',
+          reason: '53-380-00-01, 53-350, 53-400, 53-410 카드 없음',
+          note: '',
+          isNa: true,
+          taskItems: []
+        });
+      }
+
+      // 주4) 53-990-00-30/49J/50J Bear Strap & Frame NDI = +40 M/H (단, 주3과 중복 시 0 M/H)
+      if (found990Codes.length > 0) {
+        if (hasWetArea) {
+          reasons.push({
+            tag: 'NDI 항목 (주4)',
+            title: `${found990Codes.join(', ')} Bear Strap & Frame NDI 포함`,
+            weight: '0 M/H (주3 중복 제외)',
+            reason: 'R/H FWD GLY 장탈이 필요하나 주3(GLY & LAV 장탈 점검)과 작업 범위가 중복되어 가중치는 0 M/H 적용',
+            note: '주3과 중복 시 0 M/H 적용 규정 준수',
+            isNa: false,
+            taskItems: found990Codes.map(c => formatTask(c))
+          });
+        } else {
+          weights += 40;
+          reasons.push({
+            tag: 'NDI 항목 (주4)',
+            title: `${found990Codes.join(', ')} Bear Strap & Frame NDI 포함`,
+            weight: '+40 M/H',
+            reason: 'Bear Strap & Frame NDI는 R/H FWD GLY 장탈 필요하여 +40 M/H 가중치 적용',
+            note: '복수 포함되어도 1회만 적용',
+            isNa: false,
+            taskItems: found990Codes.map(c => formatTask(c))
+          });
+        }
+      } else {
+        reasons.push({
+          tag: 'NDI 항목 (주4)',
+          title: '53-990-00-30/49J/50J 카드 미포함',
+          weight: '미적용',
+          reason: '',
+          note: '',
+          isNa: true,
+          taskItems: []
+        });
+      }
+
+      // 주5) Wing 전체 Fuel Tank Access Panel Remove 카드 = +40 M/H
+      if (foundWingCodes.length > 0) {
         weights += 40;
-        const wingItems = foundWingCodes.map(code => `${code} (${TASK_DESCRIPTIONS[code] || 'Unknown'})`);
+        const wingItems = foundWingCodes.map(code => `${code} (${TASK_DESCRIPTIONS[code] || 'Wing Panel'})`);
         reasons.push({
-          tag: 'Wing Task',
-          title: `해당 Wing Task Card 총 ${foundWingCodes.length}건 포함 확인`,
+          tag: 'Wing Task (주5)',
+          title: `Wing 전체 Fuel Tank Access Panel 카드 총 ${foundWingCodes.length}건 포함`,
           weight: '+40 M/H',
-          reason: 'BOEING STANDARD 공수(0.7 ~ 8.5 M/H)만으로는 Seal/Gasket 점검·교환 및 Manual Torque 준수 작업까지 반영하기 어려워 보정치로 보완함',
-          note: '목록 중 여러 개가 발견되어도 최대 40 M/H만 적용됨',
+          reason: 'Bolt Torque Manual 준수 시 MPD 비현실적, 부식 및 Seal 관련 결함 다수 발생 보정',
+          note: '목록 중 여러 개가 발견되어도 최대 40 M/H만 적용',
           isNa: false,
           taskItems: wingItems
         });
+      } else {
+        reasons.push({
+          tag: 'Wing Task (주5)',
+          title: 'Wing Panel Remove 카드 미포함',
+          weight: '미적용',
+          reason: '',
+          note: '',
+          isNa: true,
+          taskItems: []
+        });
       }
 
-      // 6. 27-108
+      // 주6) 행가 외부 작업 (ENG cleaning 737-AWS-72-096 & H/E water cleaning) = +50 M/H
+      if (foundHangarExt) {
+        weights += 50;
+        reasons.push({
+          tag: '행가 외부 작업 (주6)',
+          title: 'ENG Cleaning / H/E Water Cleaning 포함 확인',
+          weight: '+50 M/H',
+          reason: '추가 Towing 및 행가 밖에서 작업 시 다른 작업들이 일시 중단(Stop)되어 M/H 손실 발생',
+          note: taskDesc['HANGAR_EXT'] || '737-AWS-72-096 / H/E water cleaning',
+          isNa: false,
+          taskItems: []
+        });
+      } else {
+        reasons.push({
+          tag: '행가 외부 작업 (주6)',
+          title: '행가 외부 작업 카드 미포함',
+          weight: '미적용',
+          reason: '',
+          note: '',
+          isNa: true,
+          taskItems: []
+        });
+      }
+
+      // 주7) 27-108-00-01 STAB' Trim ACT' 교환 = +50 M/H
       if (found27_108) {
         weights += 50;
         reasons.push({
-          tag: '보정 작업 항목',
-          title: `${formatTask('27-108-00-01')} 포함 확인`,
+          tag: 'STAB Trim (주7)',
+          title: '27-108-00-01 STAB' Trim ACT' 교환 포함 확인',
           weight: '+50 M/H',
-          reason: 'BOEING STANDARD MANHOUR(6.0)만으로는 실제 작업 반영이 부족하여 보정치로 보완함',
+          reason: '보잉 MPD(6 M/H)는 비현실적이며, 제주항공 실적 기준 90 M/H 소요로 +50 M/H 보정',
           note: '',
           isNa: false,
           taskItems: []
         });
+      } else {
+        reasons.push({
+          tag: 'STAB Trim (주7)',
+          title: '27-108-00-01 카드 미포함',
+          weight: '미적용',
+          reason: '',
+          note: '',
+          isNa: true,
+          taskItems: []
+        });
       }
 
-      // 7. 47-310
+      // 주8) NGS 관련 HEAT EXCHANGER 장탈 (47-310-00-01) = +10 M/H
       if (found47_310) {
         weights += 10;
         reasons.push({
-          tag: '보정 작업 항목',
-          title: `${formatTask('47-310-00-01')} 포함 확인`,
+          tag: 'NGS H/E (주8)',
+          title: '47-310-00-01 HEAT EXCHANGER 장탈 포함 확인',
           weight: '+10 M/H',
-          reason: 'BOEING STANDARD MANHOUR(0.5)만으로는 실제 작업 반영이 부족하여 보정치로 보완함',
+          reason: 'NGS 작업 관련 HEAT EXCHANGER 장탈 시 MPD M/H(0.5) 비현실적으로 10 M/H 반영 필요',
           note: '',
           isNa: false,
           taskItems: []
         });
+      } else {
+        reasons.push({
+          tag: 'NGS H/E (주8)',
+          title: '47-310-00-01 카드 미포함',
+          weight: '미적용',
+          reason: '',
+          note: '',
+          isNa: true,
+          taskItems: []
+        });
       }
 
-      // Total & TAT
+      // 주9) LIVERY PAINT 후 10년 경과 항공기 (도입일자 기준) = +50 M/H
+      if (delivYears && delivYears >= 10) {
+        weights += 50;
+        reasons.push({
+          tag: 'Livery Paint (주9)',
+          title: `${hl} 도입 후 ${delivYears.toFixed(1)}년 경과 (도입일: ${delivDate})`,
+          weight: '+50 M/H',
+          reason: 'LIVERY PAINT 후 10년 경과 항공기(도입일자 기준): PAINT CONDITION 및 COMPOSITE EROSION 가중치 적용',
+          note: '도입 시 신규 도장 기준 (10년 경과로 표면 열화 보정)',
+          isNa: false,
+          taskItems: []
+        });
+      } else if (delivYears) {
+        reasons.push({
+          tag: 'Livery Paint (주9)',
+          title: `${hl} 도입 후 ${delivYears.toFixed(1)}년 경과 (10년 미만)`,
+          weight: '미적용',
+          reason: '도입 후 10년 미만으로 도장 열화 가중치 미적용',
+          note: `도입일: ${delivDate}`,
+          isNa: true,
+          taskItems: []
+        });
+      } else {
+        reasons.push({
+          tag: 'Livery Paint (주9)',
+          title: '도입일자 정보 확인 불가',
+          weight: '미적용',
+          reason: '',
+          note: '',
+          isNa: true,
+          taskItems: []
+        });
+      }
+
+      // 주10) Landing Gear 교환 (ALL L/G 400 M/H, ONLY NLG 200 M/H)
+      if (foundLgAll) {
+        weights += 400;
+        reasons.push({
+          tag: 'L/G 교환 (주10)',
+          title: 'ALL L/G (전체 랜딩기어 NLG+MLG) 교환 카드 포함',
+          weight: '+400 M/H',
+          reason: 'ALL L/G 교환 및 계통 Rigging / 기능 점검 공수 보정',
+          note: '',
+          isNa: false,
+          taskItems: []
+        });
+      } else if (foundLgNlg) {
+        weights += 200;
+        reasons.push({
+          tag: 'L/G 교환 (주10)',
+          title: 'ONLY NLG (Nose Gear) 교환 카드 포함',
+          weight: '+200 M/H',
+          reason: 'ONLY NLG 단독 교환 및 점검 공수 보정',
+          note: '',
+          isNa: false,
+          taskItems: []
+        });
+      } else {
+        reasons.push({
+          tag: 'L/G 교환 (주10)',
+          title: 'Landing Gear 교환 카드 미포함',
+          weight: '미적용',
+          reason: '',
+          note: '',
+          isNa: true,
+          taskItems: []
+        });
+      }
+
+      // Total & TAT Calculation
       const total = mpdSum + adSum + weights;
       let tatDays = Math.ceil(total / 100.0);
       let wetAreaMinApplied = false;
 
-      if (found53_380 && tatDays < 12) {
+      // 주3 보정: GLY & LAV 장탈(hasWetArea) 포함 시 중정비 TAT 최소 12일 필요
+      if (hasWetArea && tatDays < 12) {
         tatDays = 12;
         wetAreaMinApplied = true;
       }
 
       let calcExplanation =
-        `최종 산출식:\n` +
-        `(MPD ${mpdSum.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} + AD/SB/EO ${adSum.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} + 가중치 ${weights})\n` +
-        `= ${total.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ÷ 100 = ${(total / 100).toFixed(2)}일\n` +
+        `최종 산출식:
+` +
+        `(MPD ${mpdSum.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} + AD/SB/EO ${adSum.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} + 가중치(주1~10) ${weights})
+` +
+        `= ${total.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ÷ 100 = ${(total / 100).toFixed(2)}일
+` +
         `➔ 소수점 올림 계산하여 ${tatDays}일 예측`;
 
       if (wetAreaMinApplied) {
-        calcExplanation += '\n➔ Wet Area 포함으로 최소 12일 보정 적용';
+        calcExplanation += '\n➔ 주3 WET AREA(GLY & LAV 장탈 점검) 포함으로 중정비 TAT 최소 12일 보정 적용';
       }
 
-      const years = calculateYearsFrom(mfgDate);
       const revNum = extractRevision(filename);
 
       return {
@@ -1827,7 +2112,9 @@
         cLevel: cLevel ? `${cLevel}C` : '-',
         revision: revNum > 0 ? `R${revNum}` : 'R0',
         mfgDate: mfgDate instanceof Date ? mfgDate.toISOString().split('T')[0] : (mfgDate || '-'),
-        ageYears: years ? years.toFixed(1) : '-',
+        delivDate: delivDate instanceof Date ? delivDate.toISOString().split('T')[0] : (delivDate || '-'),
+        ageYears: mfgYears ? mfgYears.toFixed(1) : '-',
+        delivYears: delivYears ? delivYears.toFixed(1) : '-',
         mpdSum,
         adSum,
         weights,

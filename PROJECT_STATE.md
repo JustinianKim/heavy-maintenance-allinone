@@ -1,6 +1,6 @@
 # 제주항공 중정비 All in One Portal — 프로젝트 인수인계 및 작업 상태 가이드
 
-> **최종 갱신일**: 2026-11-14  
+> **최종 갱신일**: 2026-11-15  
 > **저장소**: [JustinianKim/heavy-maintenance-allinone](https://github.com/JustinianKim/heavy-maintenance-allinone.git) (`main` 브랜치)  
 > **라이브 웹사이트**: [https://justiniankim.github.io/heavy-maintenance-allinone/](https://justiniankim.github.io/heavy-maintenance-allinone/)  
 > **작업 디렉터리**: `c:\Users\user\Documents\Jeju_Air\Programming\WP_분석기`
@@ -22,10 +22,25 @@
 
 | 모듈 | 화면명 | 상태 | 주요 기능 |
 | :--- | :--- | :---: | :--- |
-| **모듈 1** | **Work Package 분석기** | 완료 | • 복수 WP 엑셀 드래그&드롭 일괄 분석<br>• MPD/가중치 기반 공수(M/H) 및 예상 TAT 자동 산출<br>• 실시간 분석 터미널 로그 및 분석 결과 엑셀 저장<br>• 내부 `산출 기준` 가이드 팝업 모달 탑재 |
+| **모듈 1** | **Work Package 분석기** | 완료 | • 복수 WP 엑셀 드래그&드롭 일괄 분석<br>• **실무 10대 가중치(주1~주10)** 및 예상 TAT 자동 산출<br>• 제주항공 45대 내장 플릿 DB 기반 기령(`mfg`) 및 도입경과(`deliv`) 자동 판별<br>• 실시간 분석 터미널 로그 및 분석 결과 엑셀 저장<br>• 내부 `산출 기준` 가이드 팝업 모달 탑재 |
 | **모듈 2** | **중정비 업무 체크리스트** | 완료 | • 162개 전 점검 항목 수록 (입고전 36건, 입고중 115건, 완료후 11건)<br>• 기번별 독립 저장소(`localStorage`), 항목별 완료 체크 및 일시 자동 기록<br>• 인쇄/PDF 최적화 A4 양식 및 엑셀 내보내기<br>• 부서별 필터, 진행상태 필터, 실시간 키워드 검색<br>• 상단 4개 진척도 카드 클릭 시 해당 단계 즉시 필터링 |
-| **신규 기능** | **공수비행 현황 (Ferry Flight)** | 완료 | • 상단 메뉴와 체크리스트 사이 슬림형 접이식(아코디언) 카드<br>• `7C*M` 편명 검색 및 Flightradar24 / ADS-B Globe 실시간 레이더 화면 내장<br>• 최근 공수비행 이착륙 기록 관리, 신규 등록 및 엑셀 다운로드<br>• 공수편 클릭 시 해당 항공기 체크리스트 즉시 자동 연동 |
+| **신규 기능** | **공수비행 현황 (Ferry Flight)** | 완료 | • 상단 메뉴와 체크리스트 사이 슬림형 접이식(아코디언) 카드<br>• `7C*M` 편명 검색 및 Flightradar24 / ADS-B Globe 실시간 레이더 화면 내장<br>• 군더더기 버튼 일절 배제된 100% 클린 레이더 맵<br>• 공수편 클릭 시 해당 항공기 체크리스트 즉시 자동 연동 |
 | **모듈 3** | **객실 오더** | 대기 | 추후 객실 정비 오더 및 결함(Defect) 양식 구축 예정 |
+
+---
+
+### ※ Work Package 분석기 10대 산출 기준 (주1 ~ 주10)
+1. **주1) 제작 후 14년 이상 노후기**: `+50 M/H` (제작일자 기준 `mfgAge >= 14년`, 부식/크랙 등 구조 결함 다수 발생)
+2. **주2) 4C 이상 CHK 또는 도입 후 7년 경과**: `+50 M/H` (`cLevel >= 4` 또는 `delivAge >= 7년`, 결함 빈발)
+3. **주3) GLY & LAV 장탈 점검 (WET AREA)**: `+200 M/H` 및 **중정비 TAT 최소 12일** 보정 (`53-380`, `53-350`, `53-400`, `53-410` 계열 카드 포함 시)
+4. **주4) Bear Strap & Frame NDI**: `+40 M/H` (`53-990-00-30J/49J/50J`, R/H FWD GLY 장탈 필요. **단, 주3과 중복 시 0 M/H 적용**)
+5. **주5) Wing 전체 Fuel Tank Access Panel Remove**: `+40 M/H` (`57-020`, `57-170`, `57-180`, `57-190` 계열 등)
+6. **주6) 행가 외부 작업**: `+50 M/H` (`737-AWS-72-096` ENG cleaning 및 H/E water cleaning 타 작업 stop 손실 보정)
+7. **주7) STAB' Trim ACT' 교환**: `+50 M/H` (`27-108-00-01` 제주항공 실적 90 M/H 소요 반영)
+8. **주8) NGS HEAT EXCHANGER 장탈**: `+10 M/H` (`47-310-00-01` 실제 장탈 공수 보정)
+9. **주9) LIVERY PAINT 후 10년 경과 (도입일자 기준)**: `+50 M/H` (`delivAge >= 10년`, Paint condition 및 Composite erosion 보정)
+10. **주10) Landing Gear 교환**: ALL L/G `+400 M/H`, ONLY NLG `+200 M/H` (랜딩기어 교환 및 Rigging/점검 공수)
+- **최종 공식**: `TAT = ceil((MPD M/H + AD/SB/EO M/H + 가중치) / 100)` (단, 주3 해당 시 `tatDays >= 12`)
 
 ---
 
