@@ -402,20 +402,17 @@
 
           <!-- Summary KPI Cards -->
           <div class="grid grid-cols-3 gap-3">
-            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 text-center">
+            <div class="bg-gray-50 py-4 px-3.5 rounded-xl border border-gray-200 text-center">
               <p class="text-xs font-semibold text-gray-500">분석 대상</p>
               <p id="kpiTargetCount" class="text-xl sm:text-2xl font-bold text-brand-orange mt-1">1대</p>
-              <p class="text-[11px] text-gray-400 mt-0.5">항공기</p>
             </div>
-            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 text-center">
+            <div class="bg-gray-50 py-4 px-3.5 rounded-xl border border-gray-200 text-center">
               <p class="text-xs font-semibold text-gray-500">총 Man-Hour 합계</p>
               <p id="kpiTotalMh" class="text-xl sm:text-2xl font-bold text-brand-orange mt-1">0.0</p>
-              <p class="text-[11px] text-gray-400 mt-0.5">Total M/H</p>
             </div>
-            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 text-center">
-              <p class="text-xs font-semibold text-gray-500">예측 TAT (평균/최대)</p>
+            <div class="bg-gray-50 py-4 px-3.5 rounded-xl border border-gray-200 text-center">
+              <p class="text-xs font-semibold text-gray-500">예측 TAT (평균)</p>
               <p id="kpiAvgTat" class="text-xl sm:text-2xl font-bold text-amber-600 mt-1">0일</p>
-              <p id="kpiMaxTatSub" class="text-[11px] text-gray-400 mt-0.5">최대: 0일</p>
             </div>
           </div>
 
@@ -2283,9 +2280,7 @@
       document.getElementById('kpiTotalMh').textContent = sumTotalMh.toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
       const avgTat = (results.reduce((acc, r) => acc + r.tatDays, 0) / results.length).toFixed(1);
-      const maxTat = Math.max(...results.map(r => r.tatDays));
       document.getElementById('kpiAvgTat').textContent = `${avgTat}일`;
-      document.getElementById('kpiMaxTatSub').textContent = `최대: ${maxTat}일`;
 
       // Render Batch Table
       renderBatchTable();
