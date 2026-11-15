@@ -381,7 +381,7 @@
               <h2 class="text-lg font-bold text-gray-900 flex items-center space-x-2">
                 <span>분석 결과 리포트</span>
               </h2>
-              <p id="resBatchSummaryText" class="text-xs text-gray-500 mt-0.5">총 1대 항공기 분석 완료</p>
+              
             </div>
             <div class="flex items-center space-x-2 shrink-0">
               <button type="button"
@@ -2277,8 +2277,6 @@
 
     function displayBatchResults(results) {
       if (!results || results.length === 0) return;
-
-      document.getElementById('resBatchSummaryText').textContent = `총 ${results.length}대 항공기 일괄 분석 완료`;
       document.getElementById('kpiTargetCount').textContent = `${results.length}대`;
 
       const sumTotalMh = results.reduce((acc, r) => acc + r.total, 0);
