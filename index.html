@@ -521,7 +521,7 @@
           <div class="flex items-center space-x-2 shrink-0">
             <!-- Flight Number Quick Input -->
             <div class="relative" onclick="event.stopPropagation()">
-              <input type="text" id="ferrySearchInput" placeholder="공수편명 입력 (예: 7C8032M)"
+              <input type="text" id="ferrySearchInput" placeholder="7C*M 편명 검색 (예: 7C8032M)"
                 class="w-44 sm:w-52 text-xs font-mono font-semibold bg-white border border-gray-300 rounded-lg pl-2.5 pr-14 py-1 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-orange uppercase">
               <button type="button" id="btnFerrySearch"
                 class="absolute right-1 top-1/2 -translate-y-1/2 px-2 py-0.5 text-[11px] font-bold rounded bg-brand-orange hover:bg-orange-600 text-white transition-colors cursor-pointer">
@@ -546,10 +546,10 @@
               <div class="flex items-center justify-between flex-wrap gap-2">
                 <div class="flex items-center space-x-2">
                   <span class="text-xs font-bold text-gray-800">실시간 항공 레이더</span>
-                  <span id="ferryActiveCallsignBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700">동아시아 MRO 공역</span>
+                  <span id="ferryActiveCallsignBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-orange-50 text-brand-orange border border-orange-200">7C*M 전용 레이더</span>
                 </div>
                 <div class="flex items-center space-x-2 text-xs">
-                  <button type="button" id="btnRadarReset" class="px-2.5 py-0.5 rounded font-medium text-[11px] bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer transition-colors" title="동아시아 MRO 공역 기본 화면으로 리셋">기본 공역</button>
+                  <button type="button" id="btnRadarReset" class="px-2.5 py-0.5 rounded font-medium text-[11px] bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer transition-colors" title="동아시아 7C*M 공역 기본 화면으로 리셋">기본 공역</button>
                   <a id="linkExternalFr24" href="https://www.flightradar24.com/33.5,125.5/6" target="_blank" rel="noopener noreferrer"
                     class="inline-flex items-center px-2.5 py-0.5 rounded font-semibold text-[11px] bg-amber-400 hover:bg-amber-500 text-gray-900 transition-colors shadow-2xs"
                     title="Flightradar24 사이트에서 실시간 직접 조회 (새 창)">
@@ -561,22 +561,25 @@
               <!-- Iframe Container -->
               <div class="w-full h-80 sm:h-96 rounded-xl border border-gray-200 overflow-hidden relative bg-slate-900 shadow-inner">
                 <iframe id="ferryRadarIframe"
-                  src="https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6"
+                  src="https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=%287C.%2AM%7CJJA.%2AM%29"
                   class="w-full h-full border-0"
                   allowfullscreen
                   loading="lazy"></iframe>
               </div>
 
               <div class="flex flex-wrap items-center justify-between text-[11px] text-gray-400 gap-2 pt-0.5">
-                <span>인천(ICN), 김포(GMP), 광저우(CAN), 샤먼(XMN), 싱가포르(SIN) C-Check 공수 이동 모니터링</span>
-                <span id="ferryCurrentAircraftTrack" class="text-gray-700 font-semibold"></span>
+                <span>동아시아 MRO 공역 (ICN, GMP, CAN, XMN, SIN) • 7C*M 공수편만 필터링 표시</span>
+                <span id="ferryCurrentAircraftTrack" class="text-gray-700 font-semibold">7C*M 전용 모니터링</span>
               </div>
             </div>
 
             <!-- Right: Ferry Flight Records & Schedule Table (5 cols) -->
             <div class="lg:col-span-5 flex flex-col space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-gray-800">최근 공수비행 이착륙 기록</span>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs font-bold text-gray-800">최근 공수비행 (7C*M) 스케줄</span>
+                  <span class="text-[10px] text-gray-500 font-normal">(최근 5건)</span>
+                </div>
                 <button type="button" id="btnAddFerryRecord" class="text-[11px] font-semibold text-brand-orange hover:underline cursor-pointer">
                   + 공수편 등록
                 </button>
@@ -2215,12 +2218,14 @@
     // =========================================================================
     // MODULE: FERRY FLIGHT CONTROLLER (7C*M Monitor & Radar Integration)
     // =========================================================================
-    const FERRY_STORAGE_KEY = 'JEJU_HM_FERRY_RECORDS_V1';
+    const FERRY_STORAGE_KEY = 'JEJU_HM_FERRY_RECORDS_V2';
+    const FERRY_RADAR_FILTER_URL = 'https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=%287C.%2AM%7CJJA.%2AM%29';
     const DEFAULT_FERRY_RECORDS = [
-      { id: 1, flightNo: "7C8032M", tail: "HL8032", origin: "ICN (인천)", dest: "CAN (광저우)", date: "2026-11-10", std: "09:15", sta: "12:30", status: "착륙완료", purpose: "C-CHK 입고" },
-      { id: 2, flightNo: "7C8061M", tail: "HL8061", origin: "CAN (광저우)", dest: "ICN (인천)", date: "2026-11-08", std: "14:20", sta: "18:40", status: "착륙완료", purpose: "C-CHK 출고" },
-      { id: 3, flightNo: "7C7213M", tail: "HL7213", origin: "GMP (김포)", dest: "XMN (샤먼)", date: "2026-11-14", std: "10:00", sta: "13:10", status: "착륙완료", purpose: "C-CHK 입고" },
-      { id: 4, flightNo: "7C8305M", tail: "HL8305", origin: "ICN (인천)", dest: "CAN (광저우)", date: "2026-11-16", std: "09:00", sta: "12:15", status: "예정", purpose: "C-CHK 입고" }
+      { id: 1, flightNo: "7C8305M", tail: "HL8305", origin: "ICN (인천)", dest: "CAN (광저우)", date: "2026-11-16", std: "09:00", sta: "12:15", status: "예정", purpose: "C-CHK 입고" },
+      { id: 2, flightNo: "7C7213M", tail: "HL7213", origin: "GMP (김포)", dest: "XMN (샤먼)", date: "2026-11-14", std: "10:00", sta: "13:10", status: "착륙완료", purpose: "C-CHK 입고" },
+      { id: 3, flightNo: "7C8032M", tail: "HL8032", origin: "ICN (인천)", dest: "CAN (광저우)", date: "2026-11-10", std: "09:15", sta: "12:30", status: "착륙완료", purpose: "C-CHK 입고" },
+      { id: 4, flightNo: "7C8061M", tail: "HL8061", origin: "CAN (광저우)", dest: "ICN (인천)", date: "2026-11-08", std: "14:20", sta: "18:40", status: "착륙완료", purpose: "C-CHK 출고" },
+      { id: 5, flightNo: "7C8034M", tail: "HL8034", origin: "XMN (샤먼)", dest: "ICN (인천)", date: "2026-11-05", std: "15:30", sta: "19:40", status: "착륙완료", purpose: "C-CHK 출고" }
     ];
 
     let ferryRecords = [];
@@ -2271,7 +2276,7 @@
       }
     }
 
-    function renderFerryRecords() {
+    function renderFerryRecords(filterQuery = '') {
       ferryRecordsList.innerHTML = '';
       if (!ferryRecords || ferryRecords.length === 0) {
         ferryRecordsList.innerHTML = '<div class="py-6 text-center text-gray-400">등록된 공수비행 기록이 없습니다.</div>';
@@ -2279,19 +2284,49 @@
         return;
       }
 
-      // Sort by date/id descending
-      const sorted = [...ferryRecords].sort((a, b) => (b.date || '').localeCompare(a.date || '') || b.id - a.id);
+      const q = (filterQuery || '').trim().toUpperCase();
+      let filtered = ferryRecords;
 
-      // Update Quick Summary
-      const inFlight = sorted.find(r => r.status === '비행중');
-      if (inFlight) {
-        ferryQuickSummary.innerHTML = `<span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">비행중</span> <strong class="text-gray-900">${inFlight.flightNo}</strong> (${inFlight.tail}) ${inFlight.origin} → ${inFlight.dest}`;
+      if (q) {
+        filtered = ferryRecords.filter(r => 
+          (r.flightNo && r.flightNo.toUpperCase().includes(q)) || 
+          (r.tail && r.tail.toUpperCase().includes(q)) ||
+          (r.origin && r.origin.toUpperCase().includes(q)) ||
+          (r.dest && r.dest.toUpperCase().includes(q))
+        );
       } else {
-        const latest = sorted[0];
-        ferryQuickSummary.innerHTML = `<span class="text-gray-600">최근 공수:</span> <strong class="text-gray-800 font-mono">${latest.flightNo}</strong> (${latest.tail}) ${latest.origin} → ${latest.dest} <span class="text-gray-400">(${latest.status})</span>`;
+        // 기본 7C*M 편명 검색 필터링
+        filtered = ferryRecords.filter(r => /^7C.*M$/i.test((r.flightNo || '').trim()));
+        if (filtered.length === 0) filtered = ferryRecords;
       }
 
-      sorted.forEach(record => {
+      // 최신 일시 기준 내림차순 정렬
+      const sorted = [...filtered].sort((a, b) => {
+        const dtA = `${a.date || ''} ${a.std || ''}`;
+        const dtB = `${b.date || ''} ${b.std || ''}`;
+        return dtB.localeCompare(dtA) || ((b.id || 0) - (a.id || 0));
+      });
+
+      // 요구사항: 최근 5개까지 우측 표시
+      const recent5 = sorted.slice(0, 5);
+
+      // 상단 한 줄 요약 업데이트
+      const inFlight = sorted.find(r => r.status === '비행중');
+      if (inFlight) {
+        ferryQuickSummary.innerHTML = `<span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">비행중</span> <strong class="text-gray-900 font-mono">${escapeHtml(inFlight.flightNo)}</strong> (${escapeHtml(inFlight.tail)}) ${escapeHtml(inFlight.origin)} → ${escapeHtml(inFlight.dest)}`;
+      } else if (sorted.length > 0) {
+        const latest = sorted[0];
+        ferryQuickSummary.innerHTML = `<span class="text-gray-600">최근 공수(7C*M):</span> <strong class="text-gray-800 font-mono">${escapeHtml(latest.flightNo)}</strong> (${escapeHtml(latest.tail)}) ${escapeHtml(latest.origin)} → ${escapeHtml(latest.dest)} <span class="text-gray-400">(${escapeHtml(latest.status)})</span>`;
+      } else {
+        ferryQuickSummary.textContent = '조회된 7C*M 공수편 없음';
+      }
+
+      if (recent5.length === 0) {
+        ferryRecordsList.innerHTML = '<div class="py-6 text-center text-gray-400 text-xs">일치하는 7C*M 공수편이 없습니다.</div>';
+        return;
+      }
+
+      recent5.forEach(record => {
         const div = document.createElement('div');
         div.className = 'p-2.5 hover:bg-orange-50/60 transition-colors cursor-pointer flex items-center justify-between gap-2 group';
 
@@ -2314,7 +2349,7 @@
           </div>
           <div class="flex items-center space-x-1 shrink-0">
             <button type="button" class="btn-ferry-track px-2 py-0.5 text-[10px] font-bold rounded bg-white hover:bg-brand-orange hover:text-white border border-gray-200 transition-colors cursor-pointer shadow-2xs"
-              title="임베드 레이더에서 위치 추적">
+              title="임베드 레이더에서 7C*M 위치 추적">
               레이더
             </button>
             <a href="https://www.flightradar24.com/data/flights/${record.flightNo.toLowerCase()}" target="_blank" rel="noopener noreferrer"
@@ -2340,7 +2375,7 @@
           if (!confirm(`[${record.flightNo}] 공수비행 기록을 삭제하시겠습니까?`)) return;
           ferryRecords = ferryRecords.filter(r => r.id !== record.id);
           saveFerryRecords();
-          renderFerryRecords();
+          renderFerryRecords(ferrySearchInput.value);
         });
 
         ferryRecordsList.appendChild(div);
@@ -2352,11 +2387,14 @@
       ferrySearchInput.value = record.flightNo;
       ferryActiveCallsignBadge.textContent = `${record.flightNo} (${record.tail})`;
 
-      // Focus embedded ADS-B radar
+      // 7C*M 전용 필터 적용 상태에서 해당 항공기/편명 포커스
+      const numOnly = (record.flightNo || '').replace(/\D/g, '');
+      const callsignRegex = numOnly ? `%287C${numOnly}M%7CJJA${numOnly}M%29` : `%287C.%2AM%7CJJA.%2AM%29`;
+      
       if (record.tail) {
-        ferryRadarIframe.src = `https://globe.adsbexchange.com/?reg=${encodeURIComponent(record.tail.toUpperCase())}`;
-      } else if (record.flightNo) {
-        ferryRadarIframe.src = `https://globe.adsbexchange.com/?callsign=${encodeURIComponent(record.flightNo.toUpperCase())}`;
+        ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=${callsignRegex}&reg=${encodeURIComponent(record.tail.toUpperCase())}`;
+      } else {
+        ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=${callsignRegex}`;
       }
 
       // Update external Flightradar24 link
@@ -2415,32 +2453,40 @@
       // Search Handler
       const doSearch = () => {
         const query = ferrySearchInput.value.trim().toUpperCase();
+        renderFerryRecords(query);
+
         if (!query) {
-          ferryRadarIframe.src = 'https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6';
-          ferryActiveCallsignBadge.textContent = '동아시아 MRO 공역';
+          ferryRadarIframe.src = FERRY_RADAR_FILTER_URL;
+          ferryActiveCallsignBadge.textContent = '7C*M 전용 레이더';
           linkExternalFr24.href = 'https://www.flightradar24.com/33.5,125.5/6';
           linkExternalFr24.innerHTML = '<span>Flightradar24 ↗</span>';
-          ferryCurrentAircraftTrack.textContent = '';
+          ferryCurrentAircraftTrack.textContent = '7C*M 전용 모니터링';
           return;
         }
 
         // Check if query matches a record
-        const matched = ferryRecords.find(r => r.flightNo.toUpperCase() === query || r.tail.toUpperCase() === query);
+        const matched = ferryRecords.find(r => 
+          (r.flightNo && r.flightNo.toUpperCase() === query) || 
+          (r.tail && r.tail.toUpperCase() === query)
+        );
+
         if (matched) {
           trackFerryFlight(matched);
         } else {
           ferryActiveCallsignBadge.textContent = query;
           if (query.startsWith('HL')) {
-            ferryRadarIframe.src = `https://globe.adsbexchange.com/?reg=${encodeURIComponent(query)}`;
+            ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=%287C.%2AM%7CJJA.%2AM%29&reg=${encodeURIComponent(query)}`;
             linkExternalFr24.href = `https://www.flightradar24.com/data/aircraft/${encodeURIComponent(query.toLowerCase())}`;
             linkExternalFr24.innerHTML = `<span>${escapeHtml(query)} (FR24) ↗</span>`;
-            ferryCurrentAircraftTrack.textContent = `추적: ${query}`;
+            ferryCurrentAircraftTrack.textContent = `추적: ${query} (7C*M 필터)`;
             if (DEFAULT_AIRCRAFT_STATUS[query]) selectAircraft(query, true);
           } else {
-            ferryRadarIframe.src = `https://globe.adsbexchange.com/?callsign=${encodeURIComponent(query)}`;
+            const numOnly = query.replace(/\D/g, '');
+            const callsignRegex = numOnly ? `%287C${numOnly}M%7CJJA${numOnly}M%29` : `%287C.%2AM%7CJJA.%2AM%29`;
+            ferryRadarIframe.src = `https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6&filterCallSign=${callsignRegex}`;
             linkExternalFr24.href = `https://www.flightradar24.com/data/flights/${encodeURIComponent(query.toLowerCase())}`;
             linkExternalFr24.innerHTML = `<span>${escapeHtml(query)} (FR24) ↗</span>`;
-            ferryCurrentAircraftTrack.textContent = `추적: ${query}`;
+            ferryCurrentAircraftTrack.textContent = `추적: ${query} (7C*M 필터)`;
           }
         }
         if (ferryContentBody.classList.contains('hidden')) toggleFerrySection(true);
@@ -2456,12 +2502,13 @@
 
       // Radar Reset Button
       btnRadarReset.addEventListener('click', () => {
-        ferryRadarIframe.src = 'https://globe.adsbexchange.com/?lat=33.5&lon=125.5&zoom=6';
-        ferryActiveCallsignBadge.textContent = '동아시아 MRO 공역';
+        ferryRadarIframe.src = FERRY_RADAR_FILTER_URL;
+        ferryActiveCallsignBadge.textContent = '7C*M 전용 레이더';
         ferrySearchInput.value = '';
+        renderFerryRecords('');
         linkExternalFr24.href = 'https://www.flightradar24.com/33.5,125.5/6';
         linkExternalFr24.innerHTML = '<span>Flightradar24 ↗</span>';
-        ferryCurrentAircraftTrack.textContent = '';
+        ferryCurrentAircraftTrack.textContent = '7C*M 전용 모니터링';
       });
 
       // Modal Handlers
