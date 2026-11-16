@@ -873,19 +873,11 @@
     <!-- ================= MODULE 3: VARIOUS ORDERS (각종 오더) ================= -->
     <div id="moduleCabinOrder" class="hidden w-full space-y-4">
       <!-- Sub-Navigation Bar for Order Types -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 px-4 py-2.5 flex items-center justify-between flex-wrap gap-2">
-        <div class="flex items-center space-x-2">
-          <button type="button" data-order-tab="cabinClean"
-            class="order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-orange text-white transition-colors cursor-pointer">
-            객실 소독/청소 오더
-          </button>
-        </div>
-        <div class="flex items-center space-x-2">
-          <button type="button" id="btnCabinZiw29"
-            class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-900 text-white transition-colors cursor-pointer">
-            AR 오더 조회 (ZIW29)
-          </button>
-        </div>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 px-4 py-2.5 flex items-center space-x-2">
+        <button type="button" data-order-tab="cabinClean"
+          class="order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-orange text-white transition-colors cursor-pointer">
+          객실 소독/청소 오더
+        </button>
       </div>
 
       <!-- Order Sub-Module 1: Cabin Disinfection & Cleaning Order -->
@@ -3719,7 +3711,6 @@
       const btnCabinRemoveSel = document.getElementById('btnCabinRemoveSel');
       const btnCabinClearAll = document.getElementById('btnCabinClearAll');
       const btnCabinRunSap = document.getElementById('btnCabinRunSap');
-      const btnCabinZiw29 = document.getElementById('btnCabinZiw29');
       const cabinLogBody = document.getElementById('cabinLogBody');
       const btnCabinClearLog = document.getElementById('btnCabinClearLog');
 
@@ -4080,44 +4071,6 @@
       function vbsEscape(str) {
         return String(str || '').replace(/"/g, '""');
       }
-
-      // ZIW29 Lookup Button
-      btnCabinZiw29.addEventListener('click', () => {
-        const userNo = cabinUserNo.value.trim();
-        if (!userNo) {
-          alert('AR 오더 조회를 위해 발행인 사번을 입력해 주세요.');
-          cabinUserNo.focus();
-          return;
-        }
-        saveCabinSettings();
-        const vbs = [
-          "If Not IsObject(application) Then",
-          "   Set SapGuiAuto  = GetObject(\"SAPGUI\")",
-          "   Set application = SapGuiAuto.GetScriptingEngine",
-          "End If",
-          "If Not IsObject(connection) Then",
-          "   Set connection = application.Children(0)",
-          "End If",
-          "If Not IsObject(session) Then",
-          "   Set session    = connection.Children(0)",
-          "End If",
-          "If IsObject(WScript) Then",
-          "   WScript.ConnectObject session,     \"on\"",
-          "   WScript.ConnectObject application, \"on\"",
-          "End If",
-          "session.findById(\"wnd[0]\").maximize",
-          "session.findById(\"wnd[0]/tbar[0]/okcd\").text = \"/nZIW29\"",
-          "session.findById(\"wnd[0]\").sendVKey 0",
-          `session.findById("wnd[0]/usr/ctxtS_QNAME-LOW").text = "${vbsEscape(userNo)}"`,
-          "session.findById(\"wnd[0]/usr/ctxtS_QMART-LOW\").text = \"AR\"",
-          "session.findById(\"wnd[0]/usr/ctxtS_QNAME-LOW\").setFocus",
-          `session.findById("wnd[0]/usr/ctxtS_QNAME-LOW").caretPosition = ${userNo.length}`,
-          "session.findById(\"wnd[0]\").sendVKey 8"
-        ].join('\r\n');
-
-        downloadUtf16Vbs(`SAP_ZIW29_조회_${userNo}.vbs`, vbs);
-        logCabin('SUCCESS', `발행자(${userNo}) ZIW29 조회 스크립트가 생성되었습니다. 다운로드된 파일을 열면 SAP에서 즉시 조회됩니다.`);
-      });
 
       // Batch SAP Order Creation Button
       btnCabinRunSap.addEventListener('click', () => {
