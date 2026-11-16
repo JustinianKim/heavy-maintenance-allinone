@@ -9,21 +9,18 @@
   <rect width="64" height="64" rx="16" fill="url(#brandGrad)"/>
   <rect x="1" y="1" width="62" height="62" rx="15" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="2"/>
 
-  <!-- Heavy Maintenance Hangar Arch Roof -->
-  <path d="M 9 52 L 9 30 C 9 17 19 10 32 10 C 45 10 55 17 55 30 L 55 52" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
-  <line x1="6" y1="52" x2="58" y2="52" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Solid White Heavy Maintenance Hangar Arch Roof -->
+  <path d="M 9 52 L 9 30 C 9 17 19 10 32 10 C 45 10 55 17 55 30 L 55 52" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+  <line x1="6" y1="52" x2="58" y2="52" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
 
-  <!-- Vertical Tail Fin (Rises up top) -->
+  <!-- Vertical Tail Fin (Solid White) -->
   <path d="M 31 28 L 31.4 15 L 32.6 15 L 33 28 Z" fill="#FFFFFF"/>
 
-  <!-- Horizontal Stabilizers (Lowered right behind fuselage at y=31.5) -->
-  <path d="M 21 31.5 L 43 31.5 L 43 33.2 L 21 33.2 Z" fill="#FFFFFF" fill-opacity="0.85"/>
+  <!-- Horizontal Stabilizers (Solid White) -->
+  <path d="M 21 31.5 L 43 31.5 L 43 33.2 L 21 33.2 Z" fill="#FFFFFF"/>
 
-  <!-- Main Wings (Swept dihedral) -->
-  <path d="M 10 33.5 L 32 37.5 L 54 33.5 L 54 36 L 32 40 L 10 36 Z" fill="#FFFFFF"/>
-  <!-- Blended Winglets (Upward curving at tips) -->
-  <path d="M 10 36.5 L 10 28.5 L 11.8 28.5 L 11.8 36.2 Z" fill="#FFFFFF"/>
-  <path d="M 54 36.5 L 54 28.5 L 52.2 28.5 L 52.2 36.2 Z" fill="#FFFFFF"/>
+  <!-- Main Wings (Cleanly detached from hangar walls, NO winglets) -->
+  <path d="M 13.5 34 L 32 37.5 L 50.5 34 L 50.5 36.5 L 32 40 L 13.5 36.5 Z" fill="#FFFFFF"/>
 
   <!-- Two Jet Engines (CFM56 / LEAP Nacelles hanging under wings) -->
   <rect x="20.5" y="38" width="5" height="7" rx="2.5" fill="#FFFFFF"/>
@@ -31,7 +28,7 @@
   <rect x="38.5" y="38" width="5" height="7" rx="2.5" fill="#FFFFFF"/>
   <circle cx="41" cy="41.5" r="1.5" fill="#EA6500"/>
 
-  <!-- Main Fuselage Oval (Head-on Nose - clean without landing gear) -->
+  <!-- Main Fuselage Oval (Head-on Nose) -->
   <ellipse cx="32" cy="35" rx="6.5" ry="7.5" fill="#FFFFFF"/>
   <!-- Iconic 6-Pane Cockpit Windshield (Eyebrow/Sunglasses Brow) -->
   <path d="M 28 32 Q 32 30.5 36 32 L 35.5 33.8 Q 32 32.5 28.5 33.8 Z" fill="#EA6500"/>
