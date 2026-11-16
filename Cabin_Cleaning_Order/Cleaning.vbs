@@ -140,30 +140,37 @@ Function ProcessCleaningOrder(acNo, workCenter, reqDate, userNo, qmtxt, ilart, t
     currentStep = "1. 신규 통지 트랜잭션(/nIW21) 진입"
     session.findById("wnd[0]").maximize
     
-    ' 기존 화면의 AUTOTEXT008 버튼이 있으면 누르고, 없으면 /nIW21로 직접 진입
-    Dim autoBtn
-    Set autoBtn = session.findById("wnd[0]/usr/btn%#AUTOTEXT008", False)
-    If Not autoBtn Is Nothing Then
-        autoBtn.press
-    Else
-        session.findById("wnd[0]/tbar[0]/okcd").text = "/nIW21"
-        session.findById("wnd[0]").sendVKey 0
+    If session.findById("wnd[0]/usr/ctxtRIWO00-QMART", False) Is Nothing Then
+        Dim autoBtn
+        Set autoBtn = session.findById("wnd[0]/usr/btn%#AUTOTEXT008", False)
+        If Not autoBtn Is Nothing Then
+            autoBtn.press
+        Else
+            session.findById("wnd[0]/tbar[0]/okcd").text = "/nIW21"
+            session.findById("wnd[0]").sendVKey 0
+        End If
     End If
 
     ' 통지 유형 AR 입력
     currentStep = "1-1. 통지유형(AR) 입력"
     session.findById("wnd[0]/usr/ctxtRIWO00-QMART").text = "AR"
+    session.findById("wnd[0]/usr/ctxtRIWO00-QMART").caretPosition = 2
     session.findById("wnd[0]").sendVKey 0
 
     If CheckSapError(currentStep) Then Exit Function
 
     ' (2) 탭1 (TAB01) 데이터 입력
     currentStep = "2. TAB01 기본 정보 입력"
-    session.findById("wnd[0]/usr/subSCREEN_1:SAPLIQS0:1050/subNOTIF_TYPE:SAPLIQS0:1051/txtVIQMEL-QMTXT").text = qmtxt
+    session.findById("wnd[0]/usr/subSCREEN_1:SAPLIQS0:1050/subNOTIF_TYPE:SAPLIQS0:1051/txtVIQMEL-QMTXT").text = "CABIN CLEANING CHK DUE"
     session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_1:SAPLIQS0:7322/subOBJEKT:SAPLIWO1:0100/ctxtRIWO1-TPLNR").text = acNo
+    session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_3:SAPLIQS0:7326/ctxtVIQMEL-INGRP").text = "100"
     session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_3:SAPLIQS0:7326/ctxtRIWO00-GEWRK").text = workCenter
     session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_4:SAPLIQS0:7330/ctxtVIQMEL-LTRMN").text = reqDate
     session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_5:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0101/ctxtVIQMEL-ZRUSRNO").text = userNo
+    session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_5:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0101/ctxtVIQMEL-ZRUSRNO").setFocus
+    session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_5:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0101/ctxtVIQMEL-ZRUSRNO").caretPosition = Len(userNo)
+    session.findById("wnd[0]").sendVKey 0
+    session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_2:SAPLIQS0:7715/cntlTEXT/shellcont/shell").setSelectionIndexes 0,0
 
     If CheckSapError(currentStep) Then Exit Function
 
@@ -171,58 +178,37 @@ Function ProcessCleaningOrder(acNo, workCenter, reqDate, userNo, qmtxt, ilart, t
     currentStep = "3. TAB02 Due Date 입력"
     session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB02").select
     session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB02/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_1:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0100/ctxtVIQMEL-ZDDATE_AC").text = reqDate
+    session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB02/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_1:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0100/ctxtVIQMEL-ZDDATE_AC").setFocus
+    session.findById("wnd[0]/usr/tabsTAB_GROUP_10/tabp10\TAB02/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_1:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0100/ctxtVIQMEL-ZDDATE_AC").caretPosition = 10
 
     If CheckSapError(currentStep) Then Exit Function
 
     ' (4) 오더 생성 버튼 클릭 및 팝업창(오더 유형) 확인 처리
     currentStep = "4. 오더 생성 버튼(btnXICON_ORDER) 클릭"
     session.findById("wnd[0]/usr/subSCREEN_1:SAPLIQS0:1050/btnXICON_ORDER").press
-    If Not session.findById("wnd[1]", False) Is Nothing Then
-        session.findById("wnd[1]").sendVKey 0
-    End If
+    session.findById("wnd[1]/tbar[0]/btn[0]").press
 
     If CheckSapError(currentStep) Then Exit Function
 
     ' (5) 액티비티 타입(ILART) 입력
-    currentStep = "5. 액티비티 타입(ILART: " & ilart & ") 입력"
-    session.findById("wnd[0]/usr/subSUB_ALL:SAPLCOIH:3001/ssubSUB_LEVEL:SAPLCOIH:1100/tabsTS_1100/tabpIHKZ/ssubSUB_AUFTRAG:SAPLCOIH:1120/subHEADER:SAPLCOIH:0154/ctxtCAUFVD-ILART").text = ilart
+    currentStep = "5. 액티비티 타입(ILART: CHK) 입력"
+    session.findById("wnd[0]/usr/subSUB_ALL:SAPLCOIH:3001/ssubSUB_LEVEL:SAPLCOIH:1100/tabsTS_1100/tabpIHKZ/ssubSUB_AUFTRAG:SAPLCOIH:1120/subHEADER:SAPLCOIH:0154/ctxtCAUFVD-ILART").text = "CHK"
+    session.findById("wnd[0]/usr/subSUB_ALL:SAPLCOIH:3001/ssubSUB_LEVEL:SAPLCOIH:1100/tabsTS_1100/tabpIHKZ/ssubSUB_AUFTRAG:SAPLCOIH:1120/subHEADER:SAPLCOIH:0154/ctxtCAUFVD-ILART").setFocus
+    session.findById("wnd[0]/usr/subSUB_ALL:SAPLCOIH:3001/ssubSUB_LEVEL:SAPLCOIH:1100/tabsTS_1100/tabpIHKZ/ssubSUB_AUFTRAG:SAPLCOIH:1120/subHEADER:SAPLCOIH:0154/ctxtCAUFVD-ILART").caretPosition = 3
     session.findById("wnd[0]").sendVKey 0
 
     If CheckSapError(currentStep) Then Exit Function
 
-    ' (6) Task List(작업 목록) 선택 (taskList 값이 있는 경우에만 실행)
-    If Trim(taskList) <> "" Then
-        currentStep = "6. Task List(" & taskList & ") 선택 및 적용"
-        session.findById("wnd[0]/mbar/menu[3]/menu[0]/menu[4]").select
-        session.findById("wnd[0]/usr/ctxtPN_PLNNR-LOW").text = taskList
-        session.findById("wnd[0]").sendVKey 8 ' F8 (실행)
-
-        ' 만약 작업장 필드가 표시되는 경우 자동 입력 처리
-        Dim arbplElem
-        Set arbplElem = session.findById("wnd[0]/usr/subSUB_ALL:SAPLCOIH:3001/ssubSUB_LEVEL:SAPLCOIH:1100/tabsTS_1100/tabpIHKZ/ssubSUB_AUFTRAG:SAPLCOIH:1120/subAVO:SAPLCOI0:0310/ctxtAFVGD-ARBPL", False)
-        If Not arbplElem Is Nothing Then
-            arbplElem.text = workCenter
-            session.findById("wnd[0]").sendVKey 0
-            session.findById("wnd[0]").sendVKey 0
-        End If
-
-        If CheckSapError(currentStep) Then Exit Function
-    End If
-
-    ' (7) 릴리즈(Release) 및 저장(Save)
-    currentStep = "7. 오더 릴리즈(Release) 및 저장(Ctrl+S)"
+    ' (6) 릴리즈(Release) 및 저장(Save)
+    currentStep = "6. 오더 릴리즈(Release) 및 저장(Save)"
     session.findById("wnd[0]/tbar[1]/btn[25]").press ' Release
-    session.findById("wnd[0]").sendVKey 11 ' Save (Ctrl+S / F11)
-
-    ' 팝업창이 나타나면 Enter로 닫기
-    If Not session.findById("wnd[1]", False) Is Nothing Then
-        session.findById("wnd[1]").sendVKey 0
-    End If
+    session.findById("wnd[0]/tbar[0]/btn[11]").press ' Save
+    session.findById("wnd[0]").resizeWorkingPane 199,35,false
 
     If CheckSapError(currentStep) Then Exit Function
 
-    ' (8) 이전 화면 정리
-    currentStep = "8. 화면 정리"
+    ' (7) 이전 화면 정리
+    currentStep = "7. 화면 정리"
     Dim cleanBtn
     Set cleanBtn = session.findById("wnd[0]/usr/btn%#AUTOTEXT010", False)
     If Not cleanBtn Is Nothing Then
@@ -238,6 +224,7 @@ Function ProcessCleaningOrder(acNo, workCenter, reqDate, userNo, qmtxt, ilart, t
 
     ProcessCleaningOrder = True
     On Error GoTo 0
+End Function
 End Function
 
 '================================================================================
