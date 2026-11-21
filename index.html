@@ -1074,6 +1074,21 @@
             </div>
           </div>
 
+          <!-- Naver Works Folder Quick Guide & Copy Bar -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-blue-50/70 rounded-xl px-4 py-2.5 border border-blue-200 text-xs gap-2">
+            <div class="flex items-center space-x-2 min-w-0">
+              <span class="px-2 py-0.5 rounded bg-blue-600 text-white font-bold text-[11px] shrink-0">네이버웍스 드라이브</span>
+              <span class="text-blue-900 font-mono text-[11px] truncate select-all" title="W:\공용 드라이브\정비본부_안전정비실 정비운영팀 생산계획파트 (최대 2TB)\8. 항공기 GRD 현황">
+                W:\공용 드라이브\정비본부_안전정비실 정비운영팀 생산계획파트 (최대 2TB)\8. 항공기 GRD 현황
+              </span>
+            </div>
+            <button type="button" id="btnCopyNaverWorksPath"
+              class="shrink-0 px-2.5 py-1 bg-white hover:bg-blue-100 text-blue-700 font-bold rounded-lg border border-blue-300 shadow-2xs transition-colors cursor-pointer text-xs flex items-center space-x-1"
+              title="네이버웍스 폴더 경로를 클립보드에 복사">
+              <span>경로 복사</span>
+            </button>
+          </div>
+
           <!-- Active File & Base Date Status Bar (Hidden until file selected) -->
           <div id="grdFileInfoBar" class="hidden bg-gray-50 rounded-xl p-3 border border-gray-200 flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center space-x-2">
@@ -4668,6 +4683,14 @@
           }
           copyToClipboard(grdState.icnTails.join(' '), btnCopyIcnTails);
           logGrd('INFO', `인천 기번 ${grdState.icnTails.length}대 클립보드에 복사 완료`);
+        });
+      }
+
+      const btnCopyNaverWorksPath = document.getElementById('btnCopyNaverWorksPath');
+      if (btnCopyNaverWorksPath) {
+        btnCopyNaverWorksPath.addEventListener('click', () => {
+          copyToClipboard('W:\\공용 드라이브\\정비본부_안전정비실 정비운영팀 생산계획파트 (최대 2TB)\\8. 항공기 GRD 현황', btnCopyNaverWorksPath);
+          logGrd('INFO', '네이버웍스 폴더 경로가 복사되었습니다. 파일 선택창 또는 윈도우 탐색기 주소창에 붙여넣기(Ctrl+V)하세요.');
         });
       }
 
