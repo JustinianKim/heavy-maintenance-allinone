@@ -234,53 +234,33 @@
 
             <!-- Start Menu Dropdown Flyout -->
             <div id="startMenuDropdown"
-              class="hidden absolute left-0 top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
+              class="hidden absolute left-0 top-full mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-200 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
               <div class="px-3 py-1 text-[11px] font-bold text-gray-400 border-b border-gray-100">
                 업무 시스템 메뉴
               </div>
               <div class="p-1 space-y-0.5">
-                <!-- 1. GMP/ICN 야간 Ground 조회 -->
+                <!-- GMP/ICN 야간 Ground 조회 -->
                 <button type="button" data-module-target="grd"
-                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange flex items-center space-x-3 transition-colors cursor-pointer">
-                  <div class="w-6 h-6 rounded bg-blue-100 text-blue-700 flex items-center justify-center font-black text-xs shrink-0">
-                    1
-                  </div>
-                  <div>
-                    <div class="text-xs font-bold">GMP/ICN 야간 Ground 조회</div>
-                  </div>
+                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
+                  GMP/ICN 야간 Ground 조회
                 </button>
 
-                <!-- 2. 각종 오더 -->
+                <!-- 각종 오더 -->
                 <button type="button" data-module-target="cabin"
-                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange flex items-center space-x-3 transition-colors cursor-pointer">
-                  <div class="w-6 h-6 rounded bg-purple-100 text-purple-700 flex items-center justify-center font-black text-xs shrink-0">
-                    2
-                  </div>
-                  <div>
-                    <div class="text-xs font-bold">각종 오더</div>
-                  </div>
+                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
+                  각종 오더
                 </button>
 
-                <!-- 3. Work Package 분석기 -->
+                <!-- Work Package 분석기 -->
                 <button type="button" data-module-target="wp"
-                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange flex items-center space-x-3 transition-colors cursor-pointer">
-                  <div class="w-6 h-6 rounded bg-orange-100 text-brand-orange flex items-center justify-center font-black text-xs shrink-0">
-                    3
-                  </div>
-                  <div>
-                    <div class="text-xs font-bold">Work Package 분석기</div>
-                  </div>
+                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
+                  Work Package 분석기
                 </button>
 
-                <!-- 4. 중정비 업무 체크리스트 -->
+                <!-- 중정비 업무 체크리스트 -->
                 <button type="button" data-module-target="checklist"
-                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange flex items-center space-x-3 transition-colors cursor-pointer">
-                  <div class="w-6 h-6 rounded bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-xs shrink-0">
-                    4
-                  </div>
-                  <div>
-                    <div class="text-xs font-bold">중정비 업무 체크리스트</div>
-                  </div>
+                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
+                  중정비 업무 체크리스트
                 </button>
               </div>
 
@@ -335,15 +315,12 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl w-full">
         <!-- Card 1: GMP/ICN 야간 Ground 조회 -->
         <button type="button" data-home-launch="grd"
-          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex items-start space-x-4">
-          <div class="w-10 h-10 rounded-lg bg-blue-50 group-hover:bg-blue-100 text-blue-700 flex items-center justify-center font-black text-sm shrink-0 transition-colors">
-            1
-          </div>
-          <div class="flex-1">
+          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex flex-col justify-between">
+          <div>
             <h3 class="text-sm font-bold text-gray-900 group-hover:text-brand-orange transition-colors">
               GMP/ICN 야간 Ground 조회
             </h3>
-            <p class="text-xs text-gray-500 mt-0.5">
+            <p class="text-xs text-gray-500 mt-1">
               김포/인천 야간 주기 기번 및 일일 현황 워드 보고서 생성
             </p>
           </div>
@@ -351,15 +328,12 @@
 
         <!-- Card 2: 각종 오더 -->
         <button type="button" data-home-launch="cabin"
-          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex items-start space-x-4">
-          <div class="w-10 h-10 rounded-lg bg-purple-50 group-hover:bg-purple-100 text-purple-700 flex items-center justify-center font-black text-sm shrink-0 transition-colors">
-            2
-          </div>
-          <div class="flex-1">
+          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex flex-col justify-between">
+          <div>
             <h3 class="text-sm font-bold text-gray-900 group-hover:text-brand-orange transition-colors">
               각종 오더
             </h3>
-            <p class="text-xs text-gray-500 mt-0.5">
+            <p class="text-xs text-gray-500 mt-1">
               객실 소독/청소 SAP AR 오더 일괄 자동 생성 (VBS)
             </p>
           </div>
@@ -367,15 +341,12 @@
 
         <!-- Card 3: Work Package 분석기 -->
         <button type="button" data-home-launch="wp"
-          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex items-start space-x-4">
-          <div class="w-10 h-10 rounded-lg bg-orange-50 group-hover:bg-orange-100 text-brand-orange flex items-center justify-center font-black text-sm shrink-0 transition-colors">
-            3
-          </div>
-          <div class="flex-1">
+          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex flex-col justify-between">
+          <div>
             <h3 class="text-sm font-bold text-gray-900 group-hover:text-brand-orange transition-colors">
               Work Package 분석기
             </h3>
-            <p class="text-xs text-gray-500 mt-0.5">
+            <p class="text-xs text-gray-500 mt-1">
               WP 엑셀 일괄 분석, 10대 가중치 및 예상 TAT 자동 산출
             </p>
           </div>
@@ -383,15 +354,12 @@
 
         <!-- Card 4: 중정비 업무 체크리스트 -->
         <button type="button" data-home-launch="checklist"
-          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex items-start space-x-4">
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 group-hover:bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-sm shrink-0 transition-colors">
-            4
-          </div>
-          <div class="flex-1">
+          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex flex-col justify-between">
+          <div>
             <h3 class="text-sm font-bold text-gray-900 group-hover:text-brand-orange transition-colors">
               중정비 업무 체크리스트
             </h3>
-            <p class="text-xs text-gray-500 mt-0.5">
+            <p class="text-xs text-gray-500 mt-1">
               162개 표준 체크리스트 점검 및 공수비행(Ferry Flight) 추적
             </p>
           </div>
