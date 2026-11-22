@@ -234,18 +234,33 @@
 
             <!-- Menu Dropdown Flyout -->
             <div id="startMenuDropdown"
-              class="hidden absolute left-0 top-full mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-200 p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 space-y-0.5">
+              class="hidden absolute left-0 top-full mt-2 w-60 bg-white rounded-xl shadow-2xl border border-gray-200 p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 space-y-0.5">
               <!-- GMP/ICN 야간 Ground 조회 -->
               <button type="button" data-module-target="grd"
                 class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
                 GMP/ICN 야간 Ground 조회
               </button>
 
-              <!-- 각종 오더 -->
-              <button type="button" data-module-target="cabin"
-                class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
-                각종 오더
-              </button>
+              <!-- 각종 오더 그룹 -->
+              <div class="pt-1 pb-0.5">
+                <div class="px-3 py-1 text-[11px] font-bold text-gray-400">
+                  각종 오더
+                </div>
+                <div class="pl-2 space-y-0.5">
+                  <button type="button" data-module-target="order_cabin"
+                    class="start-menu-item w-full px-3 py-1.5 rounded-lg text-left text-xs font-semibold text-gray-700 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
+                    객실 소독/청소
+                  </button>
+                  <button type="button" data-module-target="order_rollshade"
+                    class="start-menu-item w-full px-3 py-1.5 rounded-lg text-left text-xs font-semibold text-gray-700 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
+                    ROLL SHADE
+                  </button>
+                  <button type="button" data-module-target="order_cartridge"
+                    class="start-menu-item w-full px-3 py-1.5 rounded-lg text-left text-xs font-semibold text-gray-700 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
+                    CARTRIDGE VALVE
+                  </button>
+                </div>
+              </div>
 
               <!-- Work Package 분석기 -->
               <button type="button" data-module-target="wp"
@@ -932,7 +947,23 @@
 
     <!-- ================= MODULE 2: VARIOUS ORDERS (각종 오더) ================= -->
     <div id="moduleCabinOrder" class="hidden w-full space-y-4">
-      <!-- Cabin Disinfection & Cleaning Order -->
+      <!-- Sub-Navigation Tabs for Various Orders -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 px-4 py-2.5 flex items-center space-x-2">
+        <button type="button" id="subtabBtnCabinClean" data-order-subtab="order_cabin"
+          class="order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-orange text-white transition-colors cursor-pointer shadow-xs">
+          객실 소독/청소
+        </button>
+        <button type="button" id="subtabBtnRollShade" data-order-subtab="order_rollshade"
+          class="order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer">
+          ROLL SHADE
+        </button>
+        <button type="button" id="subtabBtnCartridge" data-order-subtab="order_cartridge"
+          class="order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer">
+          CARTRIDGE VALVE
+        </button>
+      </div>
+
+      <!-- Order Sub-Module 1: Cabin Disinfection & Cleaning Order -->
       <div id="orderSubCabinClean" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         <!-- Left Column (7 cols): Input & Queue Table -->
         <div class="lg:col-span-7 space-y-4">
@@ -1073,6 +1104,26 @@
               <div class="text-gray-500">기번을 입력하여 대기열에 추가한 뒤 [SAP 오더 자동 생성 실행]을 누르세요.</div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Order Sub-Module 2: ROLL SHADE -->
+      <div id="orderSubRollShade" class="hidden w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+        <div class="pb-3 border-b border-gray-100">
+          <h2 class="text-base font-bold text-gray-900">ROLL SHADE 오더 생성</h2>
+        </div>
+        <div class="py-12 text-center text-gray-400 text-xs">
+          VBS 스크립트 연동 준비 중입니다.
+        </div>
+      </div>
+
+      <!-- Order Sub-Module 3: CARTRIDGE VALVE -->
+      <div id="orderSubCartridge" class="hidden w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+        <div class="pb-3 border-b border-gray-100">
+          <h2 class="text-base font-bold text-gray-900">CARTRIDGE VALVE 오더 생성</h2>
+        </div>
+        <div class="py-12 text-center text-gray-400 text-xs">
+          VBS 스크립트 연동 준비 중입니다.
         </div>
       </div>
     </div>
@@ -1517,11 +1568,45 @@
 
     const MODULE_TITLES = {
       'grd': 'GMP/ICN 야간 Ground 조회',
-      'cabin': '각종 오더',
+      'cabin': '각종 오더 - 객실 소독/청소',
+      'order_cabin': '각종 오더 - 객실 소독/청소',
+      'order_rollshade': '각종 오더 - ROLL SHADE',
+      'order_cartridge': '각종 오더 - CARTRIDGE VALVE',
       'wp': 'Work Package 분석기',
       'checklist': '중정비 업무 체크리스트',
       'home': '홈'
     };
+
+    function switchCabinSubTab(subTabKey) {
+      const orderSubCabinClean = document.getElementById('orderSubCabinClean');
+      const orderSubRollShade = document.getElementById('orderSubRollShade');
+      const orderSubCartridge = document.getElementById('orderSubCartridge');
+      const subtabBtnCabinClean = document.getElementById('subtabBtnCabinClean');
+      const subtabBtnRollShade = document.getElementById('subtabBtnRollShade');
+      const subtabBtnCartridge = document.getElementById('subtabBtnCartridge');
+
+      const tabs = [
+        { key: 'order_cabin', el: orderSubCabinClean, btn: subtabBtnCabinClean, title: '각종 오더 - 객실 소독/청소' },
+        { key: 'order_rollshade', el: orderSubRollShade, btn: subtabBtnRollShade, title: '각종 오더 - ROLL SHADE' },
+        { key: 'order_cartridge', el: orderSubCartridge, btn: subtabBtnCartridge, title: '각종 오더 - CARTRIDGE VALVE' }
+      ];
+
+      tabs.forEach(t => {
+        if (t.el) t.el.classList.add('hidden');
+        if (t.btn) {
+          t.btn.className = 'order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer';
+        }
+      });
+
+      const matched = tabs.find(t => t.key === subTabKey) || tabs[0];
+      if (matched.el) matched.el.classList.remove('hidden');
+      if (matched.btn) {
+        matched.btn.className = 'order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-orange text-white transition-colors cursor-pointer shadow-xs';
+      }
+      if (activeModuleTitle) {
+        activeModuleTitle.textContent = matched.title;
+      }
+    }
 
     function switchModule(moduleName) {
       // Hide all modules
@@ -1544,7 +1629,10 @@
 
       let activeTarget = null;
       if (moduleName === 'grd') activeTarget = moduleGrdLookup;
-      else if (moduleName === 'cabin') activeTarget = moduleCabinOrder;
+      else if (moduleName === 'cabin' || moduleName.startsWith('order_')) {
+        activeTarget = moduleCabinOrder;
+        switchCabinSubTab(moduleName === 'cabin' ? 'order_cabin' : moduleName);
+      }
       else if (moduleName === 'wp') activeTarget = moduleWpAnalyzer;
       else if (moduleName === 'checklist') activeTarget = moduleChecklist;
 
@@ -1586,6 +1674,14 @@
       item.addEventListener('click', () => {
         const target = item.getAttribute('data-module-target');
         if (target) switchModule(target);
+      });
+    });
+
+    // Order Subtab Buttons Click
+    document.querySelectorAll('.order-subtab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-order-subtab');
+        if (target) switchCabinSubTab(target);
       });
     });
 
