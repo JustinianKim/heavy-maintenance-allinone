@@ -1043,10 +1043,7 @@
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-gray-100 gap-2">
             <div>
-              <h2 class="text-base font-bold text-gray-900 flex items-center space-x-2">
-                <span>GMP/ICN 야간 Ground 기번 조회 및 일일 현황 문서 자동 생성</span>
-              </h2>
-              <p class="text-xs text-gray-500 mt-0.5">운항 스케줄(flightSkd) 또는 항공기 GRD 현황 엑셀 파일을 업로드하면 김포/인천 야간 주기 기번을 자동 분석하고 워드 보고서를 생성합니다.</p>
+              <h2 class="text-base font-bold text-gray-900">GMP/ICN 야간 Ground 조회</h2>
             </div>
             <div id="grdActiveModeBadge" class="hidden items-center space-x-1.5 text-xs font-bold px-3 py-1 rounded-full bg-orange-100 text-brand-orange border border-orange-200">
               <span id="grdModeText">스케줄 모드</span>
@@ -1057,19 +1054,14 @@
           <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-blue-50 rounded-xl p-4 border border-emerald-200 shadow-xs space-y-3">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-xs">
+                <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-sm shrink-0 shadow-xs">
                   W:
                 </div>
-                <div>
-                  <div class="flex items-center space-x-2">
-                    <span class="text-xs font-bold text-gray-900">네이버웍스 폴더 스마트 자동 연동</span>
-                    <span id="grdFolderStatusBadge" class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
-                      연결 필요 (최초 1회)
-                    </span>
-                  </div>
-                  <p class="text-[11px] text-gray-500 mt-0.5">
-                    폴더를 1회만 지정해 두시면, 매일 파일창을 열 필요 없이 최신 GRD 엑셀을 버튼 하나로 자동 탐색하여 읽어옵니다.
-                  </p>
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-bold text-gray-900">네이버웍스 드라이브 연동</span>
+                  <span id="grdFolderStatusBadge" class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                    연결 필요
+                  </span>
                 </div>
               </div>
               <div class="flex items-center space-x-2 shrink-0">
@@ -1095,7 +1087,7 @@
                 <span id="grdConnectedFolderName" class="font-mono text-emerald-800 font-bold truncate">8. 항공기 GRD 현황</span>
               </div>
               <div class="flex items-center space-x-2">
-                <label for="grdFolderFilesDropdown" class="font-bold text-gray-700 shrink-0">다른 일자 파일 선택:</label>
+                <label for="grdFolderFilesDropdown" class="font-bold text-gray-700 shrink-0">다른 일자 선택:</label>
                 <select id="grdFolderFilesDropdown"
                   class="px-2 py-1 text-xs font-mono font-bold bg-white border border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 focus:outline-none cursor-pointer max-w-xs">
                   <option value="">(최신 파일 로드됨)</option>
@@ -1106,20 +1098,17 @@
 
           <!-- Dropzone -->
           <div id="grdDropzone"
-            class="border-2 border-dashed border-gray-300 hover:border-brand-orange rounded-xl p-6 text-center cursor-pointer transition-colors bg-gray-50 hover:bg-orange-50/40 group">
+            class="border-2 border-dashed border-gray-300 hover:border-brand-orange rounded-xl p-5 text-center cursor-pointer transition-colors bg-gray-50 hover:bg-orange-50/40 group">
             <input type="file" id="grdFileInput" accept=".xlsx, .xls" class="hidden">
-            <div class="flex flex-col items-center justify-center space-y-2">
-              <div class="w-12 h-12 rounded-full bg-orange-100 text-brand-orange flex items-center justify-center group-hover:scale-110 transition-transform shadow-xs">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex flex-col items-center justify-center space-y-1.5">
+              <div class="w-10 h-10 rounded-full bg-orange-100 text-brand-orange flex items-center justify-center group-hover:scale-110 transition-transform shadow-xs">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                 </svg>
               </div>
               <div>
                 <p class="text-sm font-bold text-gray-800">
-                  <span class="text-brand-orange underline">엑셀 파일 선택</span> 또는 여기로 드래그 앤 드롭
-                </p>
-                <p class="text-xs text-gray-500 mt-1">
-                  지원 형식: 운항 스케줄(flightSkd 엑셀) 또는 항공기 GRD 현황(LAYOVER 시트) (.xlsx, .xls)
+                  <span class="text-brand-orange underline">엑셀 파일 직접 선택</span> 또는 드래그 앤 드롭
                 </p>
               </div>
             </div>
@@ -1237,13 +1226,10 @@
           <div class="lg:col-span-5 bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex flex-col justify-between space-y-4">
             <div>
               <h3 class="text-sm font-bold text-gray-900 pb-2 border-b border-gray-100">
-                워드 보고서(.docx) 자동 생성
+                워드 보고서(.docx) 생성
               </h3>
-              <p class="text-xs text-gray-600 mt-2 leading-relaxed">
-                템플릿 양식의 2번째 표(Work Center: GMP-ALM / ICN-ALM)에 추출된 기번을 자동 입력하고, 규격 파일명으로 워드 문서를 즉시 다운로드합니다.
-              </p>
               <div class="mt-3 bg-gray-50 rounded-lg p-2.5 border border-gray-200 text-xs">
-                <span class="font-bold text-gray-500 block mb-0.5">다운로드 파일명 규격:</span>
+                <span class="font-bold text-gray-500 block mb-0.5">저장 파일명:</span>
                 <span id="grdExpectedFileName" class="font-mono text-gray-800 break-all">2. 항공기 GRD 현황_YYYY.MM.DD_김포+인천_기번.docx</span>
               </div>
             </div>
