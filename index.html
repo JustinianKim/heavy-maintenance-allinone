@@ -234,48 +234,50 @@
 
             <!-- Menu Dropdown Flyout -->
             <div id="startMenuDropdown"
-              class="hidden absolute left-0 top-full mt-2 w-68 bg-white rounded-xl shadow-2xl border border-gray-200 p-2 z-50 animate-in fade-in zoom-in-95 duration-100 space-y-1">
+              class="hidden absolute left-0 top-full mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-2 z-50 animate-in fade-in zoom-in-95 duration-100 space-y-1"
+              style="width: 320px; min-width: 320px;">
               <!-- GMP/ICN 야간 Ground 조회 -->
               <button type="button" data-module-target="grd"
-                class="start-menu-item w-full px-3.5 py-2.5 rounded-lg text-left text-sm font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
+                class="start-menu-item w-full px-4 py-3 rounded-lg text-left text-sm font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
                 GMP/ICN 야간 Ground 조회
               </button>
 
               <!-- 각종 오더 (Windows 95 Cascading Flyout Menu) -->
               <div class="relative group/sub">
                 <button type="button" data-module-target="order_cabin"
-                  class="start-menu-item w-full px-3.5 py-2.5 rounded-lg text-left text-sm font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange flex items-center justify-between transition-colors cursor-pointer">
+                  class="start-menu-item w-full px-4 py-3 rounded-lg text-left text-sm font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange flex items-center justify-between transition-colors cursor-pointer">
                   <span>각종 오더</span>
-                  <svg class="w-3.5 h-3.5 text-gray-400 group-hover/sub:text-brand-orange transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4 text-gray-400 group-hover/sub:text-brand-orange transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
                   </svg>
                 </button>
 
                 <!-- Cascading Submenu Flyout (Hovering opens to the right) -->
                 <div class="hidden group-hover/sub:block absolute left-full top-0 -mt-1 pl-2 z-60 animate-in fade-in duration-100">
-                  <div class="w-56 bg-white rounded-xl shadow-2xl border border-gray-200 p-2 space-y-1">
+                  <div class="bg-white rounded-xl shadow-2xl border border-gray-200 p-2 space-y-1"
+                    style="width: 250px; min-width: 250px;">
                     <button type="button" data-module-target="order_cabin"
-                      class="start-menu-item w-full px-3.5 py-2 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
+                      class="start-menu-item w-full px-4 py-2.5 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
                       객실 소독/청소
                     </button>
                     <button type="button" data-module-target="order_rollshade"
-                      class="start-menu-item w-full px-3.5 py-2 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
+                      class="start-menu-item w-full px-4 py-2.5 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
                       ROLL SHADE
                     </button>
                     <button type="button" data-module-target="order_cartridge"
-                      class="start-menu-item w-full px-3.5 py-2 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
+                      class="start-menu-item w-full px-4 py-2.5 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
                       CARTRIDGE VALVE
                     </button>
                     <button type="button" data-module-target="order_lapbelt"
-                      class="start-menu-item w-full px-3.5 py-2 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
+                      class="start-menu-item w-full px-4 py-2.5 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
                       LAP BELT
                     </button>
                     <button type="button" data-module-target="order_doorlatch"
-                      class="start-menu-item w-full px-3.5 py-2 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
+                      class="start-menu-item w-full px-4 py-2.5 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
                       DOOR LATCH
                     </button>
                     <button type="button" data-module-target="order_oxygen"
-                      class="start-menu-item w-full px-3.5 py-2 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
+                      class="start-menu-item w-full px-4 py-2.5 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer block">
                       OXYGEN BOTTLE
                     </button>
                   </div>
@@ -284,13 +286,13 @@
 
               <!-- Work Package 분석기 -->
               <button type="button" data-module-target="wp"
-                class="start-menu-item w-full px-3.5 py-2.5 rounded-lg text-left text-sm font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
+                class="start-menu-item w-full px-4 py-3 rounded-lg text-left text-sm font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
                 Work Package 분석기
               </button>
 
               <!-- 중정비 업무 체크리스트 -->
               <button type="button" data-module-target="checklist"
-                class="start-menu-item w-full px-3.5 py-2.5 rounded-lg text-left text-sm font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
+                class="start-menu-item w-full px-4 py-3 rounded-lg text-left text-sm font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange transition-colors cursor-pointer">
                 중정비 업무 체크리스트
               </button>
             </div>
