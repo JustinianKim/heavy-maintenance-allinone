@@ -119,6 +119,8 @@
       header,
       footer,
       nav,
+      #moduleHome,
+      #moduleGrdLookup,
       #moduleWpAnalyzer,
       #moduleCabinOrder,
       .no-print,
@@ -211,20 +213,108 @@
       </div>
     </div>
 
-    <!-- Top-level Navigation Tabs -->
-    <div class="bg-brand-dark/35 backdrop-blur-xs border-t border-white/10 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-7xl mx-auto flex space-x-1 sm:space-x-3 text-xs sm:text-sm font-bold">
-        <button id="navTabWp"
-          class="py-2.5 px-3.5 border-b-2 border-white text-white flex items-center space-x-1.5 transition-colors cursor-pointer">
-          <span>Work Package 분석기</span>
-        </button>
-        <button id="navTabChecklist"
-          class="py-2.5 px-3.5 border-b-2 border-transparent text-orange-100/70 hover:text-white hover:border-white/40 flex items-center space-x-1.5 transition-colors cursor-pointer">
-          <span>중정비 업무 체크리스트</span>
-        </button>
-        <button id="navTabCabin"
-          class="py-2.5 px-3.5 border-b-2 border-transparent text-orange-100/70 hover:text-white hover:border-white/40 flex items-center space-x-1.5 transition-colors cursor-pointer">
-          <span>각종 오더</span>
+    <!-- Top-level Navigation Bar with Start Button -->
+    <div class="bg-brand-dark/35 backdrop-blur-xs border-t border-white/10 px-4 sm:px-6 lg:px-8 relative z-20">
+      <div class="max-w-7xl mx-auto h-11 flex items-center justify-between text-xs sm:text-sm">
+        <!-- Left: Start Button + Active Module Indicator -->
+        <div class="flex items-center space-x-3">
+          <!-- Windows-Style Start Button -->
+          <div class="relative" id="startMenuContainer">
+            <button id="btnStartMenu" type="button"
+              class="px-3.5 py-1.5 rounded-lg font-bold text-xs bg-white text-brand-orange hover:bg-orange-50 shadow-xs flex items-center space-x-2 transition-all cursor-pointer">
+              <!-- Grid 4-square icon (Windows style) -->
+              <svg class="w-3.5 h-3.5 text-brand-orange" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="3" y="3" width="8" height="8" rx="1.5"/>
+                <rect x="13" y="3" width="8" height="8" rx="1.5"/>
+                <rect x="3" y="13" width="8" height="8" rx="1.5"/>
+                <rect x="13" y="13" width="8" height="8" rx="1.5"/>
+              </svg>
+              <span>시작</span>
+              <svg class="w-3 h-3 text-brand-orange/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            <!-- Start Menu Dropdown Flyout -->
+            <div id="startMenuDropdown"
+              class="hidden absolute left-0 top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
+              <div class="px-3 py-1 text-[11px] font-bold text-gray-400 border-b border-gray-100">
+                업무 시스템 메뉴
+              </div>
+              <div class="p-1 space-y-0.5">
+                <!-- 1. GMP/ICN 야간 Ground 조회 -->
+                <button type="button" data-module-target="grd"
+                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange flex items-center space-x-3 transition-colors cursor-pointer">
+                  <div class="w-6 h-6 rounded bg-blue-100 text-blue-700 flex items-center justify-center font-black text-xs shrink-0">
+                    1
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold">GMP/ICN 야간 Ground 조회</div>
+                  </div>
+                </button>
+
+                <!-- 2. 각종 오더 -->
+                <button type="button" data-module-target="cabin"
+                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange flex items-center space-x-3 transition-colors cursor-pointer">
+                  <div class="w-6 h-6 rounded bg-purple-100 text-purple-700 flex items-center justify-center font-black text-xs shrink-0">
+                    2
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold">각종 오더</div>
+                  </div>
+                </button>
+
+                <!-- 3. Work Package 분석기 -->
+                <button type="button" data-module-target="wp"
+                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange flex items-center space-x-3 transition-colors cursor-pointer">
+                  <div class="w-6 h-6 rounded bg-orange-100 text-brand-orange flex items-center justify-center font-black text-xs shrink-0">
+                    3
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold">Work Package 분석기</div>
+                  </div>
+                </button>
+
+                <!-- 4. 중정비 업무 체크리스트 -->
+                <button type="button" data-module-target="checklist"
+                  class="start-menu-item w-full px-3 py-2 rounded-lg text-left text-xs font-bold text-gray-800 hover:bg-orange-50 hover:text-brand-orange flex items-center space-x-3 transition-colors cursor-pointer">
+                  <div class="w-6 h-6 rounded bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-xs shrink-0">
+                    4
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold">중정비 업무 체크리스트</div>
+                  </div>
+                </button>
+              </div>
+
+              <!-- Menu Footer: Home Button -->
+              <div class="pt-1 mt-1 border-t border-gray-100 px-1">
+                <button type="button" data-module-target="home"
+                  class="start-menu-item w-full px-3 py-1.5 rounded-lg text-left text-xs font-bold text-gray-600 hover:bg-gray-100 flex items-center space-x-2 transition-colors cursor-pointer">
+                  <span>초기 화면으로 이동</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Module Indicator / Close Button -->
+          <div id="activeModuleIndicator" class="hidden items-center space-x-2">
+            <span class="text-white/60 text-xs">/</span>
+            <span id="activeModuleTitle" class="text-xs font-bold text-white px-2.5 py-1 rounded-md bg-white/15 border border-white/20">
+              선택된 업무
+            </span>
+            <button type="button" id="btnCloseModule"
+              class="px-2 py-0.5 rounded text-[11px] font-bold text-white/80 hover:text-white bg-black/20 hover:bg-black/40 border border-white/20 transition-colors cursor-pointer"
+              title="화면 닫기">
+              닫기 ✕
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Home Shortcut -->
+        <button type="button" id="btnNavHome"
+          class="text-xs font-bold text-orange-100/80 hover:text-white transition-colors cursor-pointer flex items-center space-x-1">
+          <span>홈</span>
         </button>
       </div>
     </div>
@@ -233,8 +323,87 @@
   <!-- Main Content Container -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
 
+    <!-- ================= MODULE 0: HOME / CLEAN INITIAL LANDING ================= -->
+    <div id="moduleHome" class="w-full flex flex-col items-center justify-center py-12 space-y-8 animate-in fade-in duration-150">
+      <div class="text-center space-y-2 max-w-xl">
+        <h2 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+          중정비 All in One
+        </h2>
+        <p class="text-xs sm:text-sm text-gray-500">
+          좌측 상단 [시작] 버튼을 누르거나 아래 메뉴를 선택하여 작업을 시작하세요.
+        </p>
+      </div>
+
+      <!-- 4 Quick Launch Cards in 2x2 Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl w-full">
+        <!-- Card 1: GMP/ICN 야간 Ground 조회 -->
+        <button type="button" data-home-launch="grd"
+          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex items-start space-x-4">
+          <div class="w-10 h-10 rounded-lg bg-blue-50 group-hover:bg-blue-100 text-blue-700 flex items-center justify-center font-black text-sm shrink-0 transition-colors">
+            1
+          </div>
+          <div class="flex-1">
+            <h3 class="text-sm font-bold text-gray-900 group-hover:text-brand-orange transition-colors">
+              GMP/ICN 야간 Ground 조회
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">
+              김포/인천 야간 주기 기번 및 일일 현황 워드 보고서 생성
+            </p>
+          </div>
+        </button>
+
+        <!-- Card 2: 각종 오더 -->
+        <button type="button" data-home-launch="cabin"
+          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex items-start space-x-4">
+          <div class="w-10 h-10 rounded-lg bg-purple-50 group-hover:bg-purple-100 text-purple-700 flex items-center justify-center font-black text-sm shrink-0 transition-colors">
+            2
+          </div>
+          <div class="flex-1">
+            <h3 class="text-sm font-bold text-gray-900 group-hover:text-brand-orange transition-colors">
+              각종 오더
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">
+              객실 소독/청소 SAP AR 오더 일괄 자동 생성 (VBS)
+            </p>
+          </div>
+        </button>
+
+        <!-- Card 3: Work Package 분석기 -->
+        <button type="button" data-home-launch="wp"
+          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex items-start space-x-4">
+          <div class="w-10 h-10 rounded-lg bg-orange-50 group-hover:bg-orange-100 text-brand-orange flex items-center justify-center font-black text-sm shrink-0 transition-colors">
+            3
+          </div>
+          <div class="flex-1">
+            <h3 class="text-sm font-bold text-gray-900 group-hover:text-brand-orange transition-colors">
+              Work Package 분석기
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">
+              WP 엑셀 일괄 분석, 10대 가중치 및 예상 TAT 자동 산출
+            </p>
+          </div>
+        </button>
+
+        <!-- Card 4: 중정비 업무 체크리스트 -->
+        <button type="button" data-home-launch="checklist"
+          class="p-5 bg-white rounded-xl shadow-xs hover:shadow-md border border-gray-200 hover:border-brand-orange text-left transition-all duration-150 cursor-pointer group flex items-start space-x-4">
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 group-hover:bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-sm shrink-0 transition-colors">
+            4
+          </div>
+          <div class="flex-1">
+            <h3 class="text-sm font-bold text-gray-900 group-hover:text-brand-orange transition-colors">
+              중정비 업무 체크리스트
+            </h3>
+            <p class="text-xs text-gray-500 mt-0.5">
+              162개 표준 체크리스트 점검 및 공수비행(Ferry Flight) 추적
+            </p>
+          </div>
+        </button>
+      </div>
+    </div>
+
     <!-- ================= MODULE 1: WORK PACKAGE ANALYZER ================= -->
-    <div id="moduleWpAnalyzer" class="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+    <div id="moduleWpAnalyzer" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
 
       <!-- Left Column: Input or Result Screen (7 cols) -->
       <div class="lg:col-span-7 flex flex-col space-y-5">
@@ -879,21 +1048,9 @@
       </div>
     </div>
 
-    <!-- ================= MODULE 3: VARIOUS ORDERS (각종 오더) ================= -->
+    <!-- ================= MODULE 2: VARIOUS ORDERS (각종 오더) ================= -->
     <div id="moduleCabinOrder" class="hidden w-full space-y-4">
-      <!-- Sub-Navigation Bar for Order Types -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 px-4 py-2.5 flex items-center space-x-2">
-        <button type="button" id="subtabBtnCabinClean" data-order-tab="cabinClean"
-          class="order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-orange text-white transition-colors cursor-pointer shadow-xs">
-          객실 소독/청소 오더
-        </button>
-        <button type="button" id="subtabBtnGrdLookup" data-order-tab="grdLookup"
-          class="order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer">
-          GMP/ICN 야간 Ground 조회
-        </button>
-      </div>
-
-      <!-- Order Sub-Module 1: Cabin Disinfection & Cleaning Order -->
+      <!-- Cabin Disinfection & Cleaning Order -->
       <div id="orderSubCabinClean" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         <!-- Left Column (7 cols): Input & Queue Table -->
         <div class="lg:col-span-7 space-y-4">
@@ -1036,9 +1193,10 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Order Sub-Module 2: GMP/ICN 야간 Ground 조회 -->
-      <div id="orderSubGrdLookup" class="hidden w-full space-y-5">
+    <!-- ================= MODULE 1: GMP/ICN 야간 Ground 조회 ================= -->
+    <div id="moduleGrdLookup" class="hidden w-full space-y-5">
         <!-- 1. Top Card: Upload & Analysis Parameters -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-gray-100 gap-2">
@@ -1221,7 +1379,6 @@
           </div>
         </div>
       </div>
-    </div>
 
   </main>
 
@@ -1475,42 +1632,110 @@
     let stFile = null;
     let latestBatchResults = []; // Saved batch results for Excel export and switching details
 
-    // Navigation Tabs Elements
-    const navTabWp = document.getElementById('navTabWp');
-    const navTabChecklist = document.getElementById('navTabChecklist');
-    const navTabCabin = document.getElementById('navTabCabin');
+    // Navigation & Module System
+    const btnStartMenu = document.getElementById('btnStartMenu');
+    const startMenuDropdown = document.getElementById('startMenuDropdown');
+    const startMenuContainer = document.getElementById('startMenuContainer');
+    const activeModuleIndicator = document.getElementById('activeModuleIndicator');
+    const activeModuleTitle = document.getElementById('activeModuleTitle');
+    const btnCloseModule = document.getElementById('btnCloseModule');
+    const btnNavHome = document.getElementById('btnNavHome');
 
+    const moduleHome = document.getElementById('moduleHome');
+    const moduleGrdLookup = document.getElementById('moduleGrdLookup');
+    const moduleCabinOrder = document.getElementById('moduleCabinOrder');
     const moduleWpAnalyzer = document.getElementById('moduleWpAnalyzer');
     const moduleChecklist = document.getElementById('moduleChecklist');
-    const moduleCabinOrder = document.getElementById('moduleCabinOrder');
+
+    const MODULE_TITLES = {
+      'grd': 'GMP/ICN 야간 Ground 조회',
+      'cabin': '각종 오더',
+      'wp': 'Work Package 분석기',
+      'checklist': '중정비 업무 체크리스트',
+      'home': '홈'
+    };
 
     function switchModule(moduleName) {
-      [navTabWp, navTabChecklist, navTabCabin].forEach(tab => {
-        tab.classList.remove('border-white', 'text-white');
-        tab.classList.add('border-transparent', 'text-orange-100/70');
-      });
-      [moduleWpAnalyzer, moduleChecklist, moduleCabinOrder].forEach(mod => {
-        mod.classList.add('hidden');
+      // Hide all modules
+      [moduleHome, moduleGrdLookup, moduleCabinOrder, moduleWpAnalyzer, moduleChecklist].forEach(mod => {
+        if (mod) mod.classList.add('hidden');
       });
 
-      if (moduleName === 'wp') {
-        navTabWp.classList.add('border-white', 'text-white');
-        navTabWp.classList.remove('border-transparent', 'text-orange-100/70');
-        moduleWpAnalyzer.classList.remove('hidden');
-      } else if (moduleName === 'checklist') {
-        navTabChecklist.classList.add('border-white', 'text-white');
-        navTabChecklist.classList.remove('border-transparent', 'text-orange-100/70');
-        moduleChecklist.classList.remove('hidden');
-      } else if (moduleName === 'cabin') {
-        navTabCabin.classList.add('border-white', 'text-white');
-        navTabCabin.classList.remove('border-transparent', 'text-orange-100/70');
-        moduleCabinOrder.classList.remove('hidden');
+      // Close start menu flyout
+      if (startMenuDropdown) startMenuDropdown.classList.add('hidden');
+
+      if (moduleName === 'home' || !moduleName) {
+        if (moduleHome) moduleHome.classList.remove('hidden');
+        if (activeModuleIndicator) {
+          activeModuleIndicator.classList.add('hidden');
+          activeModuleIndicator.classList.remove('flex');
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
       }
+
+      let activeTarget = null;
+      if (moduleName === 'grd') activeTarget = moduleGrdLookup;
+      else if (moduleName === 'cabin') activeTarget = moduleCabinOrder;
+      else if (moduleName === 'wp') activeTarget = moduleWpAnalyzer;
+      else if (moduleName === 'checklist') activeTarget = moduleChecklist;
+
+      if (activeTarget) {
+        activeTarget.classList.remove('hidden');
+      }
+
+      if (activeModuleIndicator && activeModuleTitle) {
+        activeModuleTitle.textContent = MODULE_TITLES[moduleName] || moduleName;
+        activeModuleIndicator.classList.remove('hidden');
+        activeModuleIndicator.classList.add('flex');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    navTabWp.addEventListener('click', () => switchModule('wp'));
-    navTabChecklist.addEventListener('click', () => switchModule('checklist'));
-    navTabCabin.addEventListener('click', () => switchModule('cabin'));
+    // Start Menu Toggle & Outside Click
+    if (btnStartMenu && startMenuDropdown) {
+      btnStartMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+        startMenuDropdown.classList.toggle('hidden');
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      if (startMenuContainer && !startMenuContainer.contains(e.target)) {
+        if (startMenuDropdown) startMenuDropdown.classList.add('hidden');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && startMenuDropdown) {
+        startMenuDropdown.classList.add('hidden');
+      }
+    });
+
+    // Start Menu Items Click
+    document.querySelectorAll('.start-menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const target = item.getAttribute('data-module-target');
+        if (target) switchModule(target);
+      });
+    });
+
+    // Home Launch Cards Click
+    document.querySelectorAll('[data-home-launch]').forEach(card => {
+      card.addEventListener('click', () => {
+        const target = card.getAttribute('data-home-launch');
+        if (target) switchModule(target);
+      });
+    });
+
+    // Close & Home buttons
+    if (btnCloseModule) {
+      btnCloseModule.addEventListener('click', () => switchModule('home'));
+    }
+    if (btnNavHome) {
+      btnNavHome.addEventListener('click', () => switchModule('home'));
+    }
 
     // DOM Elements
     const wpDropzone = document.getElementById('wpDropzone');
@@ -4503,37 +4728,7 @@
         logCabin('INFO', '브라우저 다운로드 목록에서 [SAP_객실오더_자동생성.vbs] 파일을 클릭(열기)하면 SAP 자동 생성이 즉시 실행됩니다.');
       });
 
-      // =========================================================================
-      // [신규] 각종 오더 서브탭 전환 및 GMP/ICN 야간 Ground 조회 모듈
-      // =========================================================================
-      const subtabBtnCabinClean = document.getElementById('subtabBtnCabinClean');
-      const subtabBtnGrdLookup = document.getElementById('subtabBtnGrdLookup');
-      const orderSubCabinClean = document.getElementById('orderSubCabinClean');
-      const orderSubGrdLookup = document.getElementById('orderSubGrdLookup');
-
-      function switchOrderSubtab(tabKey) {
-        if (!subtabBtnCabinClean || !subtabBtnGrdLookup || !orderSubCabinClean || !orderSubGrdLookup) return;
-        if (tabKey === 'cabinClean') {
-          subtabBtnCabinClean.className = 'order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-orange text-white transition-colors cursor-pointer shadow-xs';
-          subtabBtnGrdLookup.className = 'order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer';
-          orderSubCabinClean.classList.remove('hidden');
-          orderSubGrdLookup.classList.add('hidden');
-        } else if (tabKey === 'grdLookup') {
-          subtabBtnGrdLookup.className = 'order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-orange text-white transition-colors cursor-pointer shadow-xs';
-          subtabBtnCabinClean.className = 'order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer';
-          orderSubCabinClean.classList.add('hidden');
-          orderSubGrdLookup.classList.remove('hidden');
-        }
-      }
-
-      if (subtabBtnCabinClean) {
-        subtabBtnCabinClean.addEventListener('click', () => switchOrderSubtab('cabinClean'));
-      }
-      if (subtabBtnGrdLookup) {
-        subtabBtnGrdLookup.addEventListener('click', () => switchOrderSubtab('grdLookup'));
-      }
-
-      // Initialize GMP/ICN 야간 Ground 조회
+      // Initialize GMP/ICN 야간 Ground 조회 모듈
       initGrdLookupModule();
     }
 
