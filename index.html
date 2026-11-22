@@ -1334,9 +1334,7 @@
               </span>
             </div>
             <div class="py-4">
-              <div id="grdGmpTailsContainer" class="flex flex-wrap gap-2 min-h-[48px] items-center select-text">
-                <span class="text-xs text-gray-400 select-none">파일을 업로드하면 김포 야간 주기 기번이 표시됩니다.</span>
-              </div>
+              <div id="grdGmpTailsContainer" class="flex flex-wrap gap-2 min-h-[48px] items-center select-text"></div>
             </div>
           </div>
           <!-- Red-eye notice in Gimpo if any -->
@@ -1362,9 +1360,7 @@
               </span>
             </div>
             <div class="py-4">
-              <div id="grdIcnTailsContainer" class="flex flex-wrap gap-2 min-h-[48px] items-center select-text">
-                <span class="text-xs text-gray-400 select-none">파일을 업로드하면 인천 야간 주기 기번이 표시됩니다.</span>
-              </div>
+              <div id="grdIcnTailsContainer" class="flex flex-wrap gap-2 min-h-[48px] items-center select-text"></div>
             </div>
           </div>
           <!-- Red-eye notice in Incheon if any -->
@@ -5033,12 +5029,12 @@
         updateExpectedFileName();
 
         grdGmpCountBadge.textContent = '0대';
-        grdGmpTailsContainer.innerHTML = '<span class="text-xs text-gray-400">파일을 업로드하면 김포 야간 주기 기번이 표시됩니다.</span>';
+        grdGmpTailsContainer.innerHTML = '';
         grdGmpRedeyeBox.classList.add('hidden');
         grdGmpRedeyeList.innerHTML = '';
 
         grdIcnCountBadge.textContent = '0대';
-        grdIcnTailsContainer.innerHTML = '<span class="text-xs text-gray-400">파일을 업로드하면 인천 야간 주기 기번이 표시됩니다.</span>';
+        grdIcnTailsContainer.innerHTML = '';
         grdIcnRedeyeBox.classList.add('hidden');
         grdIcnRedeyeList.innerHTML = '';
 
