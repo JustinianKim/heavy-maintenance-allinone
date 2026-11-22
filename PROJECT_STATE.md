@@ -1,6 +1,6 @@
 # 제주항공 중정비 All in One Portal — 프로젝트 인수인계 및 작업 상태 가이드
 
-> **최종 갱신일**: 2026-11-15  
+> **최종 갱신일**: 2026-11-22  
 > **저장소**: [JustinianKim/heavy-maintenance-allinone](https://github.com/JustinianKim/heavy-maintenance-allinone.git) (`main` 브랜치)  
 > **라이브 웹사이트**: [https://justiniankim.github.io/heavy-maintenance-allinone/](https://justiniankim.github.io/heavy-maintenance-allinone/)  
 > **작업 디렉터리**: `c:\Users\user\Documents\Jeju_Air\Programming\WP_분석기`
@@ -15,6 +15,7 @@
   - 외부 CDN 및 Google Fonts 의존성 완전 제거 (중국 출장지 및 인터넷 미연결 폐쇄망에서 `실행하기.bat` 더블클릭으로 즉시 구동).
   - 로컬 벤더 스크립트: `vendor/xlsx.full.min.js` (SheetJS), `vendor/tailwind.min.js` (Tailwind CSS v3).
   - 오프라인 배포 파일: `heavy_maintenance_allinone_offline.zip` (코드 변경 시 자동 재압축 및 Git 커밋/푸시).
+  - SAP 연동: IW21 통지/오더 생성 VBS 스크립트(UTF-16LE with BOM)를 브라우저에서 동적 생성 및 원클릭 실행. 릴리즈/저장 시 모달 팝업(`wnd[1]`) 안전 자동 승인 탑재.
 
 ---
 
