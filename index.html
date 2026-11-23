@@ -282,6 +282,10 @@
                       class="start-menu-item w-full px-4 py-2.5 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-brand-orange hover:text-white transition-colors cursor-pointer block">
                       OXYGEN BOTTLE
                     </button>
+                    <button type="button" data-module-target="order_carpet"
+                      class="start-menu-item w-full px-4 py-2.5 rounded-lg text-left text-sm font-semibold text-gray-800 hover:bg-brand-orange hover:text-white transition-colors cursor-pointer block">
+                      ALL CARPET REPLACEMENT
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1040,6 +1044,10 @@
           class="order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer">
           OXYGEN BOTTLE
         </button>
+        <button type="button" id="subtabBtnCarpet" data-order-subtab="order_carpet"
+          class="order-subtab-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer">
+          ALL CARPET REPLACEMENT
+        </button>
       </div>
 
       <!-- Order Sub-Module 1: Cabin Disinfection & Cleaning Order -->
@@ -1242,6 +1250,16 @@
       <div id="orderSubOxygen" class="hidden w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
         <div class="pb-3 border-b border-gray-100">
           <h2 class="text-base font-bold text-gray-900">OXYGEN BOTTLE 오더 생성</h2>
+        </div>
+        <div class="py-12 text-center text-gray-400 text-xs">
+          VBS 스크립트 연동 준비 중입니다.
+        </div>
+      </div>
+
+      <!-- Order Sub-Module 7: ALL CARPET REPLACEMENT -->
+      <div id="orderSubCarpet" class="hidden w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+        <div class="pb-3 border-b border-gray-100">
+          <h2 class="text-base font-bold text-gray-900">ALL CARPET REPLACEMENT 오더 생성</h2>
         </div>
         <div class="py-12 text-center text-gray-400 text-xs">
           VBS 스크립트 연동 준비 중입니다.
@@ -1674,6 +1692,7 @@
       'order_lapbelt': '각종 오더 - LAP BELT',
       'order_doorlatch': '각종 오더 - DOOR LATCH',
       'order_oxygen': '각종 오더 - OXYGEN BOTTLE',
+      'order_carpet': '각종 오더 - ALL CARPET REPLACEMENT',
       'wp': 'Work Package 분석기',
       'checklist': '중정비 업무 체크리스트',
       'home': '홈'
@@ -1686,6 +1705,7 @@
       const orderSubLapBelt = document.getElementById('orderSubLapBelt');
       const orderSubDoorLatch = document.getElementById('orderSubDoorLatch');
       const orderSubOxygen = document.getElementById('orderSubOxygen');
+      const orderSubCarpet = document.getElementById('orderSubCarpet');
 
       const subtabBtnCabinClean = document.getElementById('subtabBtnCabinClean');
       const subtabBtnRollShade = document.getElementById('subtabBtnRollShade');
@@ -1693,6 +1713,7 @@
       const subtabBtnLapBelt = document.getElementById('subtabBtnLapBelt');
       const subtabBtnDoorLatch = document.getElementById('subtabBtnDoorLatch');
       const subtabBtnOxygen = document.getElementById('subtabBtnOxygen');
+      const subtabBtnCarpet = document.getElementById('subtabBtnCarpet');
 
       const tabs = [
         { key: 'order_cabin', el: orderSubCabinClean, btn: subtabBtnCabinClean, title: '각종 오더 - 객실 소독/청소' },
@@ -1700,7 +1721,8 @@
         { key: 'order_cartridge', el: orderSubCartridge, btn: subtabBtnCartridge, title: '각종 오더 - CARTRIDGE VALVE' },
         { key: 'order_lapbelt', el: orderSubLapBelt, btn: subtabBtnLapBelt, title: '각종 오더 - LAP BELT' },
         { key: 'order_doorlatch', el: orderSubDoorLatch, btn: subtabBtnDoorLatch, title: '각종 오더 - DOOR LATCH' },
-        { key: 'order_oxygen', el: orderSubOxygen, btn: subtabBtnOxygen, title: '각종 오더 - OXYGEN BOTTLE' }
+        { key: 'order_oxygen', el: orderSubOxygen, btn: subtabBtnOxygen, title: '각종 오더 - OXYGEN BOTTLE' },
+        { key: 'order_carpet', el: orderSubCarpet, btn: subtabBtnCarpet, title: '각종 오더 - ALL CARPET REPLACEMENT' }
       ];
 
       tabs.forEach(t => {
