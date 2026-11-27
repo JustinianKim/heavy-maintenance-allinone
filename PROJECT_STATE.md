@@ -15,7 +15,7 @@
   - 외부 CDN 및 Google Fonts 의존성 완전 제거 (중국 출장지 및 인터넷 미연결 폐쇄망에서 `실행하기.bat` 더블클릭으로 즉시 구동).
   - 로컬 벤더 스크립트: `vendor/xlsx.full.min.js` (SheetJS), `vendor/tailwind.min.js` (Tailwind CSS v3).
   - 오프라인 배포 파일: `heavy_maintenance_allinone_offline.zip` (코드 변경 시 자동 재압축 및 Git 커밋/푸시).
-  - SAP 연동: IW21 통지/오더 생성 VBS 스크립트(UTF-16LE with BOM)를 브라우저에서 동적 생성 및 원클릭 실행. ZMENU/ZINV 등 어떤 화면에서도 100% 안전하게 동작하도록 `session.startTransaction "IW21"` 적용 및 레거시 AUTOTEXT 버튼 의존성 완전 제거, 릴리즈/저장 시 모달 팝업(`wnd[1]`) 안전 자동 승인 탑재.
+  - SAP 연동: IW21 통지/오더 생성 VBS 스크립트(UTF-16LE with BOM)를 브라우저에서 동적 생성 및 원클릭 실행. ZMENU/ZINV 등 어떤 화면에서도 100% 안전하게 동작하도록 `session.startTransaction "IW21"` 적용 및 레거시 AUTOTEXT 버튼 의존성 완전 제거, 릴리즈/저장 시 모달 팝업(`wnd[1]`) 안전 자동 승인 탑재. 세부 단계별(Step) 오류 추적, SAP StatusBar 시스템 에러 메시지 캡처, 바탕화면 실행 결과 및 트러블슈팅 로그 파일(`*.log`) 자동 생성 기능 완비.
 
 ---
 
@@ -24,7 +24,7 @@
 | 모듈 | 화면명 | 상태 | 주요 기능 |
 | :--- | :--- | :---: | :--- |
 | **모듈 1** | **GMP/ICN 야간 Ground 조회** | 완료 | • 운항스케줄(flightSkd) 및 GRD 현황(LAYOVER 시트) 엑셀 자동 분석<br>• 김포/인천 야간 주기 기번 및 심야 도착편(Red-eye) 추출 (마우스 드래그 및 복사 최적화)<br>• 업로드 영역 우측 직관적인 `워드파일 다운로드` 버튼 원클릭 문서 생성 (잡다한 하단 콘솔/중복 박스 완전 제거) |
-| **모듈 2** | **각종 오더** | 완료 / 확장 중 | • **객실 소독/청소**: SAP AR 오더(10630/13870 Disinfection & CABIN CLEANING CHK DUE) 일괄 생성 및 ZIW28 자동 조회 VBS 스크립트 출력<br>• **ROLL SHADE**: 전용 서브탭 및 화면 구성 완료 (VBS 연동 준비)<br>• **CARTRIDGE VALVE**: 전용 서브탭 및 화면 구성 완료 (VBS 연동 준비)<br>• **LAP BELT**: 전용 서브탭 및 화면 구성 완료 (VBS 연동 준비)<br>• **DOOR LATCH**: 전용 서브탭 및 화면 구성 완료 (VBS 연동 준비)<br>• **OXYGEN BOTTLE**: 전용 서브탭 및 화면 구성 완료 (VBS 연동 준비)<br>• **ALL CARPET REPLACEMENT**: 전용 UI 및 대기열(Queue) 관리, Activity Type `RPL` 기반 SAP IW21 오더 일괄 생성 및 완료 후 ZIW28 자동 조회 VBS 스크립트 출력 구현 완료 |
+| **모듈 2** | **각종 오더** | 완료 / 확장 중 | • **객실 소독/청소**: SAP AR 오더(10630/13870 Disinfection & CABIN CLEANING CHK DUE) 일괄 생성, 단계별 에러 추적 및 StatusBar 메시지 캡처, 바탕화면 결과 로그 파일(`*.log`) 자동 생성, ZIW28 자동 조회 VBS 스크립트 출력<br>• **ROLL SHADE**: 전용 서브탭 및 화면 구성 완료 (VBS 연동 준비)<br>• **CARTRIDGE VALVE**: 전용 서브탭 및 화면 구성 완료 (VBS 연동 준비)<br>• **LAP BELT**: 전용 서브탭 및 화면 구성 완료 (VBS 연동 준비)<br>• **DOOR LATCH**: 전용 서브탭 및 화면 구성 완료 (VBS 연동 준비)<br>• **OXYGEN BOTTLE**: 전용 서브탭 및 화면 구성 완료 (VBS 연동 준비)<br>• **ALL CARPET REPLACEMENT**: 전용 UI 및 대기열(Queue) 관리, Activity Type `RPL` 기반 SAP IW21 오더 일괄 생성, 단계별 에러 추적 및 결과 로그 파일 자동 저장, 완료 후 ZIW28 자동 조회 VBS 스크립트 출력 구현 완료 |
 | **모듈 3** | **Work Package 분석기** | 완료 | • 복수 WP 엑셀 드래그&드롭 일괄 분석<br>• **실무 10대 가중치(주1~주10)** 및 예상 TAT 자동 산출<br>• 제주항공 45대 내장 플릿 DB 기반 기령(`mfg`) 및 도입경과(`deliv`) 자동 판별<br>• **종합 분석 테이블 헤더 클릭 시 오름/내림차순 동적 정렬**<br>• 실시간 분석 터미널 로그 및 분석 결과 엑셀 저장<br>• 내부 `산출 기준` 가이드 팝업 모달 탑재 |
 | **모듈 4** | **중정비 업무 체크리스트** | 완료 | • 162개 전 점검 항목 수록 (입고전 36건, 입고중 115건, 완료후 11건)<br>• 기번별 독립 저장소(`localStorage`), 항목별 완료 체크 및 일시 자동 기록<br>• 인쇄/PDF 최적화 A4 양식 및 엑셀 내보내기<br>• 부서별 필터, 진행상태 필터, 실시간 키워드 검색<br>• 상단 4개 진척도 카드 클릭 시 해당 단계 즉시 필터링<br>• 상단 슬림 접이식 **공수비행(Ferry Flight, 7C*M)** 실시간 레이더 추적 내장 |
 
