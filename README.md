@@ -29,7 +29,7 @@
   - 소독 오더(Disinfection): 기종별 Task List(`10630` NG / `13870` MAX) 자동 매핑 및 릴리즈/저장
   - 청소 오더(CABIN CLEANING CHK DUE): 작업장(`ARBPL`) 자동 할당 및 릴리즈/저장
   - ZMENU, ZINV 등 SAP이 어떤 화면에 위치해 있어도 안전하게 초기화 진입하는 `session.startTransaction "IW21"` 표준 스크립트(UTF-16LE with BOM) 출력
-  - 모달 팝업(`wnd[1]`) 안전 자동 통과 및 완료 시 ZIW29 자동 조회
+  - 모달 팝업(`wnd[1]`) 안전 자동 통과 및 완료 시 ZIW28 자동 조회
 - **기타 오더 확장 구성**:
   - ROLL SHADE
   - CARTRIDGE VALVE
