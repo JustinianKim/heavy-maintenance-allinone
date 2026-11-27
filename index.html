@@ -1257,12 +1257,139 @@
       </div>
 
       <!-- Order Sub-Module 7: ALL CARPET REPLACEMENT -->
-      <div id="orderSubCarpet" class="hidden w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
-        <div class="pb-3 border-b border-gray-100">
-          <h2 class="text-base font-bold text-gray-900">ALL CARPET REPLACEMENT 오더 생성</h2>
+      <div id="orderSubCarpet" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <!-- Left Column (7 cols): Input & Queue Table -->
+        <div class="lg:col-span-7 space-y-4">
+          <!-- 1. Input Card -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+              <h2 class="text-base font-bold text-gray-900">SAP ALL CARPET REPLACEMENT 오더 생성</h2>
+            </div>
+
+            <!-- Row 1: 발행인 사번, Due Date, STATION -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">발행인 사번</label>
+                <input type="text" id="carpetUserNo" placeholder="사번 7자리"
+                  class="w-full px-3 py-2 text-xs font-mono font-semibold bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange focus:bg-white">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Due Date (완료요청일)</label>
+                <input type="text" id="carpetDueDate" placeholder="YYYY.MM.DD"
+                  class="w-full px-3 py-2 text-xs font-mono font-semibold bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange focus:bg-white">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">STATION</label>
+                <select id="carpetWorkCenter"
+                  class="w-full px-3 py-2 text-xs font-bold bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange focus:bg-white cursor-pointer">
+                  <option value="GMP-ACM">GMP-ACM</option>
+                  <option value="ICN-ACM">ICN-ACM</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 2: 항공기 기번, 오더 내역 정보, 목록 추가 버튼 -->
+            <div class="pt-3 border-t border-gray-100 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+              <div class="flex flex-wrap items-end gap-3">
+                <div class="w-36 relative" id="carpetAcComboContainer">
+                  <label class="block text-xs font-bold text-brand-orange mb-1">항공기 기번</label>
+                  <div class="relative flex items-center">
+                    <input type="text" id="carpetAcNo" autocomplete="off" placeholder="예: HL8087"
+                      class="w-full pl-3 pr-7 py-2 text-xs font-mono font-bold uppercase bg-white border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange text-gray-900 cursor-pointer">
+                    <button type="button" id="carpetAcToggleBtn"
+                      class="absolute right-2 text-gray-400 hover:text-brand-orange text-[10px] cursor-pointer"
+                      title="전체 기번 목록 열기">
+                      ▼
+                    </button>
+                  </div>
+                  <div id="carpetAcDropdownList"
+                    class="hidden absolute left-0 top-full mt-1 w-44 max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-xl shadow-xl z-50 divide-y divide-gray-100 text-xs">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-gray-700 mb-1">오더 내역 (Activity Type: RPL)</label>
+                  <div class="flex items-center h-[34px]">
+                    <span class="px-3 py-1.5 text-xs font-bold bg-orange-50 text-brand-orange border border-orange-200 rounded-lg">
+                      ALL CARPET REPLACE DUE
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" id="btnCarpetAddQueue"
+                class="px-4 py-2 rounded-lg text-xs font-bold bg-brand-orange hover:bg-orange-600 text-white transition-colors cursor-pointer shrink-0">
+                + 목록에 추가
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. Queue Table Card -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <span id="carpetQueueCount" class="text-xs font-bold text-gray-900">총 대기 작업: 0 대</span>
+              <div class="flex items-center space-x-2">
+                <button type="button" id="btnCarpetRemoveSel"
+                  class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer">
+                  선택 삭제
+                </button>
+                <button type="button" id="btnCarpetClearAll"
+                  class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer">
+                  전체 비우기
+                </button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto border border-gray-200 rounded-lg">
+              <table class="w-full text-xs text-left">
+                <thead class="bg-gray-50 text-gray-600 font-bold border-b border-gray-200">
+                  <tr>
+                    <th class="py-2.5 px-3 text-center w-9">
+                      <input type="checkbox" id="carpetSelectAll"
+                        class="w-3.5 h-3.5 accent-brand-orange rounded cursor-pointer">
+                    </th>
+                    <th class="py-2.5 px-2 text-center w-12">순번</th>
+                    <th class="py-2.5 px-3 text-center">항공기 기번</th>
+                    <th class="py-2.5 px-3 text-center">STATION</th>
+                    <th class="py-2.5 px-3 text-center">Due Date</th>
+                    <th class="py-2.5 px-3 text-center">발행인</th>
+                    <th class="py-2.5 px-3 text-center">오더 내역 (Activity)</th>
+                    <th class="py-2.5 px-2 text-center w-12">삭제</th>
+                  </tr>
+                </thead>
+                <tbody id="carpetQueueTbody" class="divide-y divide-gray-100">
+                  <tr>
+                    <td colspan="8" class="py-8 text-center text-gray-400">대기열에 등록된 작업이 없습니다.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pt-2">
+              <button type="button" id="btnCarpetRunSap"
+                class="w-full py-3.5 px-6 rounded-xl font-bold text-white bg-brand-orange hover:bg-orange-600 active:bg-orange-700 shadow-md hover:shadow-lg transition-all text-sm cursor-pointer">
+                SAP 카펫 교체 오더 자동 생성 실행
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="py-12 text-center text-gray-400 text-xs">
-          VBS 스크립트 연동 준비 중입니다.
+
+        <!-- Right Column (5 cols): Console Log -->
+        <div class="lg:col-span-5 flex flex-col h-[500px] lg:h-auto">
+          <div class="bg-[#18181B] rounded-xl shadow-sm border border-gray-800 flex flex-col h-full overflow-hidden">
+            <div class="bg-[#27272A] px-4 py-2.5 flex items-center justify-between border-b border-gray-800">
+              <span class="text-xs font-mono font-medium text-gray-300">오더 실행 로그 (Console)</span>
+              <button type="button" id="btnCarpetClearLog"
+                class="text-[11px] text-gray-400 hover:text-white transition-colors cursor-pointer">
+                로그 지우기
+              </button>
+            </div>
+            <div id="carpetLogBody"
+              class="flex-1 p-4 font-mono text-xs text-green-400 bg-black overflow-y-auto terminal-scroll leading-relaxed whitespace-pre-wrap select-text">
+              <div class="text-gray-500">SAP ALL CARPET REPLACEMENT 오더 생성기 준비 완료.</div>
+              <div class="text-gray-500">기번을 입력하여 대기열에 추가한 뒤 [SAP 카펫 교체 오더 자동 생성 실행]을 누르세요.</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -4870,6 +4997,433 @@
         logCabin('SUCCESS', `총 ${cabinQueue.length}대 항공기(${subTasks.length}건 오더) 자동 생성 스크립트가 준비되었습니다.`);
         logCabin('INFO', '브라우저 다운로드 목록에서 [SAP_객실오더_자동생성.vbs] 파일을 클릭(열기)하면 SAP 자동 생성이 즉시 실행됩니다.');
       });
+
+      // ----------------- SUB-MODULE: ALL CARPET REPLACEMENT -----------------
+      const CARPET_SETTINGS_KEY = 'JJA_CARPET_ORDER_SETTINGS_V1';
+      const carpetUserNo = document.getElementById('carpetUserNo');
+      const carpetDueDate = document.getElementById('carpetDueDate');
+      const carpetWorkCenter = document.getElementById('carpetWorkCenter');
+      const carpetAcNo = document.getElementById('carpetAcNo');
+      const carpetAcToggleBtn = document.getElementById('carpetAcToggleBtn');
+      const carpetAcDropdownList = document.getElementById('carpetAcDropdownList');
+      const btnCarpetAddQueue = document.getElementById('btnCarpetAddQueue');
+      const carpetQueueCount = document.getElementById('carpetQueueCount');
+      const carpetSelectAll = document.getElementById('carpetSelectAll');
+      const carpetQueueTbody = document.getElementById('carpetQueueTbody');
+      const btnCarpetRemoveSel = document.getElementById('btnCarpetRemoveSel');
+      const btnCarpetClearAll = document.getElementById('btnCarpetClearAll');
+      const btnCarpetRunSap = document.getElementById('btnCarpetRunSap');
+      const carpetLogBody = document.getElementById('carpetLogBody');
+      const btnCarpetClearLog = document.getElementById('btnCarpetClearLog');
+
+      if (carpetUserNo) {
+        let carpetQueue = [];
+
+        function loadCarpetSettings() {
+          try {
+            const raw = localStorage.getItem(CARPET_SETTINGS_KEY);
+            if (raw) {
+              const saved = JSON.parse(raw);
+              if (saved.userNo) carpetUserNo.value = saved.userNo;
+              if (saved.workCenter) carpetWorkCenter.value = saved.workCenter;
+            } else if (cabinUserNo && cabinUserNo.value) {
+              carpetUserNo.value = cabinUserNo.value;
+            }
+          } catch (e) { }
+          if (!carpetDueDate.value) {
+            carpetDueDate.value = getOneYearLaterStr();
+          }
+        }
+
+        function saveCarpetSettings() {
+          try {
+            const data = {
+              userNo: carpetUserNo.value.trim(),
+              workCenter: carpetWorkCenter.value
+            };
+            localStorage.setItem(CARPET_SETTINGS_KEY, JSON.stringify(data));
+          } catch (e) { }
+        }
+
+        loadCarpetSettings();
+
+        function logCarpet(level, msg) {
+          if (!carpetLogBody) return;
+          const now = new Date();
+          const timeStr = `[${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}] `;
+          const div = document.createElement('div');
+          div.textContent = timeStr + msg;
+          carpetLogBody.appendChild(div);
+          carpetLogBody.scrollTop = carpetLogBody.scrollHeight;
+        }
+
+        if (btnCarpetClearLog) {
+          btnCarpetClearLog.addEventListener('click', () => {
+            carpetLogBody.innerHTML = '<div class="text-gray-500">로그가 초기화되었습니다.</div>';
+          });
+        }
+
+        function renderCarpetAcDropdown(filterQuery) {
+          if (!carpetAcDropdownList) return;
+          const q = (filterQuery || '').trim().toUpperCase();
+          const curVal = normalizeAcNo(carpetAcNo.value);
+          const showAll = !q || fleetTails.includes(q);
+          const list = showAll ? fleetTails : fleetTails.filter(hl => hl.includes(q));
+
+          carpetAcDropdownList.innerHTML = '';
+          if (list.length === 0) {
+            carpetAcDropdownList.innerHTML = '<div class="px-3 py-2 text-gray-400 text-center">일치하는 기번 없음</div>';
+            carpetAcDropdownList.classList.remove('hidden');
+            return;
+          }
+
+          let activeEl = null;
+          list.forEach(hl => {
+            const item = document.createElement('div');
+            const isSelected = (hl === curVal);
+            item.className = `px-3 py-2 cursor-pointer flex items-center justify-between transition-colors ${isSelected ? 'bg-orange-100 text-brand-orange font-bold' : 'text-gray-800 hover:bg-orange-50'}`;
+            item.innerHTML = `<span class="font-mono font-bold">${hl}</span>`;
+            item.addEventListener('mousedown', (e) => {
+              e.preventDefault();
+              carpetAcNo.value = hl;
+              carpetAcDropdownList.classList.add('hidden');
+              carpetAcNo.focus();
+            });
+            carpetAcDropdownList.appendChild(item);
+            if (isSelected) activeEl = item;
+          });
+
+          carpetAcDropdownList.classList.remove('hidden');
+          if (activeEl) {
+            setTimeout(() => {
+              activeEl.scrollIntoView({ block: 'nearest' });
+            }, 0);
+          }
+        }
+
+        carpetAcNo.addEventListener('focus', () => renderCarpetAcDropdown(''));
+        carpetAcNo.addEventListener('click', () => {
+          if (carpetAcDropdownList.classList.contains('hidden')) renderCarpetAcDropdown('');
+        });
+
+        if (carpetAcToggleBtn) {
+          carpetAcToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (carpetAcDropdownList.classList.contains('hidden')) {
+              carpetAcNo.focus();
+              renderCarpetAcDropdown('');
+            } else {
+              carpetAcDropdownList.classList.add('hidden');
+            }
+          });
+        }
+
+        document.addEventListener('click', (e) => {
+          if (!e.target.closest('#carpetAcComboContainer') && carpetAcDropdownList) {
+            carpetAcDropdownList.classList.add('hidden');
+          }
+        });
+
+        carpetAcNo.addEventListener('input', () => {
+          const raw = carpetAcNo.value.trim();
+          if (/^\d{4,}$/.test(raw)) {
+            carpetAcNo.value = 'HL' + raw;
+          } else if (raw.toUpperCase().startsWith('HL') && raw !== raw.toUpperCase()) {
+            carpetAcNo.value = raw.toUpperCase();
+          }
+          renderCarpetAcDropdown(carpetAcNo.value);
+        });
+
+        carpetAcNo.addEventListener('blur', () => {
+          const norm = normalizeAcNo(carpetAcNo.value);
+          if (norm) carpetAcNo.value = norm;
+        });
+
+        carpetUserNo.addEventListener('blur', saveCarpetSettings);
+        carpetWorkCenter.addEventListener('change', saveCarpetSettings);
+
+        function renderCarpetQueue() {
+          carpetQueueCount.textContent = `총 대기 작업: ${carpetQueue.length} 대`;
+          if (carpetQueue.length === 0) {
+            carpetQueueTbody.innerHTML = '<tr><td colspan="8" class="py-8 text-center text-gray-400">대기열에 등록된 작업이 없습니다.</td></tr>';
+            if (carpetSelectAll) carpetSelectAll.checked = false;
+            return;
+          }
+
+          carpetQueueTbody.innerHTML = '';
+          carpetQueue.forEach((item, idx) => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-orange-50/40 transition-colors border-b border-gray-100';
+            tr.innerHTML = `
+              <td class="py-2.5 px-3 text-center">
+                <input type="checkbox" class="carpet-row-chk w-3.5 h-3.5 accent-brand-orange rounded cursor-pointer" data-idx="${idx}">
+              </td>
+              <td class="py-2.5 px-2 text-center font-mono text-gray-500">${idx + 1}</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-gray-900">${item.acNo}</td>
+              <td class="py-2.5 px-3 text-center font-semibold text-gray-700">${item.workCenter}</td>
+              <td class="py-2.5 px-3 text-center font-mono text-gray-700">${item.dueDate}</td>
+              <td class="py-2.5 px-3 text-center font-mono text-gray-700">${item.userNo}</td>
+              <td class="py-2.5 px-3 text-center">
+                <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-orange-100 text-brand-orange">ALL CARPET REPLACE (RPL)</span>
+              </td>
+              <td class="py-2.5 px-2 text-center">
+                <button type="button" class="btn-carpet-del-one text-gray-400 hover:text-red-600 font-bold px-1 transition-colors cursor-pointer" data-idx="${idx}" title="삭제">✕</button>
+              </td>
+            `;
+            carpetQueueTbody.appendChild(tr);
+          });
+
+          carpetQueueTbody.querySelectorAll('.btn-carpet-del-one').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const idx = Number(btn.getAttribute('data-idx'));
+              carpetQueue.splice(idx, 1);
+              renderCarpetQueue();
+            });
+          });
+        }
+
+        function addCarpetToQueue() {
+          const userNo = carpetUserNo.value.trim();
+          if (!userNo) {
+            alert('발행인 사번을 입력해 주세요.');
+            carpetUserNo.focus();
+            return false;
+          }
+          saveCarpetSettings();
+
+          const acNo = normalizeAcNo(carpetAcNo.value);
+          if (!acNo) {
+            alert('항공기 기번을 입력해 주세요. (예: HL8087)');
+            carpetAcNo.focus();
+            return false;
+          }
+
+          const dueDate = carpetDueDate.value.trim();
+          if (!validateDueDate(dueDate)) {
+            alert('날짜 형식이 올바르지 않습니다. (예: YYYY.MM.DD)');
+            carpetDueDate.focus();
+            return false;
+          }
+
+          const workCenter = carpetWorkCenter.value;
+
+          const exists = carpetQueue.some(item => item.acNo === acNo);
+          if (exists) {
+            if (!confirm(`[${acNo}] 항공기가 이미 대기열에 존재합니다. 중복으로 추가하시겠습니까?`)) {
+              return false;
+            }
+          }
+
+          carpetQueue.push({ acNo, workCenter, dueDate, userNo });
+          renderCarpetQueue();
+          logCarpet('INFO', `대기열 추가 완료: ${acNo} (${workCenter}, ${dueDate}, ALL CARPET REPLACE DUE)`);
+          carpetAcNo.value = '';
+          if (carpetAcDropdownList) carpetAcDropdownList.classList.add('hidden');
+          carpetAcNo.focus();
+          return true;
+        }
+
+        btnCarpetAddQueue.addEventListener('click', addCarpetToQueue);
+        carpetAcNo.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            if (carpetAcDropdownList) carpetAcDropdownList.classList.add('hidden');
+            carpetAcNo.blur();
+          } else if (e.key === 'Escape') {
+            if (carpetAcDropdownList) carpetAcDropdownList.classList.add('hidden');
+          }
+        });
+
+        if (carpetSelectAll) {
+          carpetSelectAll.addEventListener('change', () => {
+            carpetQueueTbody.querySelectorAll('.carpet-row-chk').forEach(chk => {
+              chk.checked = carpetSelectAll.checked;
+            });
+          });
+        }
+
+        btnCarpetRemoveSel.addEventListener('click', () => {
+          const checked = Array.from(carpetQueueTbody.querySelectorAll('.carpet-row-chk:checked'))
+            .map(c => Number(c.getAttribute('data-idx')))
+            .sort((a, b) => b - a);
+          if (checked.length === 0) {
+            alert('삭제할 항목을 목록에서 선택해 주세요.');
+            return;
+          }
+          checked.forEach(i => carpetQueue.splice(i, 1));
+          renderCarpetQueue();
+        });
+
+        btnCarpetClearAll.addEventListener('click', () => {
+          if (carpetQueue.length === 0) return;
+          if (!confirm('대기열의 모든 작업을 비우시겠습니까?')) return;
+          carpetQueue = [];
+          renderCarpetQueue();
+          logCarpet('INFO', '대기열이 초기화되었습니다.');
+        });
+
+        // Run SAP VBS Generation for Carpet
+        btnCarpetRunSap.addEventListener('click', () => {
+          if (carpetQueue.length === 0) {
+            if (carpetAcNo.value.trim()) {
+              if (!addCarpetToQueue()) return;
+            } else {
+              alert('실행할 작업 대상이 없습니다.\n기번을 입력하고 [목록에 추가]를 눌러주세요.');
+              carpetAcNo.focus();
+              return;
+            }
+          }
+
+          const lastUserNo = carpetQueue[carpetQueue.length - 1].userNo;
+          const callLines = carpetQueue.map(t => {
+            return `If ProcessCarpetOrder("${vbsEscape(t.acNo)}", "${vbsEscape(t.workCenter)}", "${vbsEscape(t.dueDate)}", "${vbsEscape(t.userNo)}") Then okCnt = okCnt + 1 Else failCnt = failCnt + 1 : failLogs = failLogs & vbCrLf & "- [CARPET] ${vbsEscape(t.acNo)} 실패"`;
+          });
+
+          const vbs = [
+            "If Not IsObject(application) Then",
+            "   Set SapGuiAuto  = GetObject(\"SAPGUI\")",
+            "   Set application = SapGuiAuto.GetScriptingEngine",
+            "End If",
+            "If Not IsObject(connection) Then",
+            "   Set connection = application.Children(0)",
+            "End If",
+            "If Not IsObject(session) Then",
+            "   Set session    = connection.Children(0)",
+            "End If",
+            "If IsObject(WScript) Then",
+            "   WScript.ConnectObject session,     \"on\"",
+            "   WScript.ConnectObject application, \"on\"",
+            "End If",
+            "session.findById(\"wnd[0]\").maximize",
+            "",
+            "Dim okCnt, failCnt, failLogs",
+            "okCnt = 0 : failCnt = 0 : failLogs = \"\"",
+            "",
+            ...callLines,
+            "",
+            "If okCnt > 0 Then",
+            "    On Error Resume Next",
+            "    If Not session.findById(\"wnd[1]\", False) Is Nothing Then",
+            "        session.findById(\"wnd[1]\").sendVKey 0",
+            "    End If",
+            "    session.startTransaction \"ZIW28\"",
+            "    If session.findById(\"wnd[0]/usr/ctxtS_QNAME-LOW\", False) Is Nothing Then",
+            "        session.findById(\"wnd[0]/tbar[0]/okcd\").text = \"/nZIW28\"",
+            "        session.findById(\"wnd[0]\").sendVKey 0",
+            "    End If",
+            "    If Not session.findById(\"wnd[0]/usr/ctxtS_QMNUM-LOW\", False) Is Nothing Then",
+            "        session.findById(\"wnd[0]/usr/ctxtS_QMNUM-LOW\").text = \"\"",
+            "    End If",
+            "    If Not session.findById(\"wnd[0]/usr/ctxtS_QMNUM-HIGH\", False) Is Nothing Then",
+            "        session.findById(\"wnd[0]/usr/ctxtS_QMNUM-HIGH\").text = \"\"",
+            "    End If",
+            `    session.findById("wnd[0]/usr/ctxtS_QNAME-LOW").text = "${vbsEscape(lastUserNo)}"`,
+            "    session.findById(\"wnd[0]/usr/ctxtS_QMART-LOW\").text = \"AR\"",
+            "    session.findById(\"wnd[0]\").sendVKey 8",
+            "    On Error GoTo 0",
+            "End If",
+            "",
+            "Dim finalMsg",
+            "finalMsg = \"카펫 교체(ALL CARPET REPLACE) 오더 자동 생성 완료!\" & vbCrLf & vbCrLf & \"- 성공: \" & okCnt & \"건\" & vbCrLf & \"- 실패: \" & failCnt & \"건\"",
+            "If failCnt > 0 Then finalMsg = finalMsg & vbCrLf & vbCrLf & \"[실패 내역]\" & failLogs",
+            "MsgBox finalMsg, vbInformation, \"SAP 오더 생성 완료\"",
+            "",
+            "' 표준 스크립트 기반 ALL CARPET REPLACEMENT 오더 생성",
+            "Function ProcessCarpetOrder(acNo, workCenter, reqDate, userNo)",
+            "    On Error Resume Next",
+            "    ProcessCarpetOrder = False",
+            "    session.findById(\"wnd[0]\").maximize",
+            "    If Not session.findById(\"wnd[1]\", False) Is Nothing Then",
+            "        session.findById(\"wnd[1]\").sendVKey 0",
+            "    End If",
+            "    session.startTransaction \"IW21\"",
+            "    If session.findById(\"wnd[0]/usr/ctxtRIWO00-QMART\", False) Is Nothing Then",
+            "        session.findById(\"wnd[0]/tbar[0]/okcd\").text = \"/nIW21\"",
+            "        session.findById(\"wnd[0]\").sendVKey 0",
+            "    End If",
+            "    If Not session.findById(\"wnd[1]\", False) Is Nothing Then",
+            "        session.findById(\"wnd[1]\").sendVKey 0",
+            "    End If",
+            "    session.findById(\"wnd[0]/usr/ctxtRIWO00-QMART\").text = \"AR\"",
+            "    session.findById(\"wnd[0]/usr/ctxtRIWO00-QMART\").caretPosition = 2",
+            "    session.findById(\"wnd[0]\").sendVKey 0",
+            "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+            "",
+            "    session.findById(\"wnd[0]/usr/subSCREEN_1:SAPLIQS0:1050/subNOTIF_TYPE:SAPLIQS0:1051/txtVIQMEL-QMTXT\").text = \"ALL CARPET REPLACE DUE\"",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_1:SAPLIQS0:7322/subOBJEKT:SAPLIWO1:0100/ctxtRIWO1-TPLNR\").text = acNo",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_3:SAPLIQS0:7326/ctxtVIQMEL-INGRP\").text = \"100\"",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_3:SAPLIQS0:7326/ctxtRIWO00-GEWRK\").text = workCenter",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_4:SAPLIQS0:7330/ctxtVIQMEL-LTRMN\").text = reqDate",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_5:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0101/ctxtVIQMEL-ZRUSRNO\").text = userNo",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_5:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0101/ctxtVIQMEL-ZRUSRNO\").setFocus",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_5:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0101/ctxtVIQMEL-ZRUSRNO\").caretPosition = Len(userNo)",
+            "    session.findById(\"wnd[0]\").sendVKey 0",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB01/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_2:SAPLIQS0:7715/cntlTEXT/shellcont/shell\").setSelectionIndexes 0,0",
+            "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+            "",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB02\").select",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB02/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_1:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0100/ctxtVIQMEL-ZDDATE_AC\").text = reqDate",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB02/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_1:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0100/ctxtVIQMEL-ZDDATE_AC\").setFocus",
+            "    session.findById(\"wnd[0]/usr/tabsTAB_GROUP_10/tabp10\\TAB02/ssubSUB_GROUP_10:SAPLIQS0:7235/subCUSTOM_SCREEN:SAPLIQS0:7212/subSUBSCREEN_1:SAPLIQS0:7901/subUSER0001:SAPLXQQM:0100/ctxtVIQMEL-ZDDATE_AC\").caretPosition = 10",
+            "    session.findById(\"wnd[0]\").sendVKey 0",
+            "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+            "",
+            "    session.findById(\"wnd[0]/usr/subSCREEN_1:SAPLIQS0:1050/btnXICON_ORDER\").press",
+            "    If Not session.findById(\"wnd[1]\", False) Is Nothing Then",
+            "        session.findById(\"wnd[1]\").sendVKey 0",
+            "    End If",
+            "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+            "",
+            "    ' Activity Type: RPL",
+            "    session.findById(\"wnd[0]/usr/subSUB_ALL:SAPLCOIH:3001/ssubSUB_LEVEL:SAPLCOIH:1100/tabsTS_1100/tabpIHKZ/ssubSUB_AUFTRAG:SAPLCOIH:1120/subHEADER:SAPLCOIH:0154/ctxtCAUFVD-ILART\").text = \"RPL\"",
+            "    session.findById(\"wnd[0]/usr/subSUB_ALL:SAPLCOIH:3001/ssubSUB_LEVEL:SAPLCOIH:1100/tabsTS_1100/tabpIHKZ/ssubSUB_AUFTRAG:SAPLCOIH:1120/subHEADER:SAPLCOIH:0154/ctxtCAUFVD-ILART\").setFocus",
+            "    session.findById(\"wnd[0]/usr/subSUB_ALL:SAPLCOIH:3001/ssubSUB_LEVEL:SAPLCOIH:1100/tabsTS_1100/tabpIHKZ/ssubSUB_AUFTRAG:SAPLCOIH:1120/subHEADER:SAPLCOIH:0154/ctxtCAUFVD-ILART\").caretPosition = 3",
+            "    session.findById(\"wnd[0]\").sendVKey 0",
+            "    If Not session.findById(\"wnd[1]\", False) Is Nothing Then",
+            "        session.findById(\"wnd[1]\").sendVKey 0",
+            "    End If",
+            "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+            "",
+            "    ' 작업장 필드가 화면에 있는 경우 채워줌",
+            "    Dim arbplElem",
+            "    Set arbplElem = session.findById(\"wnd[0]/usr/subSUB_ALL:SAPLCOIH:3001/ssubSUB_LEVEL:SAPLCOIH:1100/tabsTS_1100/tabpIHKZ/ssubSUB_AUFTRAG:SAPLCOIH:1120/subAVO:SAPLCOI0:0310/ctxtAFVGD-ARBPL\", False)",
+            "    If Not arbplElem Is Nothing Then",
+            "        arbplElem.text = workCenter",
+            "        session.findById(\"wnd[0]\").sendVKey 0",
+            "        If Not session.findById(\"wnd[1]\", False) Is Nothing Then",
+            "            session.findById(\"wnd[1]\").sendVKey 0",
+            "        End If",
+            "    End If",
+            "",
+            "    ' Release",
+            "    session.findById(\"wnd[0]/tbar[1]/btn[25]\").press",
+            "    If Not session.findById(\"wnd[1]\", False) Is Nothing Then",
+            "        session.findById(\"wnd[1]\").sendVKey 0",
+            "    End If",
+            "",
+            "    ' Save",
+            "    session.findById(\"wnd[0]/tbar[0]/btn[11]\").press",
+            "    If Not session.findById(\"wnd[1]\", False) Is Nothing Then",
+            "        session.findById(\"wnd[1]\").sendVKey 0",
+            "    End If",
+            "    session.findById(\"wnd[0]\").resizeWorkingPane 199,35,false",
+            "    If Err.Number <> 0 Then Err.Clear : Exit Function",
+            "",
+            "    Dim qmnumElem",
+            "    Set qmnumElem = session.findById(\"wnd[0]/usr/ctxtRIWO00-QMNUM\", False)",
+            "    If Not qmnumElem Is Nothing Then",
+            "        qmnumElem.text = \"\"",
+            "    End If",
+            "    ProcessCarpetOrder = True",
+            "    On Error GoTo 0",
+            "End Function"
+          ].join('\r\n');
+
+          downloadUtf16Vbs(`SAP_카펫교체오더_자동생성_${carpetQueue.length}대.vbs`, vbs);
+          logCarpet('SUCCESS', `총 ${carpetQueue.length}대 항공기 카펫 교체 자동 생성 스크립트가 준비되었습니다.`);
+          logCarpet('INFO', '브라우저 다운로드 목록에서 [SAP_카펫교체오더_자동생성.vbs] 파일을 클릭(열기)하면 SAP 자동 생성이 즉시 실행됩니다.');
+        });
+      }
 
       // Initialize GMP/ICN 야간 Ground 조회 모듈
       initGrdLookupModule();
