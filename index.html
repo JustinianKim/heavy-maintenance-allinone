@@ -1127,7 +1127,7 @@
 
               <button type="button" id="btnCabinAddQueue"
                 class="px-4 py-2 rounded-lg text-xs font-bold bg-brand-orange hover:bg-orange-600 text-white transition-colors cursor-pointer shrink-0">
-                + 목록에 추가 (Enter)
+                + 목록에 추가
               </button>
             </div>
           </div>
@@ -4533,7 +4533,8 @@
       cabinAcNo.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
-          addCabinToQueue();
+          if (cabinAcDropdownList) cabinAcDropdownList.classList.add('hidden');
+          cabinAcNo.blur();
         } else if (e.key === 'Escape') {
           if (cabinAcDropdownList) cabinAcDropdownList.classList.add('hidden');
         }
