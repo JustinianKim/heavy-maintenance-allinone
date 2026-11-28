@@ -4678,7 +4678,7 @@
             <td class="py-2 px-3 text-center font-mono text-gray-700">${escapeHtml(item.workCenter)}</td>
             <td class="py-2 px-3 text-center font-mono text-gray-700">${escapeHtml(item.dueDate)}</td>
             <td class="py-2 px-3 text-center font-mono text-gray-700">${escapeHtml(item.userNo)}</td>
-            <td class="py-2 px-3 text-center font-mono ${item.clnOpt !== '-' ? 'text-brand-orange font-bold' : 'text-gray-400'}">${escapeHtml(item.clnOpt)}</td>
+            <td class="py-2 px-3 text-center font-mono ${item.clnOpt !== '미포함' && item.clnOpt !== '-' ? 'text-brand-orange font-bold' : 'text-gray-400'}">${escapeHtml(item.clnOpt)}</td>
             <td class="py-2 px-3 text-center ${item.chkOpt === '포함' ? 'text-emerald-700 font-bold' : 'text-gray-400'}">${escapeHtml(item.chkOpt)}</td>
             <td class="py-2 px-2 text-center">
               <button type="button" data-del-idx="${idx}" class="btn-cabin-del text-gray-400 hover:text-red-500 font-bold px-1.5 py-0.5 rounded cursor-pointer">✕</button>
@@ -4725,10 +4725,10 @@
         }
 
         const workCenter = cabinWorkCenter.value || 'GMP-ACM';
-        const clnOpt = cabinChkCln.checked ? cabinClnTask.value : '-';
-        const chkOpt = cabinChkClean.checked ? '포함' : '-';
+        const clnOpt = cabinChkCln.checked ? cabinClnTask.value : '미포함';
+        const chkOpt = cabinChkClean.checked ? '포함' : '미포함';
 
-        if (clnOpt === '-' && chkOpt === '-') {
+        if ((clnOpt === '미포함' || clnOpt === '-') && (chkOpt === '미포함' || chkOpt === '-')) {
           alert('소독 또는 CLEANING 오더 중 최소 하나를 선택해야 합니다.');
           return false;
         }
@@ -4828,7 +4828,7 @@
 
         const subTasks = [];
         cabinQueue.forEach(item => {
-          if (item.clnOpt !== '-') {
+          if (item.clnOpt !== '미포함' && item.clnOpt !== '-') {
             const tl = item.clnOpt.includes('13870') ? '13870' : '10630';
             subTasks.push({
               type: 'DISINFECTION',
